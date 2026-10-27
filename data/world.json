@@ -1,0 +1,6447 @@
+{
+ "about": "Fictional demo world (Lakeshore varsity boys), generated from hoopscliniq-demo/src/mocks by scripts/build_world.py. Ids match the demo app's routes.",
+ "team": "Lakeshore",
+ "opponents": [
+  {
+   "id": "westview",
+   "name": "Westview",
+   "defense": "2-3 zone, 1-3-1 after timeouts"
+  },
+  {
+   "id": "cedar-park",
+   "name": "Cedar Park",
+   "defense": "Man, 1-2-1-1 press"
+  },
+  {
+   "id": "ridgeline",
+   "name": "Ridgeline",
+   "defense": "Pack-line man"
+  },
+  {
+   "id": "lakemont",
+   "name": "Lakemont",
+   "defense": "Switch everything"
+  },
+  {
+   "id": "fairhaven",
+   "name": "Fairhaven",
+   "defense": "Man"
+  },
+  {
+   "id": "oak-hollow",
+   "name": "Oak Hollow",
+   "defense": "Match-up zone"
+  },
+  {
+   "id": "brookside",
+   "name": "Brookside",
+   "defense": "Man, ICE ball screens"
+  },
+  {
+   "id": "pinecrest",
+   "name": "Pinecrest",
+   "defense": "Man with a full-court press"
+  },
+  {
+   "id": "harbor-city",
+   "name": "Harbor City",
+   "defense": "2-3 zone"
+  },
+  {
+   "id": "northfield-prep",
+   "name": "Northfield Prep",
+   "defense": "Man, heavy help"
+  }
+ ],
+ "plays": [
+  {
+   "id": "spain-pnr",
+   "title": "Spain Pick and Roll",
+   "description": "Ball screen with a back screen on the roller's defender; the roll or the pop is open.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 28,
+   "pointsPerPossession": 0.89,
+   "successRate": 32,
+   "inWestviewGamePlan": false,
+   "href": "/plays/spain-pnr",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q3 6:13 Turnover (bad pass)",
+     "href": "/film/cedar-park?t=3558"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q1 4:12 Missed two",
+     "href": "/film/lakemont?t=674"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q2 3:03 Made two",
+     "href": "/film/ridgeline?t=1960"
+    }
+   ]
+  },
+  {
+   "id": "horns-flare",
+   "title": "Horns Flare",
+   "description": "Horns ball screen into a flare for the shooter on the skip.",
+   "category": "Half court",
+   "vs": "any",
+   "timesRun": 46,
+   "pointsPerPossession": 1.07,
+   "successRate": 46,
+   "inWestviewGamePlan": true,
+   "href": "/plays/horns-flare",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q4 3:02 Made three",
+     "href": "/film/cedar-park?t=5167"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q3 6:21 Missed two",
+     "href": "/film/lakemont?t=3409"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q1 1:35 Fouled, 2 of 2 at the line",
+     "href": "/film/ridgeline?t=961"
+    }
+   ]
+  },
+  {
+   "id": "five-out-chicago",
+   "title": "5-Out Chicago",
+   "description": "Pin-down straight into a handoff; the wing turns the corner downhill.",
+   "category": "Half court",
+   "vs": "any",
+   "timesRun": 24,
+   "pointsPerPossession": 1.17,
+   "successRate": 50,
+   "inWestviewGamePlan": true,
+   "href": "/plays/five-out-chicago",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q2 2:06 Made three",
+     "href": "/film/cedar-park?t=2287"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q4 4:09 Missed two",
+     "href": "/film/lakemont?t=4984"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q2 7:28 And-one",
+     "href": "/film/ridgeline?t=1369"
+    }
+   ]
+  },
+  {
+   "id": "hammer",
+   "title": "Hammer",
+   "description": "Baseline drive with a hammer screen for the weak-side corner shooter.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 12,
+   "pointsPerPossession": 1.33,
+   "successRate": 58,
+   "inWestviewGamePlan": false,
+   "href": "/plays/hammer",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q2 5:54 Made three",
+     "href": "/film/cedar-park?t=1760"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q1 5:46 Missed two",
+     "href": "/film/lakemont?t=400"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q2 4:51 And-one",
+     "href": "/film/ridgeline?t=1752"
+    }
+   ]
+  },
+  {
+   "id": "floppy",
+   "title": "Floppy",
+   "description": "Shooter under the rim picks a side: single screen or the double.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 13,
+   "pointsPerPossession": 1,
+   "successRate": 46,
+   "inWestviewGamePlan": false,
+   "href": "/plays/floppy",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q2 4:39 Made two",
+     "href": "/film/cedar-park?t=1946"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q1 7:45 Missed two",
+     "href": "/film/lakemont?t=98"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q2 5:58 Made two",
+     "href": "/film/ridgeline?t=1611"
+    }
+   ]
+  },
+  {
+   "id": "box-blob",
+   "title": "Box BLOB",
+   "description": "Box set under our basket: cross screen, seal to the rim, inbounder steps in.",
+   "category": "BLOB",
+   "vs": "any",
+   "timesRun": 18,
+   "pointsPerPossession": 1.06,
+   "successRate": 56,
+   "inWestviewGamePlan": true,
+   "href": "/plays/box-blob",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q1 0:17 Made two",
+     "href": "/film/cedar-park?t=1236"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q2 7:08 Missed two",
+     "href": "/film/ridgeline?t=1423"
+    },
+    {
+     "filmId": "oak-hollow",
+     "label": "Q2 4:00 Made two",
+     "href": "/film/oak-hollow?t=1886"
+    }
+   ]
+  },
+  {
+   "id": "sideline-ob",
+   "title": "Sideline OB",
+   "description": "Safe catch first, then screen the inbounder down the sideline.",
+   "category": "SLOB",
+   "vs": "man",
+   "timesRun": 6,
+   "pointsPerPossession": 0.67,
+   "successRate": 33,
+   "inWestviewGamePlan": false,
+   "href": "/plays/sideline-ob",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q4 5:23 Missed two",
+     "href": "/film/cedar-park?t=4880"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q3 0:06 Turnover (bad pass)",
+     "href": "/film/lakemont?t=4319"
+    },
+    {
+     "filmId": "oak-hollow",
+     "label": "Q4 3:48 Made two",
+     "href": "/film/oak-hollow?t=5063"
+    }
+   ]
+  },
+  {
+   "id": "press-break",
+   "title": "Press Break 1-4",
+   "description": "Catch, hit the middle before the trap closes, attack the 2-on-1.",
+   "category": "Press break",
+   "vs": "press",
+   "timesRun": 21,
+   "pointsPerPossession": 0.86,
+   "successRate": 33,
+   "inWestviewGamePlan": false,
+   "href": "/plays/press-break",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q1 2:38 Made two",
+     "href": "/film/cedar-park?t=786"
+    },
+    {
+     "filmId": "pinecrest",
+     "label": "Q2 3:33 Missed two",
+     "href": "/film/pinecrest?t=1975"
+    }
+   ]
+  },
+  {
+   "id": "primary-transition",
+   "title": "Primary Transition",
+   "description": "Run wide, rim-run with 5, early post touch before the defense matches up.",
+   "category": "Transition",
+   "vs": "any",
+   "timesRun": 49,
+   "pointsPerPossession": 1.06,
+   "successRate": 51,
+   "inWestviewGamePlan": false,
+   "href": "/plays/primary-transition",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q1 6:49 Turnover (offensive foul)",
+     "href": "/film/cedar-park?t=185"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q2 1:17 Missed three",
+     "href": "/film/lakemont?t=2454"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q1 5:45 Made two",
+     "href": "/film/ridgeline?t=369"
+    }
+   ]
+  },
+  {
+   "id": "short-corner-flood",
+   "title": "Short Corner Flood",
+   "description": "High-post catch, then the short corner behind the bottom of the 2-3.",
+   "category": "Zone offense",
+   "vs": "zone",
+   "timesRun": 7,
+   "pointsPerPossession": 1.14,
+   "successRate": 57,
+   "inWestviewGamePlan": true,
+   "href": "/plays/short-corner-flood",
+   "clips": [
+    {
+     "filmId": "oak-hollow",
+     "label": "Q4 4:40 Made three",
+     "href": "/film/oak-hollow?t=4931"
+    },
+    {
+     "filmId": "westview",
+     "label": "Q4 7:44 Turnover (lost ball)",
+     "href": "/film/westview?t=4516"
+    }
+   ]
+  },
+  {
+   "id": "zone-gut",
+   "title": "Zone Gut",
+   "description": "Gap the top of the zone, kick, then dump to the baseline.",
+   "category": "Zone offense",
+   "vs": "zone",
+   "timesRun": 5,
+   "pointsPerPossession": 1,
+   "successRate": 60,
+   "inWestviewGamePlan": true,
+   "href": "/plays/zone-gut",
+   "clips": [
+    {
+     "filmId": "oak-hollow",
+     "label": "Q3 0:42 Made two",
+     "href": "/film/oak-hollow?t=4249"
+    },
+    {
+     "filmId": "westview",
+     "label": "Q3 4:32 Turnover (lost ball)",
+     "href": "/film/westview?t=3587"
+    }
+   ]
+  },
+  {
+   "id": "baseline-runner",
+   "title": "Baseline Runner",
+   "description": "Shooter runs the baseline under the 2-3 off a screen on the bottom defender.",
+   "category": "Zone offense",
+   "vs": "zone",
+   "timesRun": 0,
+   "pointsPerPossession": 0,
+   "successRate": 0,
+   "inWestviewGamePlan": true,
+   "href": "/plays/baseline-runner",
+   "clips": []
+  },
+  {
+   "id": "chin",
+   "title": "Chin",
+   "description": "Back screen at the elbow for the wing, then the screener pops for the DHO.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 10,
+   "pointsPerPossession": 1.1,
+   "successRate": 50,
+   "inWestviewGamePlan": false,
+   "href": "/plays/chin",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q1 6:33 Made three",
+     "href": "/film/cedar-park?t=233"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q1 3:35 Missed two",
+     "href": "/film/lakemont?t=743"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q1 7:25 Made three",
+     "href": "/film/ridgeline?t=124"
+    }
+   ]
+  },
+  {
+   "id": "elevator",
+   "title": "Elevator",
+   "description": "Shooter runs through the doors; 4 and 5 close them behind him.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 3,
+   "pointsPerPossession": 1.33,
+   "successRate": 67,
+   "inWestviewGamePlan": false,
+   "href": "/plays/elevator",
+   "clips": [
+    {
+     "filmId": "pinecrest",
+     "label": "Q1 7:42 Made two",
+     "href": "/film/pinecrest?t=96"
+    }
+   ]
+  },
+  {
+   "id": "ram-pnr",
+   "title": "Ram PnR",
+   "description": "A down screen on the screener's defender, then the ball screen and a free roll.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 11,
+   "pointsPerPossession": 1,
+   "successRate": 36,
+   "inWestviewGamePlan": false,
+   "href": "/plays/ram-pnr",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q1 1:13 Made three",
+     "href": "/film/cedar-park?t=1117"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q1 6:04 Turnover (offensive foul)",
+     "href": "/film/ridgeline?t=312"
+    },
+    {
+     "filmId": "pinecrest",
+     "label": "Q1 7:12 Made three",
+     "href": "/film/pinecrest?t=171"
+    }
+   ]
+  },
+  {
+   "id": "ato-stack",
+   "title": "ATO Stack",
+   "description": "Stack on the lane line hides a back screen for a lob after the timeout.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 2,
+   "pointsPerPossession": 1,
+   "successRate": 50,
+   "inWestviewGamePlan": false,
+   "href": "/plays/ato-stack",
+   "clips": [
+    {
+     "filmId": "lakemont",
+     "label": "Q4 5:14 Missed two",
+     "href": "/film/lakemont?t=4831"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q4 2:18 Made two",
+     "href": "/film/ridgeline?t=5236"
+    }
+   ]
+  },
+  {
+   "id": "horns-twist",
+   "title": "Horns Twist",
+   "description": "Horns ball screen, then the other big re-screens the opposite way: the twist.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 11,
+   "pointsPerPossession": 1,
+   "successRate": 36,
+   "inWestviewGamePlan": false,
+   "href": "/plays/horns-twist",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q1 3:18 Fouled, 2 of 2 at the line",
+     "href": "/film/cedar-park?t=712"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q3 0:29 Turnover (bad pass)",
+     "href": "/film/lakemont?t=4202"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q1 2:31 And-one",
+     "href": "/film/ridgeline?t=778"
+    }
+   ]
+  },
+  {
+   "id": "horns-down",
+   "title": "Horns Down",
+   "description": "Horns entry to the elbow, then a down screen for the corner shooter.",
+   "category": "Half court",
+   "vs": "any",
+   "timesRun": 7,
+   "pointsPerPossession": 0.86,
+   "successRate": 43,
+   "inWestviewGamePlan": false,
+   "href": "/plays/horns-down",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q2 0:37 Missed three",
+     "href": "/film/cedar-park?t=2616"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q1 6:23 Turnover (bad pass)",
+     "href": "/film/lakemont?t=266"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q3 7:17 Made two",
+     "href": "/film/ridgeline?t=3170"
+    }
+   ]
+  },
+  {
+   "id": "spain-slip",
+   "title": "Spain Slip",
+   "description": "The Spain look, but 5 slips the ball screen before contact when they jump it.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 5,
+   "pointsPerPossession": 0.6,
+   "successRate": 40,
+   "inWestviewGamePlan": false,
+   "href": "/plays/spain-slip",
+   "clips": [
+    {
+     "filmId": "lakemont",
+     "label": "Q2 3:59 Missed three",
+     "href": "/film/lakemont?t=1953"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q3 0:20 Missed three",
+     "href": "/film/ridgeline?t=4247"
+    },
+    {
+     "filmId": "pinecrest",
+     "label": "Q2 5:38 Fouled, 1 of 2 at the line",
+     "href": "/film/pinecrest?t=1694"
+    }
+   ]
+  },
+  {
+   "id": "one-four-rub",
+   "title": "1-4 High Rub",
+   "description": "1-4 High entry to the wing; the point guard rub-cuts off the elbow to the rim.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 6,
+   "pointsPerPossession": 1.17,
+   "successRate": 50,
+   "inWestviewGamePlan": false,
+   "href": "/plays/one-four-rub",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q3 8:00 Made two",
+     "href": "/film/cedar-park?t=3293"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q4 1:42 Missed three",
+     "href": "/film/lakemont?t=5401"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q1 4:43 Made two",
+     "href": "/film/ridgeline?t=501"
+    }
+   ]
+  },
+  {
+   "id": "one-four-backdoor",
+   "title": "1-4 High Backdoor",
+   "description": "Elbow entry from 1-4 High; the overplayed wing cuts backdoor.",
+   "category": "Half court",
+   "vs": "man",
+   "timesRun": 8,
+   "pointsPerPossession": 0.88,
+   "successRate": 50,
+   "inWestviewGamePlan": false,
+   "href": "/plays/one-four-backdoor",
+   "clips": [
+    {
+     "filmId": "lakemont",
+     "label": "Q1 2:34 Made two",
+     "href": "/film/lakemont?t=876"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q4 5:56 Missed three",
+     "href": "/film/ridgeline?t=4686"
+    },
+    {
+     "filmId": "pinecrest",
+     "label": "Q4 1:24 Missed two",
+     "href": "/film/pinecrest?t=5445"
+    }
+   ]
+  },
+  {
+   "id": "overload-131",
+   "title": "1-3-1 Overload",
+   "description": "Overload one side of the 1-3-1; the shooter runs the baseline behind the bottom defender.",
+   "category": "Zone offense",
+   "vs": "zone",
+   "timesRun": 6,
+   "pointsPerPossession": 1,
+   "successRate": 33,
+   "inWestviewGamePlan": true,
+   "href": "/plays/overload-131",
+   "clips": [
+    {
+     "filmId": "westview",
+     "label": "Q3 7:26 Made three",
+     "href": "/film/westview?t=3203"
+    }
+   ]
+  },
+  {
+   "id": "press-diamond",
+   "title": "Press Break Diamond",
+   "description": "Diamond against full-court man: hit the middle before the trap closes, then fill the lanes.",
+   "category": "Press break",
+   "vs": "press",
+   "timesRun": 6,
+   "pointsPerPossession": 1,
+   "successRate": 50,
+   "inWestviewGamePlan": false,
+   "href": "/plays/press-diamond",
+   "clips": [
+    {
+     "filmId": "pinecrest",
+     "label": "Q2 6:08 Made two",
+     "href": "/film/pinecrest?t=1627"
+    }
+   ]
+  },
+  {
+   "id": "line-blob",
+   "title": "Line BLOB",
+   "description": "Four in a line in the lane: two break to the outside, then a down screen frees the big at the rim.",
+   "category": "BLOB",
+   "vs": "man",
+   "timesRun": 2,
+   "pointsPerPossession": 0,
+   "successRate": 0,
+   "inWestviewGamePlan": false,
+   "href": "/plays/line-blob",
+   "clips": [
+    {
+     "filmId": "lakemont",
+     "label": "Q3 1:18 Fouled, 0 of 2 at the line",
+     "href": "/film/lakemont?t=4082"
+    },
+    {
+     "filmId": "oak-hollow",
+     "label": "Q4 7:12 Missed three",
+     "href": "/film/oak-hollow?t=4591"
+    }
+   ]
+  },
+  {
+   "id": "drag-screen",
+   "title": "Drag Screen",
+   "description": "The trailer sprints into a drag screen in early offense, then pops for the trail three.",
+   "category": "Transition",
+   "vs": "any",
+   "timesRun": 10,
+   "pointsPerPossession": 0.9,
+   "successRate": 40,
+   "inWestviewGamePlan": false,
+   "href": "/plays/drag-screen",
+   "clips": [
+    {
+     "filmId": "cedar-park",
+     "label": "Q2 1:02 Missed two",
+     "href": "/film/cedar-park?t=2544"
+    },
+    {
+     "filmId": "lakemont",
+     "label": "Q2 0:34 Fouled, 0 of 2 at the line",
+     "href": "/film/lakemont?t=2527"
+    },
+    {
+     "filmId": "ridgeline",
+     "label": "Q3 1:25 Missed three",
+     "href": "/film/ridgeline?t=4106"
+    }
+   ]
+  }
+ ],
+ "films": [
+  {
+   "id": "oak-hollow",
+   "kind": "game",
+   "title": "vs Oak Hollow",
+   "opponent": "Oak Hollow",
+   "opponentDefense": "Match-up zone",
+   "date": "2027-01-02",
+   "result": "W 59-50",
+   "offense": "Lakeshore",
+   "href": "/film/oak-hollow",
+   "possessions": [
+    {
+     "clipId": "oak-hollow-p2",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=71"
+    },
+    {
+     "clipId": "oak-hollow-p4",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=149"
+    },
+    {
+     "clipId": "oak-hollow-p6",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=240"
+    },
+    {
+     "clipId": "oak-hollow-p8",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=316"
+    },
+    {
+     "clipId": "oak-hollow-p10",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=390"
+    },
+    {
+     "clipId": "oak-hollow-p12",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=461"
+    },
+    {
+     "clipId": "oak-hollow-p14",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=522"
+    },
+    {
+     "clipId": "oak-hollow-p16",
+     "playId": "zone-gut",
+     "set": "Zone Gut",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=580"
+    },
+    {
+     "clipId": "oak-hollow-p18",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=656"
+    },
+    {
+     "clipId": "oak-hollow-p20",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=712"
+    },
+    {
+     "clipId": "oak-hollow-p22",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=784"
+    },
+    {
+     "clipId": "oak-hollow-p24",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=852"
+    },
+    {
+     "clipId": "oak-hollow-p26",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=930"
+    },
+    {
+     "clipId": "oak-hollow-p28",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=998"
+    },
+    {
+     "clipId": "oak-hollow-p30",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1060"
+    },
+    {
+     "clipId": "oak-hollow-p32",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Match-up zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1256"
+    },
+    {
+     "clipId": "oak-hollow-p34",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1324"
+    },
+    {
+     "clipId": "oak-hollow-p36",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Match-up zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1397"
+    },
+    {
+     "clipId": "oak-hollow-p38",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Match-up zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1539"
+    },
+    {
+     "clipId": "oak-hollow-p40",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1620"
+    },
+    {
+     "clipId": "oak-hollow-p42",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1678"
+    },
+    {
+     "clipId": "oak-hollow-p44",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1761"
+    },
+    {
+     "clipId": "oak-hollow-p46",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1886"
+    },
+    {
+     "clipId": "oak-hollow-p48",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=1961"
+    },
+    {
+     "clipId": "oak-hollow-p50",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=2022"
+    },
+    {
+     "clipId": "oak-hollow-p52",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=2168"
+    },
+    {
+     "clipId": "oak-hollow-p54",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=2246"
+    },
+    {
+     "clipId": "oak-hollow-p56",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": null,
+     "href": "/film/oak-hollow?t=2309"
+    },
+    {
+     "clipId": "oak-hollow-p58",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=2385"
+    },
+    {
+     "clipId": "oak-hollow-p60",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=2459"
+    },
+    {
+     "clipId": "oak-hollow-p62",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3122"
+    },
+    {
+     "clipId": "oak-hollow-p64",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3237"
+    },
+    {
+     "clipId": "oak-hollow-p66",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3304"
+    },
+    {
+     "clipId": "oak-hollow-p68",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3375"
+    },
+    {
+     "clipId": "oak-hollow-p70",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3423"
+    },
+    {
+     "clipId": "oak-hollow-p72",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3544"
+    },
+    {
+     "clipId": "oak-hollow-p74",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3612"
+    },
+    {
+     "clipId": "oak-hollow-p76",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3704"
+    },
+    {
+     "clipId": "oak-hollow-p78",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3768"
+    },
+    {
+     "clipId": "oak-hollow-p80",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3847"
+    },
+    {
+     "clipId": "oak-hollow-p82",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=3969"
+    },
+    {
+     "clipId": "oak-hollow-p84",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4111"
+    },
+    {
+     "clipId": "oak-hollow-p86",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4184"
+    },
+    {
+     "clipId": "oak-hollow-p88",
+     "playId": "zone-gut",
+     "set": "Zone Gut",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4249"
+    },
+    {
+     "clipId": "oak-hollow-p90",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4324"
+    },
+    {
+     "clipId": "oak-hollow-p92",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4516"
+    },
+    {
+     "clipId": "oak-hollow-p94",
+     "playId": "line-blob",
+     "set": "Line BLOB",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4591"
+    },
+    {
+     "clipId": "oak-hollow-p96",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4652"
+    },
+    {
+     "clipId": "oak-hollow-p98",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4725"
+    },
+    {
+     "clipId": "oak-hollow-p100",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4790"
+    },
+    {
+     "clipId": "oak-hollow-p102",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4865"
+    },
+    {
+     "clipId": "oak-hollow-p104",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "Match-up zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=4931"
+    },
+    {
+     "clipId": "oak-hollow-p106",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5011"
+    },
+    {
+     "clipId": "oak-hollow-p108",
+     "playId": "sideline-ob",
+     "set": "Sideline OB",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5063"
+    },
+    {
+     "clipId": "oak-hollow-p110",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Match-up zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5130"
+    },
+    {
+     "clipId": "oak-hollow-p112",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5203"
+    },
+    {
+     "clipId": "oak-hollow-p114",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5271"
+    },
+    {
+     "clipId": "oak-hollow-p116",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Match-up zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5355"
+    },
+    {
+     "clipId": "oak-hollow-p118",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Match-up zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5428"
+    },
+    {
+     "clipId": "oak-hollow-p120",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Match-up zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/oak-hollow?t=5490"
+    }
+   ]
+  },
+  {
+   "id": "ridgeline",
+   "kind": "game",
+   "title": "@ Ridgeline",
+   "opponent": "Ridgeline",
+   "opponentDefense": "Pack-line man",
+   "date": "2027-01-05",
+   "result": "W 62-54",
+   "offense": "Lakeshore",
+   "href": "/film/ridgeline",
+   "possessions": [
+    {
+     "clipId": "ridgeline-p1",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=45"
+    },
+    {
+     "clipId": "ridgeline-p3",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Pack-line man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=124"
+    },
+    {
+     "clipId": "ridgeline-p5",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=197"
+    },
+    {
+     "clipId": "ridgeline-p7",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=255"
+    },
+    {
+     "clipId": "ridgeline-p9",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=312"
+    },
+    {
+     "clipId": "ridgeline-p11",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=369"
+    },
+    {
+     "clipId": "ridgeline-p13",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Pack-line man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=436"
+    },
+    {
+     "clipId": "ridgeline-p15",
+     "playId": "one-four-rub",
+     "set": "1-4 High Rub",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=501"
+    },
+    {
+     "clipId": "ridgeline-p17",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=567"
+    },
+    {
+     "clipId": "ridgeline-p19",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=643"
+    },
+    {
+     "clipId": "ridgeline-p21",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=704"
+    },
+    {
+     "clipId": "ridgeline-p23",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Pack-line man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=778"
+    },
+    {
+     "clipId": "ridgeline-p25",
+     "playId": "spain-slip",
+     "set": "Spain Slip",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=902"
+    },
+    {
+     "clipId": "ridgeline-p27",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=961"
+    },
+    {
+     "clipId": "ridgeline-p29",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1037"
+    },
+    {
+     "clipId": "ridgeline-p31",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1114"
+    },
+    {
+     "clipId": "ridgeline-p33",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1296"
+    },
+    {
+     "clipId": "ridgeline-p35",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1369"
+    },
+    {
+     "clipId": "ridgeline-p37",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1423"
+    },
+    {
+     "clipId": "ridgeline-p39",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1491"
+    },
+    {
+     "clipId": "ridgeline-p41",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1543"
+    },
+    {
+     "clipId": "ridgeline-p43",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1611"
+    },
+    {
+     "clipId": "ridgeline-p45",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1682"
+    },
+    {
+     "clipId": "ridgeline-p47",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Pack-line man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1752"
+    },
+    {
+     "clipId": "ridgeline-p49",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1822"
+    },
+    {
+     "clipId": "ridgeline-p51",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1895"
+    },
+    {
+     "clipId": "ridgeline-p53",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=1960"
+    },
+    {
+     "clipId": "ridgeline-p55",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=2025"
+    },
+    {
+     "clipId": "ridgeline-p57",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=2091"
+    },
+    {
+     "clipId": "ridgeline-p59",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=2222"
+    },
+    {
+     "clipId": "ridgeline-p61",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=2293"
+    },
+    {
+     "clipId": "ridgeline-p63",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=2425"
+    },
+    {
+     "clipId": "ridgeline-p65",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3094"
+    },
+    {
+     "clipId": "ridgeline-p67",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3170"
+    },
+    {
+     "clipId": "ridgeline-p69",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3244"
+    },
+    {
+     "clipId": "ridgeline-p71",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3310"
+    },
+    {
+     "clipId": "ridgeline-p73",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3376"
+    },
+    {
+     "clipId": "ridgeline-p75",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Pack-line man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3439"
+    },
+    {
+     "clipId": "ridgeline-p77",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3501"
+    },
+    {
+     "clipId": "ridgeline-p79",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3571"
+    },
+    {
+     "clipId": "ridgeline-p81",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3627"
+    },
+    {
+     "clipId": "ridgeline-p83",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3696"
+    },
+    {
+     "clipId": "ridgeline-p85",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": null,
+     "href": "/film/ridgeline?t=3760"
+    },
+    {
+     "clipId": "ridgeline-p87",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3900"
+    },
+    {
+     "clipId": "ridgeline-p89",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=3971"
+    },
+    {
+     "clipId": "ridgeline-p91",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4106"
+    },
+    {
+     "clipId": "ridgeline-p93",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4173"
+    },
+    {
+     "clipId": "ridgeline-p95",
+     "playId": "spain-slip",
+     "set": "Spain Slip",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4247"
+    },
+    {
+     "clipId": "ridgeline-p97",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4451"
+    },
+    {
+     "clipId": "ridgeline-p99",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4527"
+    },
+    {
+     "clipId": "ridgeline-p101",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/ridgeline?t=4613"
+    },
+    {
+     "clipId": "ridgeline-p103",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4686"
+    },
+    {
+     "clipId": "ridgeline-p105",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4762"
+    },
+    {
+     "clipId": "ridgeline-p107",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4825"
+    },
+    {
+     "clipId": "ridgeline-p109",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Pack-line man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4902"
+    },
+    {
+     "clipId": "ridgeline-p111",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=4971"
+    },
+    {
+     "clipId": "ridgeline-p113",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5103"
+    },
+    {
+     "clipId": "ridgeline-p115",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5180"
+    },
+    {
+     "clipId": "ridgeline-p117",
+     "playId": "ato-stack",
+     "set": "ATO Stack",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5236"
+    },
+    {
+     "clipId": "ridgeline-p119",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5310"
+    },
+    {
+     "clipId": "ridgeline-p121",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5383"
+    },
+    {
+     "clipId": "ridgeline-p123",
+     "playId": "one-four-rub",
+     "set": "1-4 High Rub",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5441"
+    },
+    {
+     "clipId": "ridgeline-p125",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/ridgeline?t=5575"
+    }
+   ]
+  },
+  {
+   "id": "lakemont",
+   "kind": "game",
+   "title": "@ Lakemont",
+   "opponent": "Lakemont",
+   "opponentDefense": "Switch everything",
+   "date": "2027-01-08",
+   "result": "W 68-64",
+   "offense": "Lakeshore",
+   "href": "/film/lakemont",
+   "possessions": [
+    {
+     "clipId": "lakemont-p1",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Switch everything",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=45"
+    },
+    {
+     "clipId": "lakemont-p3",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=98"
+    },
+    {
+     "clipId": "lakemont-p5",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=155"
+    },
+    {
+     "clipId": "lakemont-p7",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=200"
+    },
+    {
+     "clipId": "lakemont-p9",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=266"
+    },
+    {
+     "clipId": "lakemont-p11",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=400"
+    },
+    {
+     "clipId": "lakemont-p13",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=477"
+    },
+    {
+     "clipId": "lakemont-p15",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=610"
+    },
+    {
+     "clipId": "lakemont-p17",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=674"
+    },
+    {
+     "clipId": "lakemont-p19",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=743"
+    },
+    {
+     "clipId": "lakemont-p21",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=807"
+    },
+    {
+     "clipId": "lakemont-p23",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=876"
+    },
+    {
+     "clipId": "lakemont-p25",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=950"
+    },
+    {
+     "clipId": "lakemont-p27",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Switch everything",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1019"
+    },
+    {
+     "clipId": "lakemont-p29",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1095"
+    },
+    {
+     "clipId": "lakemont-p31",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1215"
+    },
+    {
+     "clipId": "lakemont-p33",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1279"
+    },
+    {
+     "clipId": "lakemont-p35",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Switch everything",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1471"
+    },
+    {
+     "clipId": "lakemont-p37",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Switch everything",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1541"
+    },
+    {
+     "clipId": "lakemont-p39",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1614"
+    },
+    {
+     "clipId": "lakemont-p41",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Switch everything",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1684"
+    },
+    {
+     "clipId": "lakemont-p43",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1755"
+    },
+    {
+     "clipId": "lakemont-p45",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1812"
+    },
+    {
+     "clipId": "lakemont-p47",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1884"
+    },
+    {
+     "clipId": "lakemont-p49",
+     "playId": "spain-slip",
+     "set": "Spain Slip",
+     "defense": "Switch everything",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=1953"
+    },
+    {
+     "clipId": "lakemont-p51",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2016"
+    },
+    {
+     "clipId": "lakemont-p53",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2124"
+    },
+    {
+     "clipId": "lakemont-p55",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Switch everything",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2182"
+    },
+    {
+     "clipId": "lakemont-p57",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2251"
+    },
+    {
+     "clipId": "lakemont-p59",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2313"
+    },
+    {
+     "clipId": "lakemont-p61",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2376"
+    },
+    {
+     "clipId": "lakemont-p63",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2454"
+    },
+    {
+     "clipId": "lakemont-p65",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Switch everything",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=2527"
+    },
+    {
+     "clipId": "lakemont-p67",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Switch everything",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3202"
+    },
+    {
+     "clipId": "lakemont-p69",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3266"
+    },
+    {
+     "clipId": "lakemont-p71",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3333"
+    },
+    {
+     "clipId": "lakemont-p73",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3409"
+    },
+    {
+     "clipId": "lakemont-p75",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3479"
+    },
+    {
+     "clipId": "lakemont-p77",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3549"
+    },
+    {
+     "clipId": "lakemont-p79",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3624"
+    },
+    {
+     "clipId": "lakemont-p81",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3678"
+    },
+    {
+     "clipId": "lakemont-p83",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Switch everything",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3751"
+    },
+    {
+     "clipId": "lakemont-p85",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3809"
+    },
+    {
+     "clipId": "lakemont-p87",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3864"
+    },
+    {
+     "clipId": "lakemont-p89",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Switch everything",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=3931"
+    },
+    {
+     "clipId": "lakemont-p91",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Switch everything",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4012"
+    },
+    {
+     "clipId": "lakemont-p93",
+     "playId": "line-blob",
+     "set": "Line BLOB",
+     "defense": "Switch everything",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4082"
+    },
+    {
+     "clipId": "lakemont-p95",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4143"
+    },
+    {
+     "clipId": "lakemont-p97",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4202"
+    },
+    {
+     "clipId": "lakemont-p99",
+     "playId": "sideline-ob",
+     "set": "Sideline OB",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4319"
+    },
+    {
+     "clipId": "lakemont-p101",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4501"
+    },
+    {
+     "clipId": "lakemont-p103",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4566"
+    },
+    {
+     "clipId": "lakemont-p105",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4632"
+    },
+    {
+     "clipId": "lakemont-p107",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4700"
+    },
+    {
+     "clipId": "lakemont-p109",
+     "playId": "one-four-rub",
+     "set": "1-4 High Rub",
+     "defense": "Switch everything",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4764"
+    },
+    {
+     "clipId": "lakemont-p111",
+     "playId": "ato-stack",
+     "set": "ATO Stack",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4831"
+    },
+    {
+     "clipId": "lakemont-p113",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4902"
+    },
+    {
+     "clipId": "lakemont-p115",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=4984"
+    },
+    {
+     "clipId": "lakemont-p117",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Switch everything",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5123"
+    },
+    {
+     "clipId": "lakemont-p119",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/lakemont?t=5205"
+    },
+    {
+     "clipId": "lakemont-p121",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5267"
+    },
+    {
+     "clipId": "lakemont-p123",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Switch everything",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5330"
+    },
+    {
+     "clipId": "lakemont-p125",
+     "playId": "one-four-rub",
+     "set": "1-4 High Rub",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5401"
+    },
+    {
+     "clipId": "lakemont-p127",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5466"
+    },
+    {
+     "clipId": "lakemont-p129",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5522"
+    },
+    {
+     "clipId": "lakemont-p131",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Switch everything",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/lakemont?t=5646"
+    }
+   ]
+  },
+  {
+   "id": "cedar-park",
+   "kind": "game",
+   "title": "vs Cedar Park",
+   "opponent": "Cedar Park",
+   "opponentDefense": "Man, 1-2-1-1 press",
+   "date": "2027-01-09",
+   "result": "L 57-62",
+   "offense": "Lakeshore",
+   "href": "/film/cedar-park",
+   "possessions": [
+    {
+     "clipId": "cedar-park-p1",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=45"
+    },
+    {
+     "clipId": "cedar-park-p3",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=113"
+    },
+    {
+     "clipId": "cedar-park-p5",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=185"
+    },
+    {
+     "clipId": "cedar-park-p7",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=233"
+    },
+    {
+     "clipId": "cedar-park-p9",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=313"
+    },
+    {
+     "clipId": "cedar-park-p11",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=381"
+    },
+    {
+     "clipId": "cedar-park-p13",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=513"
+    },
+    {
+     "clipId": "cedar-park-p15",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": null,
+     "href": "/film/cedar-park?t=579"
+    },
+    {
+     "clipId": "cedar-park-p17",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=649"
+    },
+    {
+     "clipId": "cedar-park-p19",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=712"
+    },
+    {
+     "clipId": "cedar-park-p21",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=786"
+    },
+    {
+     "clipId": "cedar-park-p23",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=923"
+    },
+    {
+     "clipId": "cedar-park-p25",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=1044"
+    },
+    {
+     "clipId": "cedar-park-p27",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1117"
+    },
+    {
+     "clipId": "cedar-park-p29",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1179"
+    },
+    {
+     "clipId": "cedar-park-p31",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1236"
+    },
+    {
+     "clipId": "cedar-park-p33",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1417"
+    },
+    {
+     "clipId": "cedar-park-p35",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1487"
+    },
+    {
+     "clipId": "cedar-park-p37",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "And-1",
+     "points": 3,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1560"
+    },
+    {
+     "clipId": "cedar-park-p39",
+     "playId": "chin",
+     "set": "Chin",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1685"
+    },
+    {
+     "clipId": "cedar-park-p41",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1760"
+    },
+    {
+     "clipId": "cedar-park-p43",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1830"
+    },
+    {
+     "clipId": "cedar-park-p45",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1900"
+    },
+    {
+     "clipId": "cedar-park-p47",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=1946"
+    },
+    {
+     "clipId": "cedar-park-p49",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2019"
+    },
+    {
+     "clipId": "cedar-park-p51",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2068"
+    },
+    {
+     "clipId": "cedar-park-p53",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=2151"
+    },
+    {
+     "clipId": "cedar-park-p55",
+     "playId": "one-four-rub",
+     "set": "1-4 High Rub",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2220"
+    },
+    {
+     "clipId": "cedar-park-p57",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2287"
+    },
+    {
+     "clipId": "cedar-park-p59",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2412"
+    },
+    {
+     "clipId": "cedar-park-p61",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2544"
+    },
+    {
+     "clipId": "cedar-park-p63",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=2616"
+    },
+    {
+     "clipId": "cedar-park-p65",
+     "playId": "one-four-rub",
+     "set": "1-4 High Rub",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3293"
+    },
+    {
+     "clipId": "cedar-park-p67",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=3369"
+    },
+    {
+     "clipId": "cedar-park-p69",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3440"
+    },
+    {
+     "clipId": "cedar-park-p71",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/cedar-park?t=3500"
+    },
+    {
+     "clipId": "cedar-park-p73",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3558"
+    },
+    {
+     "clipId": "cedar-park-p75",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3613"
+    },
+    {
+     "clipId": "cedar-park-p77",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3671"
+    },
+    {
+     "clipId": "cedar-park-p79",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=3810"
+    },
+    {
+     "clipId": "cedar-park-p81",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3873"
+    },
+    {
+     "clipId": "cedar-park-p83",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=3935"
+    },
+    {
+     "clipId": "cedar-park-p85",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=4023"
+    },
+    {
+     "clipId": "cedar-park-p87",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": null,
+     "href": "/film/cedar-park?t=4094"
+    },
+    {
+     "clipId": "cedar-park-p89",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=4166"
+    },
+    {
+     "clipId": "cedar-park-p91",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4225"
+    },
+    {
+     "clipId": "cedar-park-p93",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4280"
+    },
+    {
+     "clipId": "cedar-park-p95",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4353"
+    },
+    {
+     "clipId": "cedar-park-p97",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4549"
+    },
+    {
+     "clipId": "cedar-park-p99",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4603"
+    },
+    {
+     "clipId": "cedar-park-p101",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4657"
+    },
+    {
+     "clipId": "cedar-park-p103",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4734"
+    },
+    {
+     "clipId": "cedar-park-p105",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4808"
+    },
+    {
+     "clipId": "cedar-park-p107",
+     "playId": "sideline-ob",
+     "set": "Sideline OB",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4880"
+    },
+    {
+     "clipId": "cedar-park-p109",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=4949"
+    },
+    {
+     "clipId": "cedar-park-p111",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=5017"
+    },
+    {
+     "clipId": "cedar-park-p113",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": "vs 1-2-1-1 press",
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=5093"
+    },
+    {
+     "clipId": "cedar-park-p115",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=5167"
+    },
+    {
+     "clipId": "cedar-park-p117",
+     "playId": "ato-stack",
+     "set": "ATO Stack",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=5226"
+    },
+    {
+     "clipId": "cedar-park-p119",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/cedar-park?t=5280"
+    },
+    {
+     "clipId": "cedar-park-p121",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=5347"
+    },
+    {
+     "clipId": "cedar-park-p123",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "1-2-1-1 press",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs 1-2-1-1 press",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=5398"
+    },
+    {
+     "clipId": "cedar-park-p125",
+     "playId": "sideline-ob",
+     "set": "Sideline OB",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=5461"
+    },
+    {
+     "clipId": "cedar-park-p127",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Man",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/cedar-park?t=5527"
+    }
+   ]
+  },
+  {
+   "id": "westview",
+   "kind": "game",
+   "title": "@ Westview",
+   "opponent": "Westview",
+   "opponentDefense": "2-3 zone, 1-3-1 after timeouts",
+   "date": "2026-12-11",
+   "result": "W 67-60",
+   "offense": "Lakeshore",
+   "href": "/film/westview",
+   "possessions": [
+    {
+     "clipId": "westview-p1",
+     "playId": "zone-gut",
+     "set": "Zone Gut",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=45"
+    },
+    {
+     "clipId": "westview-p3",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=109"
+    },
+    {
+     "clipId": "westview-p5",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=177"
+    },
+    {
+     "clipId": "westview-p7",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/westview?t=256"
+    },
+    {
+     "clipId": "westview-p9",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview?t=309"
+    },
+    {
+     "clipId": "westview-p11",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=389"
+    },
+    {
+     "clipId": "westview-p13",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=499"
+    },
+    {
+     "clipId": "westview-p15",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=576"
+    },
+    {
+     "clipId": "westview-p17",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=639"
+    },
+    {
+     "clipId": "westview-p19",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/westview?t=747"
+    },
+    {
+     "clipId": "westview-p21",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=811"
+    },
+    {
+     "clipId": "westview-p23",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=875"
+    },
+    {
+     "clipId": "westview-p25",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=947"
+    },
+    {
+     "clipId": "westview-p27",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1021"
+    },
+    {
+     "clipId": "westview-p29",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1101"
+    },
+    {
+     "clipId": "westview-p31",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1155"
+    },
+    {
+     "clipId": "westview-p33",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1352"
+    },
+    {
+     "clipId": "westview-p35",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1481"
+    },
+    {
+     "clipId": "westview-p37",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1559"
+    },
+    {
+     "clipId": "westview-p39",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1631"
+    },
+    {
+     "clipId": "westview-p41",
+     "playId": "overload-131",
+     "set": "1-3-1 Overload",
+     "defense": "1-3-1 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview?t=1711"
+    },
+    {
+     "clipId": "westview-p43",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1787"
+    },
+    {
+     "clipId": "westview-p45",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1875"
+    },
+    {
+     "clipId": "westview-p47",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=1952"
+    },
+    {
+     "clipId": "westview-p49",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2018"
+    },
+    {
+     "clipId": "westview-p51",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview?t=2085"
+    },
+    {
+     "clipId": "westview-p53",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2151"
+    },
+    {
+     "clipId": "westview-p55",
+     "playId": "zone-gut",
+     "set": "Zone Gut",
+     "defense": "Man",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2209"
+    },
+    {
+     "clipId": "westview-p57",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2277"
+    },
+    {
+     "clipId": "westview-p59",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "2-3 zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2337"
+    },
+    {
+     "clipId": "westview-p61",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2400"
+    },
+    {
+     "clipId": "westview-p63",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=2467"
+    },
+    {
+     "clipId": "westview-p65",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3126"
+    },
+    {
+     "clipId": "westview-p67",
+     "playId": "overload-131",
+     "set": "1-3-1 Overload",
+     "defense": "1-3-1 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3203"
+    },
+    {
+     "clipId": "westview-p69",
+     "playId": "overload-131",
+     "set": "1-3-1 Overload",
+     "defense": "1-3-1 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3273"
+    },
+    {
+     "clipId": "westview-p71",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview?t=3340"
+    },
+    {
+     "clipId": "westview-p73",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/westview?t=3406"
+    },
+    {
+     "clipId": "westview-p75",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3467"
+    },
+    {
+     "clipId": "westview-p77",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3527"
+    },
+    {
+     "clipId": "westview-p79",
+     "playId": "zone-gut",
+     "set": "Zone Gut",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview?t=3587"
+    },
+    {
+     "clipId": "westview-p81",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3662"
+    },
+    {
+     "clipId": "westview-p83",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3798"
+    },
+    {
+     "clipId": "westview-p85",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3861"
+    },
+    {
+     "clipId": "westview-p87",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=3993"
+    },
+    {
+     "clipId": "westview-p89",
+     "playId": "overload-131",
+     "set": "1-3-1 Overload",
+     "defense": "1-3-1 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4136"
+    },
+    {
+     "clipId": "westview-p91",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4200"
+    },
+    {
+     "clipId": "westview-p93",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4257"
+    },
+    {
+     "clipId": "westview-p95",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4337"
+    },
+    {
+     "clipId": "westview-p97",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview?t=4516"
+    },
+    {
+     "clipId": "westview-p99",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4590"
+    },
+    {
+     "clipId": "westview-p101",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4649"
+    },
+    {
+     "clipId": "westview-p103",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4698"
+    },
+    {
+     "clipId": "westview-p105",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4771"
+    },
+    {
+     "clipId": "westview-p107",
+     "playId": "overload-131",
+     "set": "1-3-1 Overload",
+     "defense": "1-3-1 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4819"
+    },
+    {
+     "clipId": "westview-p109",
+     "playId": "overload-131",
+     "set": "1-3-1 Overload",
+     "defense": "1-3-1 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=4952"
+    },
+    {
+     "clipId": "westview-p111",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5024"
+    },
+    {
+     "clipId": "westview-p113",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5085"
+    },
+    {
+     "clipId": "westview-p115",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5152"
+    },
+    {
+     "clipId": "westview-p117",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5218"
+    },
+    {
+     "clipId": "westview-p119",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview?t=5294"
+    },
+    {
+     "clipId": "westview-p121",
+     "playId": "short-corner-flood",
+     "set": "Short Corner Flood",
+     "defense": "2-3 zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5369"
+    },
+    {
+     "clipId": "westview-p123",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5463"
+    },
+    {
+     "clipId": "westview-p125",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview?t=5524"
+    }
+   ]
+  },
+  {
+   "id": "pinecrest",
+   "kind": "game",
+   "title": "vs Pinecrest",
+   "opponent": "Pinecrest",
+   "opponentDefense": "Man with a full-court press",
+   "date": "2026-11-25",
+   "result": "W 70-66",
+   "offense": "Lakeshore",
+   "href": "/film/pinecrest",
+   "possessions": [
+    {
+     "clipId": "pinecrest-p1",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=45"
+    },
+    {
+     "clipId": "pinecrest-p3",
+     "playId": "elevator",
+     "set": "Elevator",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=96"
+    },
+    {
+     "clipId": "pinecrest-p5",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=171"
+    },
+    {
+     "clipId": "pinecrest-p7",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=243"
+    },
+    {
+     "clipId": "pinecrest-p9",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=317"
+    },
+    {
+     "clipId": "pinecrest-p11",
+     "playId": "sideline-ob",
+     "set": "Sideline OB",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=392"
+    },
+    {
+     "clipId": "pinecrest-p13",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=455"
+    },
+    {
+     "clipId": "pinecrest-p15",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=515"
+    },
+    {
+     "clipId": "pinecrest-p17",
+     "playId": "horns-down",
+     "set": "Horns Down",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=576"
+    },
+    {
+     "clipId": "pinecrest-p19",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=643"
+    },
+    {
+     "clipId": "pinecrest-p21",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=713"
+    },
+    {
+     "clipId": "pinecrest-p23",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=786"
+    },
+    {
+     "clipId": "pinecrest-p25",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=842"
+    },
+    {
+     "clipId": "pinecrest-p27",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=896"
+    },
+    {
+     "clipId": "pinecrest-p29",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=974"
+    },
+    {
+     "clipId": "pinecrest-p31",
+     "playId": "drag-screen",
+     "set": "Drag Screen",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/pinecrest?t=1040"
+    },
+    {
+     "clipId": "pinecrest-p33",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1159"
+    },
+    {
+     "clipId": "pinecrest-p35",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1332"
+    },
+    {
+     "clipId": "pinecrest-p37",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1387"
+    },
+    {
+     "clipId": "pinecrest-p39",
+     "playId": "elevator",
+     "set": "Elevator",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1446"
+    },
+    {
+     "clipId": "pinecrest-p41",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1567"
+    },
+    {
+     "clipId": "pinecrest-p43",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1627"
+    },
+    {
+     "clipId": "pinecrest-p45",
+     "playId": "spain-slip",
+     "set": "Spain Slip",
+     "defense": "Man",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1694"
+    },
+    {
+     "clipId": "pinecrest-p47",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1758"
+    },
+    {
+     "clipId": "pinecrest-p49",
+     "playId": "spain-slip",
+     "set": "Spain Slip",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1818"
+    },
+    {
+     "clipId": "pinecrest-p51",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1894"
+    },
+    {
+     "clipId": "pinecrest-p53",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=1975"
+    },
+    {
+     "clipId": "pinecrest-p55",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=2106"
+    },
+    {
+     "clipId": "pinecrest-p57",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=2188"
+    },
+    {
+     "clipId": "pinecrest-p59",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=2258"
+    },
+    {
+     "clipId": "pinecrest-p61",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=2322"
+    },
+    {
+     "clipId": "pinecrest-p63",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=2404"
+    },
+    {
+     "clipId": "pinecrest-p65",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=2480"
+    },
+    {
+     "clipId": "pinecrest-p67",
+     "playId": "sideline-ob",
+     "set": "Sideline OB",
+     "defense": "Man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3141"
+    },
+    {
+     "clipId": "pinecrest-p69",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3212"
+    },
+    {
+     "clipId": "pinecrest-p71",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3289"
+    },
+    {
+     "clipId": "pinecrest-p73",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3357"
+    },
+    {
+     "clipId": "pinecrest-p75",
+     "playId": "hammer",
+     "set": "Hammer",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3425"
+    },
+    {
+     "clipId": "pinecrest-p77",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3482"
+    },
+    {
+     "clipId": "pinecrest-p79",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3549"
+    },
+    {
+     "clipId": "pinecrest-p81",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3612"
+    },
+    {
+     "clipId": "pinecrest-p83",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3687"
+    },
+    {
+     "clipId": "pinecrest-p85",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3749"
+    },
+    {
+     "clipId": "pinecrest-p87",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3815"
+    },
+    {
+     "clipId": "pinecrest-p89",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=3893"
+    },
+    {
+     "clipId": "pinecrest-p91",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4014"
+    },
+    {
+     "clipId": "pinecrest-p93",
+     "playId": "box-blob",
+     "set": "Box BLOB",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4104"
+    },
+    {
+     "clipId": "pinecrest-p95",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": "vs full-court man",
+     "tag": null,
+     "href": "/film/pinecrest?t=4170"
+    },
+    {
+     "clipId": "pinecrest-p97",
+     "playId": "ram-pnr",
+     "set": "Ram PnR",
+     "defense": "Man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4233"
+    },
+    {
+     "clipId": "pinecrest-p99",
+     "playId": "spain-slip",
+     "set": "Spain Slip",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/pinecrest?t=4297"
+    },
+    {
+     "clipId": "pinecrest-p101",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4474"
+    },
+    {
+     "clipId": "pinecrest-p103",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4537"
+    },
+    {
+     "clipId": "pinecrest-p105",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4603"
+    },
+    {
+     "clipId": "pinecrest-p107",
+     "playId": "floppy",
+     "set": "Floppy",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4659"
+    },
+    {
+     "clipId": "pinecrest-p109",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4719"
+    },
+    {
+     "clipId": "pinecrest-p111",
+     "playId": "horns-twist",
+     "set": "Horns Twist",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4782"
+    },
+    {
+     "clipId": "pinecrest-p113",
+     "playId": "press-diamond",
+     "set": "Press Break Diamond",
+     "defense": "Full-court man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4828"
+    },
+    {
+     "clipId": "pinecrest-p115",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4890"
+    },
+    {
+     "clipId": "pinecrest-p117",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=4961"
+    },
+    {
+     "clipId": "pinecrest-p119",
+     "playId": "horns-flare",
+     "set": "Horns Flare",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5033"
+    },
+    {
+     "clipId": "pinecrest-p121",
+     "playId": "five-out-chicago",
+     "set": "5-Out Chicago",
+     "defense": "Man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5104"
+    },
+    {
+     "clipId": "pinecrest-p123",
+     "playId": "primary-transition",
+     "set": "Primary Transition",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5233"
+    },
+    {
+     "clipId": "pinecrest-p125",
+     "playId": "elevator",
+     "set": "Elevator",
+     "defense": "Man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5301"
+    },
+    {
+     "clipId": "pinecrest-p127",
+     "playId": "one-four-backdoor",
+     "set": "1-4 High Backdoor",
+     "defense": "Man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5445"
+    },
+    {
+     "clipId": "pinecrest-p129",
+     "playId": "press-break",
+     "set": "Press Break 1-4",
+     "defense": "Full-court man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": "vs full-court man",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5590"
+    },
+    {
+     "clipId": "pinecrest-p131",
+     "playId": "spain-pnr",
+     "set": "Spain PnR",
+     "defense": "Man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/pinecrest?t=5642"
+    }
+   ]
+  },
+  {
+   "id": "westview-ridgeline",
+   "kind": "scout",
+   "title": "Westview vs Ridgeline",
+   "opponent": "Westview",
+   "opponentDefense": "2-3 zone, 1-3-1 after timeouts",
+   "date": "2027-01-02",
+   "result": "Westview 58, Ridgeline 52 (scout film)",
+   "offense": "Westview",
+   "href": "/film/westview-ridgeline",
+   "possessions": [
+    {
+     "clipId": "westview-ridgeline-p1",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=45"
+    },
+    {
+     "clipId": "westview-ridgeline-p3",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=101"
+    },
+    {
+     "clipId": "westview-ridgeline-p5",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=160"
+    },
+    {
+     "clipId": "westview-ridgeline-p7",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=239"
+    },
+    {
+     "clipId": "westview-ridgeline-p9",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=316"
+    },
+    {
+     "clipId": "westview-ridgeline-p11",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=396"
+    },
+    {
+     "clipId": "westview-ridgeline-p13",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=457"
+    },
+    {
+     "clipId": "westview-ridgeline-p15",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=527"
+    },
+    {
+     "clipId": "westview-ridgeline-p17",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=602"
+    },
+    {
+     "clipId": "westview-ridgeline-p19",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=672"
+    },
+    {
+     "clipId": "westview-ridgeline-p21",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=729"
+    },
+    {
+     "clipId": "westview-ridgeline-p23",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=800"
+    },
+    {
+     "clipId": "westview-ridgeline-p25",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=868"
+    },
+    {
+     "clipId": "westview-ridgeline-p27",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=948"
+    },
+    {
+     "clipId": "westview-ridgeline-p29",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1000"
+    },
+    {
+     "clipId": "westview-ridgeline-p31",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1074"
+    },
+    {
+     "clipId": "westview-ridgeline-p33",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1267"
+    },
+    {
+     "clipId": "westview-ridgeline-p35",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1328"
+    },
+    {
+     "clipId": "westview-ridgeline-p37",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1399"
+    },
+    {
+     "clipId": "westview-ridgeline-p39",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1471"
+    },
+    {
+     "clipId": "westview-ridgeline-p41",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1611"
+    },
+    {
+     "clipId": "westview-ridgeline-p43",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1691"
+    },
+    {
+     "clipId": "westview-ridgeline-p45",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1763"
+    },
+    {
+     "clipId": "westview-ridgeline-p47",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1837"
+    },
+    {
+     "clipId": "westview-ridgeline-p49",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1896"
+    },
+    {
+     "clipId": "westview-ridgeline-p51",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=1964"
+    },
+    {
+     "clipId": "westview-ridgeline-p53",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=2031"
+    },
+    {
+     "clipId": "westview-ridgeline-p55",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=2092"
+    },
+    {
+     "clipId": "westview-ridgeline-p57",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=2162"
+    },
+    {
+     "clipId": "westview-ridgeline-p59",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=2231"
+    },
+    {
+     "clipId": "westview-ridgeline-p61",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=2343"
+    },
+    {
+     "clipId": "westview-ridgeline-p63",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3027"
+    },
+    {
+     "clipId": "westview-ridgeline-p65",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3098"
+    },
+    {
+     "clipId": "westview-ridgeline-p67",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3169"
+    },
+    {
+     "clipId": "westview-ridgeline-p69",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3244"
+    },
+    {
+     "clipId": "westview-ridgeline-p71",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3316"
+    },
+    {
+     "clipId": "westview-ridgeline-p73",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3381"
+    },
+    {
+     "clipId": "westview-ridgeline-p75",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3456"
+    },
+    {
+     "clipId": "westview-ridgeline-p77",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3533"
+    },
+    {
+     "clipId": "westview-ridgeline-p79",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3601"
+    },
+    {
+     "clipId": "westview-ridgeline-p81",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3717"
+    },
+    {
+     "clipId": "westview-ridgeline-p83",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3793"
+    },
+    {
+     "clipId": "westview-ridgeline-p85",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "Pack-line man",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3924"
+    },
+    {
+     "clipId": "westview-ridgeline-p87",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=3997"
+    },
+    {
+     "clipId": "westview-ridgeline-p89",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4134"
+    },
+    {
+     "clipId": "westview-ridgeline-p91",
+     "playId": null,
+     "set": "Transition",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4206"
+    },
+    {
+     "clipId": "westview-ridgeline-p93",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4398"
+    },
+    {
+     "clipId": "westview-ridgeline-p95",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4471"
+    },
+    {
+     "clipId": "westview-ridgeline-p97",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4548"
+    },
+    {
+     "clipId": "westview-ridgeline-p99",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4623"
+    },
+    {
+     "clipId": "westview-ridgeline-p101",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4692"
+    },
+    {
+     "clipId": "westview-ridgeline-p103",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4772"
+    },
+    {
+     "clipId": "westview-ridgeline-p105",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-ridgeline?t=4902"
+    },
+    {
+     "clipId": "westview-ridgeline-p107",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=4974"
+    },
+    {
+     "clipId": "westview-ridgeline-p109",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5041"
+    },
+    {
+     "clipId": "westview-ridgeline-p111",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5112"
+    },
+    {
+     "clipId": "westview-ridgeline-p113",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5185"
+    },
+    {
+     "clipId": "westview-ridgeline-p115",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "Pack-line man",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5251"
+    },
+    {
+     "clipId": "westview-ridgeline-p117",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5329"
+    },
+    {
+     "clipId": "westview-ridgeline-p119",
+     "playId": null,
+     "set": "Horns",
+     "defense": "Pack-line man",
+     "outcome": "FT 0/2",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5452"
+    },
+    {
+     "clipId": "westview-ridgeline-p121",
+     "playId": null,
+     "set": "Motion",
+     "defense": "Pack-line man",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-ridgeline?t=5520"
+    }
+   ]
+  },
+  {
+   "id": "westview-harbor-city",
+   "kind": "scout",
+   "title": "Westview vs Harbor City",
+   "opponent": "Westview",
+   "opponentDefense": "2-3 zone, 1-3-1 after timeouts",
+   "date": "2027-01-08",
+   "result": "Westview 61, Harbor City 55 (scout film)",
+   "offense": "Westview",
+   "href": "/film/westview-harbor-city",
+   "possessions": [
+    {
+     "clipId": "westview-harbor-city-p1",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=45"
+    },
+    {
+     "clipId": "westview-harbor-city-p3",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Offensive foul",
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=113"
+    },
+    {
+     "clipId": "westview-harbor-city-p5",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=182"
+    },
+    {
+     "clipId": "westview-harbor-city-p7",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=249"
+    },
+    {
+     "clipId": "westview-harbor-city-p9",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=422"
+    },
+    {
+     "clipId": "westview-harbor-city-p11",
+     "playId": null,
+     "set": "Horns",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=493"
+    },
+    {
+     "clipId": "westview-harbor-city-p13",
+     "playId": null,
+     "set": "Horns",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=546"
+    },
+    {
+     "clipId": "westview-harbor-city-p15",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=610"
+    },
+    {
+     "clipId": "westview-harbor-city-p17",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=696"
+    },
+    {
+     "clipId": "westview-harbor-city-p19",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=774"
+    },
+    {
+     "clipId": "westview-harbor-city-p21",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=851"
+    },
+    {
+     "clipId": "westview-harbor-city-p23",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Travel",
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=927"
+    },
+    {
+     "clipId": "westview-harbor-city-p25",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=988"
+    },
+    {
+     "clipId": "westview-harbor-city-p27",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1063"
+    },
+    {
+     "clipId": "westview-harbor-city-p29",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1140"
+    },
+    {
+     "clipId": "westview-harbor-city-p31",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1201"
+    },
+    {
+     "clipId": "westview-harbor-city-p33",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1398"
+    },
+    {
+     "clipId": "westview-harbor-city-p35",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=1457"
+    },
+    {
+     "clipId": "westview-harbor-city-p37",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1534"
+    },
+    {
+     "clipId": "westview-harbor-city-p39",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=1605"
+    },
+    {
+     "clipId": "westview-harbor-city-p41",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1672"
+    },
+    {
+     "clipId": "westview-harbor-city-p43",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1734"
+    },
+    {
+     "clipId": "westview-harbor-city-p45",
+     "playId": null,
+     "set": "Horns",
+     "defense": "2-3 zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=1877"
+    },
+    {
+     "clipId": "westview-harbor-city-p47",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=1965"
+    },
+    {
+     "clipId": "westview-harbor-city-p49",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=2038"
+    },
+    {
+     "clipId": "westview-harbor-city-p51",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=2154"
+    },
+    {
+     "clipId": "westview-harbor-city-p53",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=2227"
+    },
+    {
+     "clipId": "westview-harbor-city-p55",
+     "playId": null,
+     "set": "Horns",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=2335"
+    },
+    {
+     "clipId": "westview-harbor-city-p57",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=2472"
+    },
+    {
+     "clipId": "westview-harbor-city-p59",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=2546"
+    },
+    {
+     "clipId": "westview-harbor-city-p61",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "proposed",
+     "href": "/film/westview-harbor-city?t=2596"
+    },
+    {
+     "clipId": "westview-harbor-city-p63",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "And-1",
+     "points": 3,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=3263"
+    },
+    {
+     "clipId": "westview-harbor-city-p65",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=3337"
+    },
+    {
+     "clipId": "westview-harbor-city-p67",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=3406"
+    },
+    {
+     "clipId": "westview-harbor-city-p69",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=3468"
+    },
+    {
+     "clipId": "westview-harbor-city-p71",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": "confirmed",
+     "href": "/film/westview-harbor-city?t=3529"
+    },
+    {
+     "clipId": "westview-harbor-city-p73",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=3608"
+    },
+    {
+     "clipId": "westview-harbor-city-p75",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=3686"
+    },
+    {
+     "clipId": "westview-harbor-city-p77",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "FT 1/2",
+     "points": 1,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=3816"
+    },
+    {
+     "clipId": "westview-harbor-city-p79",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=3893"
+    },
+    {
+     "clipId": "westview-harbor-city-p81",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=3940"
+    },
+    {
+     "clipId": "westview-harbor-city-p83",
+     "playId": null,
+     "set": "Horns",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4018"
+    },
+    {
+     "clipId": "westview-harbor-city-p85",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4077"
+    },
+    {
+     "clipId": "westview-harbor-city-p87",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4139"
+    },
+    {
+     "clipId": "westview-harbor-city-p89",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4195"
+    },
+    {
+     "clipId": "westview-harbor-city-p91",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT make",
+     "points": 3,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4270"
+    },
+    {
+     "clipId": "westview-harbor-city-p93",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4331"
+    },
+    {
+     "clipId": "westview-harbor-city-p95",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Lost ball",
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4529"
+    },
+    {
+     "clipId": "westview-harbor-city-p97",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "FT 2/2",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4593"
+    },
+    {
+     "clipId": "westview-harbor-city-p99",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4680"
+    },
+    {
+     "clipId": "westview-harbor-city-p101",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4767"
+    },
+    {
+     "clipId": "westview-harbor-city-p103",
+     "playId": null,
+     "set": "Stagger",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4836"
+    },
+    {
+     "clipId": "westview-harbor-city-p105",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "TOV",
+     "points": 0,
+     "note": "Bad pass",
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4889"
+    },
+    {
+     "clipId": "westview-harbor-city-p107",
+     "playId": null,
+     "set": "High PnR",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=4959"
+    },
+    {
+     "clipId": "westview-harbor-city-p109",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5032"
+    },
+    {
+     "clipId": "westview-harbor-city-p111",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5102"
+    },
+    {
+     "clipId": "westview-harbor-city-p113",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5163"
+    },
+    {
+     "clipId": "westview-harbor-city-p115",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5229"
+    },
+    {
+     "clipId": "westview-harbor-city-p117",
+     "playId": null,
+     "set": "Horns",
+     "defense": "2-3 zone",
+     "outcome": "2PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5309"
+    },
+    {
+     "clipId": "westview-harbor-city-p119",
+     "playId": null,
+     "set": "Transition",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5371"
+    },
+    {
+     "clipId": "westview-harbor-city-p121",
+     "playId": null,
+     "set": "Motion",
+     "defense": "2-3 zone",
+     "outcome": "2PT make",
+     "points": 2,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5443"
+    },
+    {
+     "clipId": "westview-harbor-city-p123",
+     "playId": null,
+     "set": "Baseline drive",
+     "defense": "2-3 zone",
+     "outcome": "3PT miss",
+     "points": 0,
+     "note": null,
+     "tag": null,
+     "href": "/film/westview-harbor-city?t=5506"
+    }
+   ]
+  }
+ ],
+ "stats": [
+  {
+   "id": "season-record",
+   "label": "Season record",
+   "value": "11-4",
+   "href": "/study/results"
+  },
+  {
+   "id": "points-per-game",
+   "label": "Points per game",
+   "value": 61.5,
+   "href": "/study/results"
+  },
+  {
+   "id": "opp-points-per-game",
+   "label": "Opponent points per game",
+   "value": 57.3,
+   "href": "/study/results"
+  },
+  {
+   "id": "offensive-rating",
+   "label": "Offensive rating (points per 100 possessions)",
+   "value": 99.4,
+   "href": "/study/results"
+  },
+  {
+   "id": "defensive-rating",
+   "label": "Defensive rating (opponent points per 100 possessions)",
+   "value": 92.7,
+   "href": "/study/results"
+  },
+  {
+   "id": "turnovers-per-game",
+   "label": "Turnovers per game",
+   "value": 11.2,
+   "href": "/study/results"
+  },
+  {
+   "id": "opp-3pt-pct",
+   "label": "Opponent three-point percentage",
+   "value": "34.6%",
+   "href": "/study/results"
+  },
+  {
+   "id": "ppp-vs-zone",
+   "label": "Points per possession vs zone (coach-tagged film)",
+   "value": 1.01,
+   "href": "/study/results"
+  },
+  {
+   "id": "ppp-vs-man",
+   "label": "Points per possession vs man (coach-tagged film)",
+   "value": 1.02,
+   "href": "/study/results"
+  },
+  {
+   "id": "ppp-vs-press",
+   "label": "Points per possession vs press (coach-tagged film)",
+   "value": 0.86,
+   "href": "/study/results"
+  },
+  {
+   "id": "cedar-park-turnovers",
+   "label": "Turnovers in the Cedar Park loss (2027-01-09)",
+   "value": 19,
+   "href": "/study/results"
+  },
+  {
+   "id": "tagged-possessions",
+   "label": "Our offensive possessions tagged on game film",
+   "value": 359,
+   "href": "/study/results"
+  }
+ ]
+}

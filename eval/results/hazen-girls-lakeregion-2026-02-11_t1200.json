@@ -1,0 +1,11 @@
+{
+ "clip": "hazen-girls-lakeregion-2026-02-11_t1200.mp4",
+ "source": "..\\clips\\sam-girls-stream.txt",
+ "frames": 1200,
+ "playersMin": 0,
+ "playersMedian": 9.0,
+ "playersMax": 12,
+ "framesWith10Plus": 173,
+ "objectIds": 16,
+ "note": "no labels yet, nothing measured"
+}

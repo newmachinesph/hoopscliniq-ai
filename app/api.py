@@ -1,0 +1,162 @@
+"""FastAPI routes: health, film upload and job status, ClinIQ ask."""
+
+from __future__ import annotations
+
+import json
+import logging
+import shutil
+import time
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
+
+from fastapi import FastAPI, File, Form, Request, UploadFile
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from pydantic import ValidationError
+from starlette.concurrency import run_in_threadpool
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from app import settings
+from app.geometry import parse_calibration
+from app.jobs import JOB_ID, JobStore, job_view, new_job_id, now_iso
+from app.models import AskRequest, AskResponse, JobView
+
+log = logging.getLogger(__name__)
+
+HEADERS = {"Cache-Control": "no-store", "x-demo": "live"}
+CHUNK = 1024 * 1024
+
+
+def error(status: int, message: str) -> JSONResponse:
+    return JSONResponse({"error": message}, status_code=status, headers=HEADERS)
+
+
+class ModelsCheck:
+    """`modelsReachable` for /health: both models listed by the Meta API, cached for 60 s."""
+
+    def __init__(self, list_models: Callable[[], list[str]]) -> None:
+        self.list_models = list_models
+        self.at = 0.0
+        self.value = False
+
+    def __call__(self) -> bool:
+        if time.monotonic() - self.at < settings.MODELS_CHECK_TTL and self.at:
+            return self.value
+        try:
+            ids = set(self.list_models())
+            self.value = {settings.SAM_MODEL, settings.SPARK_MODEL} <= ids
+        except Exception:
+            log.warning("models check failed", exc_info=True)
+            self.value = False
+        self.at = time.monotonic()
+        return self.value
+
+
+def create_app(
+    *,
+    store: JobStore,
+    start_job: Callable[[str], None],
+    ask: Callable[[str], dict[str, Any]],
+    models_reachable: Callable[[], bool],
+    probe_duration: Callable[[Path], float],
+) -> FastAPI:
+    api = FastAPI(title="hoopscliniq-ai", version=settings.VERSION)
+
+    @api.middleware("http")
+    async def demo_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers.update(HEADERS)
+        return response
+
+    @api.exception_handler(RequestValidationError)
+    async def bad_request(_: Request, exc: RequestValidationError) -> JSONResponse:
+        first = exc.errors()[0] if exc.errors() else {}
+        where = ".".join(str(p) for p in first.get("loc", []) if p != "body")
+        return error(400, f"Bad request: {where or 'body'} {first.get('msg', 'is invalid')}".strip())
+
+    @api.exception_handler(StarletteHTTPException)
+    async def http_error(_: Request, exc: StarletteHTTPException) -> JSONResponse:
+        return error(exc.status_code, str(exc.detail))
+
+    @api.exception_handler(Exception)
+    async def unexpected(_: Request, exc: Exception) -> JSONResponse:
+        log.exception("unhandled error", exc_info=exc)
+        return error(500, "Something went wrong on our side. Try again.")
+
+    @api.get("/health")
+    def health() -> dict[str, Any]:
+        return {"ok": True, "version": settings.VERSION, "modelsReachable": models_reachable()}
+
+    @api.post("/film/upload", status_code=202)
+    def upload(file: UploadFile = File(...), calibration: str | None = Form(None)) -> JSONResponse:  # noqa: B008
+        ext = Path(file.filename or "").suffix.lower()
+        if ext not in settings.ALLOWED_EXTENSIONS:
+            return error(400, "Upload an MP4, MOV or WebM video.")
+        cal = None
+        if calibration:
+            try:
+                cal_raw = json.loads(calibration)
+                parse_calibration(cal_raw)
+                cal = cal_raw
+            except (ValueError, TypeError) as exc:
+                return error(400, f"Bad calibration: {exc}")
+        job_id = new_job_id()
+        d = store.dir(job_id)
+        d.mkdir(parents=True, exist_ok=True)
+        dest = d / f"upload{ext}"
+        size = 0
+        with dest.open("wb") as out:
+            while chunk := file.file.read(CHUNK):
+                size += len(chunk)
+                if size > settings.MAX_UPLOAD_BYTES:
+                    out.close()
+                    shutil.rmtree(d, ignore_errors=True)
+                    return error(413, "That video is over 200 MB.")
+                out.write(chunk)
+        try:
+            duration = probe_duration(dest)
+        except Exception:
+            shutil.rmtree(d, ignore_errors=True)
+            return error(400, "We could not read that video.")
+        if duration > settings.MAX_UPLOAD_SECONDS + 0.5:
+            shutil.rmtree(d, ignore_errors=True)
+            return error(
+                400, f"That video is {duration:.0f} s long; the limit is {settings.MAX_UPLOAD_SECONDS} s."
+            )
+        job = {
+            "jobId": job_id,
+            "status": "queued",
+            "createdAt": now_iso(),
+            "finishedAt": None,
+            "suggestedName": None,
+            "error": None,
+            "upload": {"file": dest.name, "name": file.filename, "bytes": size, "duration": duration},
+            "calibration": cal,
+        }
+        store.write(job)
+        start_job(job_id)
+        return JSONResponse(
+            {"jobId": job_id, "status": "queued", "statusUrl": f"/film/jobs/{job_id}"}, status_code=202
+        )
+
+    @api.get("/film/jobs/{job_id}", response_model=JobView)
+    def job_status(job_id: str) -> Any:
+        if not JOB_ID.match(job_id):
+            return error(400, "Malformed job id.")
+        job = store.read(job_id)
+        if job is None:
+            return error(404, "Unknown job.")
+        return job_view(job, store.read_play(job_id))
+
+    @api.post("/cliniq/ask", response_model=AskResponse)
+    async def cliniq_ask(request: Request) -> Any:
+        try:
+            body = AskRequest.model_validate(await request.json())
+        except (ValueError, ValidationError):
+            return error(
+                400, f'Send JSON: {{"question": "..."}} with at most {settings.MAX_QUESTION} characters.'
+            )
+        return await run_in_threadpool(ask, body.question)
+
+    return api

@@ -1,0 +1,9 @@
+{
+  "source": "estimated",
+  "clip": "../clips/sam-boys-frame0.png (Hazen Union gym, boys v. Stowe, 2025-02-10)",
+  "note": "Corners read by eye off the 1280 px frame, then scaled x1.5 to source pixels. The baseline-right corner is off-screen (extrapolated from the near sideline and the baseline). Approximate: valid only for this camera position; a panning camera moves the court out from under it.",
+  "order": ["baseline-left", "baseline-right", "halfcourt-right", "halfcourt-left"],
+  "court": [[0, 0], [50, 0], [50, 47], [0, 47]],
+  "imageSize": [1920, 1080],
+  "points": [[1275, 427.5], [2133, 757.5], [397.5, 961.5], [408, 453]]
+}

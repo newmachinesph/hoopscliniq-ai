@@ -1,0 +1,11 @@
+{
+ "clip": "hazen-boys-stowe-2025-02-10_t720.mp4",
+ "source": "..\\clips\\sam-boys-stream.txt",
+ "frames": 1200,
+ "playersMin": 6,
+ "playersMedian": 7.0,
+ "playersMax": 12,
+ "framesWith10Plus": 514,
+ "objectIds": 16,
+ "note": "no labels yet, nothing measured"
+}
