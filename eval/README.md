@@ -1,6 +1,8 @@
 # Eval harness
 
-Measures the pipeline's player boxes against boxes a person checked. Nothing is measured until labels exist.
+Measures the pipeline's player boxes against checked reference boxes. Each label file says who checked it
+(`labelledBy`; absent means a person). The 2026-10-28 labels were checked by an AI vision model, not a person.
+Nothing is measured until labels exist.
 
 ## Eval set
 

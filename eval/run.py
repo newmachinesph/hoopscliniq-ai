@@ -1,4 +1,4 @@
-"""Eval harness: the pipeline's player boxes vs hand labels.
+"""Eval harness: the pipeline's player boxes vs checked reference labels.
 
     python -m eval.run                       # every clip in eval/jobs.json that has labelled frames
     python -m eval.run --clip ../clips/<file>.mp4 [--labels eval/labels/<clip>.json] [--stream raw-sse.txt]
@@ -136,6 +136,7 @@ def clip_report(
     return {
         "clip": clip,
         "jobId": job["jobId"],
+        "labelledBy": labels.get("labelledBy") or "a person",
         **score_frames(overlay_boxes(overlay), label_boxes(labels, overlay.get("imageSize"))),
         "samFrames": meta.get("samFrames"),
         "cameraFallbackFrames": camera.get("framesFallback"),
@@ -207,7 +208,8 @@ def summary_md(summary: dict[str, Any]) -> str:
     lines = [
         "# Eval summary",
         "",
-        f"Generated {summary['generatedAt']}. {o['clips']} clips, {o['labelledFrames']} hand-checked frames. "
+        f"Generated {summary['generatedAt']}. {o['clips']} clips, {o['labelledFrames']} checked frames, "
+        f"labelled by {'; '.join(summary.get('labelledBy') or ['a person'])}. "
         "Player boxes from the job overlay (the kept tracks), matched one-to-one to labels at "
         f"IoU >= {IOU_MATCH}.",
         "",
@@ -258,6 +260,7 @@ def run_summary(base_override: str | None, refresh: bool) -> int:
         "iouThreshold": IOU_MATCH,
         "matching": "greedy one-to-one, best IoU first",
         "boxes": "job overlay players (the kept tracks) vs the done frames of eval/labels, clip.mp4 pixels",
+        "labelledBy": sorted({r["labelledBy"] for r in reports}),
         "overall": overall(reports),
         "clips": reports,
         "notLabelled": skipped,

@@ -184,13 +184,27 @@ naming was capped at 40 s, took 54.5 s and 109.6 s; almost all of it is the Muse
 - "What is the best recipe for banana bread?" → 200 in 9.4 s, `noSource: true`, body "I have no source for that
   in your film.", 0 credits.
 
-**Eval harness**: no hand labels exist yet, so precision and recall are not measured. Per-frame players found on
-the saved 60 fps reference streams: girls clip min 0 / median 9 / max 12, boys pregame min 6 / median 7 / max 12
-(`eval/results/`).
+**Player boxes** (`python -m eval.run`, 2026-10-28, backend 0.3.2): 5 live-play clips the pipeline was never tuned
+on, 40 frames (8 per clip). Reference boxes: an AI vision model corrected the pipeline's pre-filled boxes with a
+zoom tool (removed bench players, coaches and referees, added missed players, tightened boxes); a person did not
+check them. Matching: one-to-one at IoU >= 0.5. Full table: `eval/results/summary.md`.
+
+| Measure | Overall |
+|---|---|
+| Precision | 0.83 (318 of 384 boxes) |
+| Recall | 0.86 (318 of 369 players) |
+| Players found / labelled per frame | 9.6 / 9.2 |
+| Camera motion followed | 1,200 of 1,200 frames |
+| Frames with a ball box | 1,013 of 1,200 (not checked for accuracy) |
+| Upload to done, mean | 108.7 s (server 76.6 s) |
+| SAM 3.1 cost per 20 s clip | $0.096 (Muse Spark and Modal not included) |
+
+Per clip, precision ranges 0.76–0.87 and recall 0.78–0.94.
 
 ## Not working yet
 
-- No hand-labelled frames, so SAM box precision/recall, ball accuracy and event accuracy are unmeasured.
+- Player box precision and recall are measured against AI-checked reference boxes, not boxes a person checked.
+  Ball accuracy and event accuracy are unmeasured.
 - The ball is projected as if it were on the floor; a ball in the air lands at the wrong court spot, so "within
   4 ft of the rim" rarely fires for real jump shots and the rise test does most of the work.
 - Shots never say made or missed. Screens, cuts, actions and areas stay empty.
