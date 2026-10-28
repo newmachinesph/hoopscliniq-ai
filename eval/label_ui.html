@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eval labeller</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --navy: #001c3f; --bg: #0b1220; --panel: #111a2e; --line: #26324a; --text: #e8edf5; --dim: #8fa0bd;
+          --box: #ffb020; --sel: #2ee6ff; --new: #ff5ad1; --ok: #3ddc84; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+               font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  body { display: grid; grid-template-rows: auto 1fr; grid-template-columns: 260px 1fr; height: 100vh; }
+  #help { grid-column: 1 / 3; background: var(--navy); padding: 8px 14px; border-bottom: 1px solid var(--line); }
+  #help kbd { background: #1c2a45; border: 1px solid #344566; border-radius: 4px; padding: 0 5px; font: 12px ui-monospace, monospace; }
+  aside { background: var(--panel); border-right: 1px solid var(--line); overflow: auto; padding: 12px; }
+  aside h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); margin: 0 0 8px; }
+  #total { margin-bottom: 12px; font-weight: 600; }
+  .clip { padding: 8px; border-radius: 6px; cursor: pointer; margin-bottom: 6px; border: 1px solid transparent; }
+  .clip:hover { background: #18233b; }
+  .clip.cur { border-color: var(--sel); background: #142039; }
+  .clip .name { word-break: break-all; font-size: 12px; }
+  .bar { height: 6px; background: #22304c; border-radius: 3px; margin-top: 5px; overflow: hidden; }
+  .bar > div { height: 100%; background: var(--ok); }
+  .count { font-size: 12px; color: var(--dim); }
+  main { display: grid; grid-template-rows: auto 1fr auto; min-width: 0; min-height: 0; }
+  #status { padding: 6px 12px; display: flex; gap: 16px; align-items: center; border-bottom: 1px solid var(--line); }
+  #status .done { color: var(--ok); font-weight: 600; }
+  #status .todo { color: var(--dim); }
+  #saved { margin-left: auto; color: var(--dim); }
+  #saved.err { color: #ff6b6b; }
+  #wrap { position: relative; min-height: 0; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #strip { display: flex; gap: 6px; padding: 8px 12px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  #strip button { background: #18233b; color: var(--text); border: 1px solid var(--line); border-radius: 5px;
+                  padding: 4px 9px; cursor: pointer; font: inherit; font-size: 12px; }
+  #strip button.cur { border-color: var(--sel); }
+  #strip button.isdone { color: var(--ok); }
+</style>
+</head>
+<body>
+<div id="help">
+  Click a box to select, drag to move, drag a corner to resize &middot; <kbd>Del</kbd> delete &middot;
+  <kbd>N</kbd> then drag: add a box &middot; <kbd>Enter</kbd> frame done, next &middot;
+  <kbd>&larr;</kbd> <kbd>&rarr;</kbd> frames &middot; <kbd>&uarr;</kbd> <kbd>&darr;</kbd> clips &middot;
+  <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo &middot; <kbd>Esc</kbd> cancel &middot;
+  Box every on-court player (not referees, coaches or bench). Saves on every change.
+</div>
+<aside>
+  <h2>Clips</h2>
+  <div id="total"></div>
+  <div id="clips"></div>
+</aside>
+<main>
+  <div id="status"><span id="where"></span><span id="state"></span><span id="mode"></span><span id="saved"></span></div>
+  <div id="wrap"><canvas id="cv"></canvas></div>
+  <div id="strip"></div>
+</main>
+<script>
+"use strict";
+const HANDLE = 7;           // corner handle half-size, screen px
+const MIN_BOX = 4;          // image px; smaller new boxes are ignored
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+const S = {
+  clips: [], total: 0, ci: 0, fi: 0,      // current clip index, frame index within the clip
+  data: {},                               // stem -> { frames: {idx: [[x1,y1,x2,y2]]}, done: Set }
+  undo: {},                               // stem -> [snapshot]
+  img: null, sel: -1, adding: false, drag: null, view: { scale: 1, ox: 0, oy: 0 },
+};
+const images = {};
+
+const clip = () => S.clips[S.ci];
+const frameIdx = () => clip().frames[S.fi];
+const state = () => S.data[clip().stem];
+const boxes = () => state().frames[String(frameIdx())];
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+  return r.json();
+}
+
+async function init() {
+  const info = await api("/api/clips");
+  S.clips = info.clips; S.total = info.total;
+  for (const c of S.clips) {
+    const st = await api(`/api/labels/${c.stem}`);
+    S.data[c.stem] = { frames: st.frames, done: new Set(st.done) };
+    S.undo[c.stem] = [];
+  }
+  // Start on the first frame not done yet.
+  outer: for (let ci = 0; ci < S.clips.length; ci++) {
+    for (let fi = 0; fi < S.clips[ci].frames.length; fi++) {
+      if (!S.data[S.clips[ci].stem].done.has(S.clips[ci].frames[fi])) { S.ci = ci; S.fi = fi; break outer; }
+    }
+  }
+  await show();
+}
+
+function loadImage(src) {
+  if (!images[src]) {
+    images[src] = new Promise((ok, fail) => { const im = new Image(); im.onload = () => ok(im); im.onerror = fail; im.src = src; });
+  }
+  return images[src];
+}
+
+async function show() {
+  S.sel = -1; S.drag = null;
+  S.img = await loadImage(`/frames/${clip().stem}/${frameIdx()}.jpg`);
+  const next = clip().frames[S.fi + 1];
+  if (next !== undefined) loadImage(`/frames/${clip().stem}/${next}.jpg`);
+  render();
+}
+
+function layout() {
+  const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const [w, h] = clip().imageSize;
+  const scale = Math.min(r.width / w, r.height / h);
+  S.view = { scale, ox: (r.width - w * scale) / 2, oy: (r.height - h * scale) / 2, w: r.width, h: r.height };
+}
+
+const toScreen = (x, y) => [S.view.ox + x * S.view.scale, S.view.oy + y * S.view.scale];
+function toImage(e) {
+  const r = cv.getBoundingClientRect();
+  return [(e.clientX - r.left - S.view.ox) / S.view.scale, (e.clientY - r.top - S.view.oy) / S.view.scale];
+}
+
+function render() {
+  panels(); // first: the frame strip and status line change the canvas size
+  layout();
+  const v = S.view, [w, h] = clip().imageSize;
+  ctx.fillStyle = "#05080f"; ctx.fillRect(0, 0, v.w, v.h);
+  if (S.img) ctx.drawImage(S.img, v.ox, v.oy, w * v.scale, h * v.scale);
+  const list = boxes();
+  list.forEach((b, i) => drawBox(b, i === S.sel ? "sel" : "box", i + 1));
+  if (S.drag && S.drag.kind === "new" && S.drag.box) drawBox(S.drag.box, "new");
+  if (state().done.has(frameIdx())) {
+    ctx.strokeStyle = getVar("--ok"); ctx.lineWidth = 3; ctx.strokeRect(v.ox + 1.5, v.oy + 1.5, w * v.scale - 3, h * v.scale - 3);
+  }
+}
+
+function getVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function drawBox(b, kind, n) {
+  const [x1, y1] = toScreen(Math.min(b[0], b[2]), Math.min(b[1], b[3]));
+  const [x2, y2] = toScreen(Math.max(b[0], b[2]), Math.max(b[1], b[3]));
+  const color = getVar(kind === "sel" ? "--sel" : kind === "new" ? "--new" : "--box");
+  ctx.strokeStyle = color; ctx.lineWidth = kind === "sel" ? 2.5 : 1.5;
+  ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+  if (n) { ctx.fillStyle = color; ctx.font = "11px system-ui"; ctx.fillText(String(n), x1 + 2, y1 - 3); }
+  if (kind === "sel") {
+    ctx.fillStyle = color;
+    for (const [hx, hy] of [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]) ctx.fillRect(hx - HANDLE / 2, hy - HANDLE / 2, HANDLE, HANDLE);
+  }
+}
+
+function panels() {
+  const doneAll = S.clips.reduce((n, c) => n + S.data[c.stem].done.size, 0);
+  document.getElementById("total").textContent = `${doneAll} of ${S.total} frames done`;
+  const list = document.getElementById("clips");
+  list.innerHTML = "";
+  S.clips.forEach((c, ci) => {
+    const d = S.data[c.stem].done.size, el = document.createElement("div");
+    el.className = "clip" + (ci === S.ci ? " cur" : "");
+    el.innerHTML = `<div class="name"></div><div class="bar"><div style="width:${(100 * d) / c.frames.length}%"></div></div>` +
+      `<div class="count">${d} / ${c.frames.length} frames</div>`;
+    el.querySelector(".name").textContent = c.clip;
+    el.onclick = () => go(ci, 0);
+    list.appendChild(el);
+  });
+  const c = clip(), idx = frameIdx(), done = state().done.has(idx);
+  document.getElementById("where").textContent =
+    `${c.clip} · frame ${S.fi + 1} of ${c.frames.length} (t = ${(idx / c.fps).toFixed(1)} s, #${idx}) · ${boxes().length} boxes`;
+  const st = document.getElementById("state");
+  st.textContent = done ? "done" : "not done"; st.className = done ? "done" : "todo";
+  document.getElementById("mode").textContent = S.adding ? "ADD: drag a box" : "";
+  const strip = document.getElementById("strip");
+  strip.innerHTML = "";
+  c.frames.forEach((f, fi) => {
+    const b = document.createElement("button");
+    b.className = (fi === S.fi ? "cur " : "") + (state().done.has(f) ? "isdone" : "");
+    b.textContent = `${(f / c.fps).toFixed(1)} s${state().done.has(f) ? " (done)" : ""}`;
+    b.onclick = () => go(S.ci, fi);
+    strip.appendChild(b);
+  });
+}
+
+function snapshot() {
+  const st = state();
+  return JSON.stringify({ frames: st.frames, done: [...st.done] });
+}
+function pushUndo(snap) {
+  const u = S.undo[clip().stem]; u.push(snap); if (u.length > 200) u.shift();
+}
+
+let saving = Promise.resolve();
+function save() {
+  const stem = clip().stem, st = S.data[stem];
+  const body = JSON.stringify({ frames: st.frames, done: [...st.done] });
+  const el = document.getElementById("saved");
+  el.textContent = "saving..."; el.className = "";
+  saving = saving.then(() => api(`/api/labels/${stem}`, { method: "POST", headers: { "Content-Type": "application/json" }, body }))
+    .then(() => { el.textContent = "saved"; el.className = ""; })
+    .catch((err) => { el.textContent = `save failed: ${err.message}`; el.className = "err"; });
+  return saving;
+}
+
+function change(fn) {
+  const snap = snapshot();
+  fn();
+  if (snapshot() !== snap) { pushUndo(snap); save(); }
+  render();
+}
+
+function undo() {
+  const snap = S.undo[clip().stem].pop();
+  if (!snap) return;
+  const s = JSON.parse(snap);
+  S.data[clip().stem] = { frames: s.frames, done: new Set(s.done) };
+  S.sel = -1; save(); render();
+}
+
+function go(ci, fi) {
+  if (ci < 0 || ci >= S.clips.length) return;
+  S.ci = ci; S.fi = Math.max(0, Math.min(fi, S.clips[ci].frames.length - 1)); S.adding = false;
+  show();
+}
+
+function step(delta) {
+  let ci = S.ci, fi = S.fi + delta;
+  if (fi >= clip().frames.length) { if (ci + 1 >= S.clips.length) return; ci += 1; fi = 0; }
+  if (fi < 0) { if (ci === 0) return; ci -= 1; fi = S.clips[ci].frames.length - 1; }
+  go(ci, fi);
+}
+
+function nextUndone() {
+  const n = S.clips.length;
+  for (let k = 0; k < n; k++) {
+    const ci = (S.ci + k) % n, c = S.clips[ci], d = S.data[c.stem].done;
+    const start = k === 0 ? S.fi + 1 : 0;
+    for (let fi = start; fi < c.frames.length; fi++) if (!d.has(c.frames[fi])) return go(ci, fi);
+  }
+  for (let fi = 0; fi < S.fi; fi++) if (!state().done.has(clip().frames[fi])) return go(S.ci, fi);
+  render(); // everything is done
+}
+
+// ---- mouse ----
+function hitHandle(px, py) {
+  if (S.sel < 0) return -1;
+  const b = boxes()[S.sel];
+  const corners = [[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]]];
+  const tol = (HANDLE + 3) / S.view.scale;
+  return corners.findIndex(([x, y]) => Math.abs(px - x) <= tol && Math.abs(py - y) <= tol);
+}
+function hitBox(px, py) {
+  let best = -1, area = Infinity;
+  boxes().forEach((b, i) => {
+    if (px >= b[0] && px <= b[2] && py >= b[1] && py <= b[3]) {
+      const a = (b[2] - b[0]) * (b[3] - b[1]);
+      if (a < area) { area = a; best = i; }
+    }
+  });
+  return best;
+}
+
+cv.addEventListener("mousedown", (e) => {
+  if (e.button !== 0) return;
+  const [x, y] = toImage(e);
+  if (S.adding) { S.drag = { kind: "new", x0: x, y0: y, box: null }; return; }
+  const corner = hitHandle(x, y);
+  if (corner >= 0) { S.drag = { kind: "resize", corner, snap: snapshot() }; return; }
+  const i = hitBox(x, y);
+  S.sel = i;
+  if (i >= 0) S.drag = { kind: "move", x0: x, y0: y, orig: boxes()[i].slice(), snap: snapshot() };
+  render();
+});
+
+window.addEventListener("mousemove", (e) => {
+  const [x, y] = toImage(e);
+  if (!S.drag) {
+    cv.style.cursor = S.adding ? "crosshair" : hitHandle(x, y) >= 0 ? "nwse-resize" : hitBox(x, y) >= 0 ? "move" : "default";
+    return;
+  }
+  const [w, h] = clip().imageSize;
+  const cx = Math.max(0, Math.min(w, x)), cy = Math.max(0, Math.min(h, y));
+  if (S.drag.kind === "new") {
+    S.drag.box = [S.drag.x0, S.drag.y0, cx, cy];
+  } else if (S.drag.kind === "move") {
+    const o = S.drag.orig;
+    const dx = Math.max(-o[0], Math.min(w - o[2], x - S.drag.x0)), dy = Math.max(-o[1], Math.min(h - o[3], y - S.drag.y0));
+    boxes()[S.sel] = [o[0] + dx, o[1] + dy, o[2] + dx, o[3] + dy].map(Math.round);
+  } else if (S.drag.kind === "resize") {
+    const b = boxes()[S.sel], c = S.drag.corner;
+    if (c === 0 || c === 3) b[0] = Math.round(cx); else b[2] = Math.round(cx);
+    if (c === 0 || c === 1) b[1] = Math.round(cy); else b[3] = Math.round(cy);
+  }
+  render();
+});
+
+window.addEventListener("mouseup", () => {
+  const d = S.drag;
+  if (!d) return;
+  S.drag = null;
+  if (d.kind === "new") {
+    S.adding = false;
+    const b = d.box;
+    if (b && Math.abs(b[2] - b[0]) >= MIN_BOX && Math.abs(b[3] - b[1]) >= MIN_BOX) {
+      change(() => {
+        boxes().push([Math.min(b[0], b[2]), Math.min(b[1], b[3]), Math.max(b[0], b[2]), Math.max(b[1], b[3])].map(Math.round));
+        S.sel = boxes().length - 1;
+      });
+    } else render();
+    return;
+  }
+  const b = boxes()[S.sel];
+  if (b) boxes()[S.sel] = [Math.min(b[0], b[2]), Math.min(b[1], b[3]), Math.max(b[0], b[2]), Math.max(b[1], b[3])];
+  if (snapshot() !== d.snap) { pushUndo(d.snap); save(); }
+  render();
+});
+
+// ---- keys ----
+window.addEventListener("keydown", (e) => {
+  if (!S.clips.length) return;
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); undo(); return; }
+  switch (e.key) {
+    case "Delete": case "Backspace":
+      if (S.sel >= 0) { e.preventDefault(); const i = S.sel; change(() => { boxes().splice(i, 1); S.sel = -1; }); }
+      break;
+    case "n": case "N":
+      S.adding = true; S.sel = -1; cv.style.cursor = "crosshair"; render(); break;
+    case "Escape":
+      S.adding = false; S.drag = null; S.sel = -1; render(); break;
+    case "Enter":
+      e.preventDefault();
+      change(() => state().done.add(frameIdx()));
+      nextUndone(); break;
+    case "ArrowRight": e.preventDefault(); step(1); break;
+    case "ArrowLeft": e.preventDefault(); step(-1); break;
+    case "ArrowDown": e.preventDefault(); go(S.ci + 1, 0); break;
+    case "ArrowUp": e.preventDefault(); go(S.ci - 1, 0); break;
+  }
+});
+
+window.addEventListener("resize", () => S.clips.length && render());
+// For the end-to-end test: where things are on screen.
+window.labeller = { S, toScreen, frameIdx, boxes, saved: () => saving };
+init().catch((err) => { document.getElementById("saved").textContent = `load failed: ${err.message}`; });
+</script>
+</body>
+</html>

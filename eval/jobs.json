@@ -1,0 +1,35 @@
+{
+ "backend": "https://del-rosario-llino-g--hoopscliniq-ai-web.us-east.modal.run",
+ "clips": {
+  "hazen-boys-stowe-2025-02-10-t1975.mp4": {
+   "jobId": "job-eszcmfy7wok2",
+   "wallSeconds": 98.4,
+   "ranAt": "2026-10-28",
+   "version": "0.3.2"
+  },
+  "hazen-boys-stowe-2025-02-10-t4375.mp4": {
+   "jobId": "job-an73bw5pfs2n",
+   "wallSeconds": 98.3,
+   "ranAt": "2026-10-28",
+   "version": "0.3.2"
+  },
+  "hazen-girls-lakeregion-2026-02-11-t2940.mp4": {
+   "jobId": "job-ipjb3pk3qfxc",
+   "wallSeconds": 100.4,
+   "ranAt": "2026-10-28",
+   "version": "0.3.2"
+  },
+  "hazen-girls-lakeregion-2026-02-11-t4860.mp4": {
+   "jobId": "job-zvtq2kspiauc",
+   "wallSeconds": 82.2,
+   "ranAt": "2026-10-28",
+   "version": "0.3.2"
+  },
+  "hazen-girls-randolph-2025-12-27-t4855.mp4": {
+   "jobId": "job-qliahhohbfn3",
+   "wallSeconds": 164.4,
+   "ranAt": "2026-10-28",
+   "version": "0.3.2"
+  }
+ }
+}

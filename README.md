@@ -22,6 +22,8 @@ python -m modal deploy app/modal_app.py   # the deployed app `hoopscliniq-ai`
 
 python scripts/run_clip.py ../clips/hazen-girls-lakeregion-2026-02-11_t1200.mp4 --url <web url>
 python scripts/smoke.py "What did we run against Westview's zone and what worked?" --url <web url>
+python -m eval.label_server --clips ../clips/eval   # label the eval frames at http://127.0.0.1:8765 (eval/README.md)
+python -m eval.run                                   # measure: eval/results/summary.{json,md}
 python -m eval.run --clip ../clips/<clip>.mp4 [--labels eval/labels/<clip>.json] [--stream <saved SAM stream> --fps 60]
 python scripts/build_world.py            # rebuild data/world.json from the demo's mocks (needs Node 22.6+)
 ```

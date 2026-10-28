@@ -4,3 +4,6 @@
 __pycache__/
 .pytest_cache/
 .ruff_cache/
+
+# eval: local cache of job views, clip.mp4 and label frames
+eval/cache/
