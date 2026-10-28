@@ -93,6 +93,7 @@ def web():
     from app.cliniq import ask
     from app.jobs import probe
     from app.naming import suggest_name
+    from app.quiz import write_quiz
     from app.world import load_world
 
     _init_observability()
@@ -110,6 +111,10 @@ def web():
         client = settings.meta_client(timeout=settings.CALIBRATE_NAME_TIMEOUT, max_retries=0)
         return suggest_name(client, world.playbook(), play, reasoning_effort=settings.CALIBRATE_NAME_EFFORT)
 
+    def make_quiz(req) -> dict:
+        client = settings.meta_client(timeout=settings.QUIZ_TIMEOUT, max_retries=0)
+        return write_quiz(client, req)
+
     return create_app(
         store=_store(),
         start_job=start,
@@ -117,4 +122,5 @@ def web():
         models_reachable=check,
         probe_duration=lambda p: probe(p)["duration"],
         name_play=name_play,
+        make_quiz=make_quiz,
     )

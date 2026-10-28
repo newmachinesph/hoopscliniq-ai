@@ -41,7 +41,7 @@ Deployed: `https://del-rosario-llino-g--hoopscliniq-ai-web.us-east.modal.run`
 | `HOOPSCLINIQ_API_URL` | local shell | Deployed URL for `scripts/run_clip.py` and `scripts/smoke.py` |
 
 Storage: Modal Volume `hoopscliniq-film`, `jobs/<jobId>/{clip.mp4, job.json, sam.txt, sam-ball.txt, camera.json,
-calibration.json, play.json, overlay.json}`.
+calibration.json, play.json, overlay.json, clip-hidden.mp4, hidden.json}`.
 
 ## API
 
@@ -51,10 +51,12 @@ Every response carries `Cache-Control: no-store` (except the clip) and `x-demo: 
 |---|---|---|
 | `GET /health` | | `{ ok: true, version, modelsReachable }` (models check cached 60 s) |
 | `POST /film/upload` | multipart `file` (mp4/mov/webm, ≤ 200 MB, ≤ 60 s), optional `calibration` JSON string | `202 { jobId, status: "queued", statusUrl: "/film/jobs/<jobId>" }` |
-| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay, calibration, cameraMotion }`; `400` malformed id, `404` unknown |
+| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay, calibration, cameraMotion, hidden }`; `400` malformed id, `404` unknown |
 | `POST /film/jobs/{jobId}/calibrate` | `{ frame, points: [[x,y] x4], landmarks?: "lane" \| "half" }` in clip.mp4 pixels | `200` job view; `400` bad input, `404` unknown, `409` not done |
 | `GET /film/jobs` | | `{ jobs: [{ jobId, finishedAt, title, playersFound }] }`: status `done` only, newest first, max 10; `title` = `suggestedName.title` |
 | `GET /film/jobs/{jobId}/clip` | | `clip.mp4` (`video/mp4`), HTTP Range (206), `Cache-Control: public, max-age=3600`, `Access-Control-Allow-Origin: *`; `404 { error }` when missing |
+| `POST /film/jobs/{jobId}/hide` | `{ playerIds: string[] }`: 0 to 4 keys of `overlay.players`; `[]` shows everyone again | `200` job view with `hidden`; `400` bad input, `404` unknown, `409` not done or no overlay |
+| `POST /study/quiz` | `{ play: { id, title, frames[] }, spot?: 1..5 (2), count?: 2..5 (3) }` | `{ quiz, source, model, seconds }`; `400` bad play, `502` / `504` Muse Spark failed or too slow |
 | `POST /cliniq/ask` | `{ question }` (≤ 500 chars) | `{ question, answer: { body[], citations[], confidence, credits }, noSource }`; `400` bad body |
 
 `calibration` is `[[x,y] x4]` or `{ "points": [[x,y] x4], "imageSize": [w,h] }`: the half-court corners in the
@@ -86,6 +88,44 @@ lane corner, free-throw line right end, free-throw line left end, mapped to cour
 from the lane covers the whole floor plane, so positions outside the lane come out of the same matrix; small tap
 errors grow with distance from the lane. `calibration.json` and the job view's `calibration` carry `landmarks`
 (older records read as `"half"`).
+
+## Study quiz (0.4.0)
+
+`POST /study/quiz` takes the demo's play-engine `Play` (`id`, `title`, `frames[]`; coordinates in tenths of a foot,
+half court, x 0..500, y 0..420 from the baseline, rim near (250, 52)). `app/quiz.py` describes it in words, frame
+by frame (`zone(x, y)` names the court zone; the actor of an action is the offense player nearest `from`, the
+target of a pass, hand-off or screen the one nearest `to`), then makes one Muse Spark call: `json_schema` strict,
+`reasoning_effort` `QUIZ_EFFORT` (`low`), client timeout `QUIZ_TIMEOUT` (45 s), no retry. Each question has a
+`frame`, an `answerFrame`, three options, the correct index and a one-sentence `why`. The backend drops questions
+with a frame outside the play, an answer before the question frame, options that are not 3 distinct strings or a
+bad index, trims text to the limits (prompt 200, option 120, why 220, with an ellipsis), shuffles the options with
+`random.Random("<playId>:<i>")` and gives them ids `a`, `b`, `c`. Fewer than 2 valid questions: `502`. The result
+is a draft: the response says `topic: "Written by ClinIQ"` and the coach checks it before assigning.
+
+Limits and checks: 1 to 12 frames, 5 offense points per frame, points inside -20..520 x -20..440, `id` and `title`
+at most 80 characters, at most 8 actions per frame, `note` at most 200 characters.
+
+## Consent mask (0.4.0)
+
+`POST /film/jobs/{jobId}/hide` takes `{ playerIds }` (0 to 4 keys of `overlay.players`) on a finished job and
+renders `clip-hidden.mp4` with those players hidden in every frame (`app/consent.py`). Per frame, the player's
+tracked box grows by `HIDE_PAD` (15 %) on each side, is pixelated to 1/16 size (nearest-neighbour back up) and
+darkened 40 %. A frame with no box for the player uses that player's nearest box within `HIDE_HOLD_FRAMES` (6)
+frames; otherwise the frame counts as missed. OpenCV reads the frames, raw frames go through a pipe to ffmpeg
+(libx264, yuv420p, CRF 23, preset veryfast, `+faststart`, same fps). `hidden.json` is
+`{ playerIds, framesMissed: { id: n }, frames, at }`.
+
+Decision: the mask uses the tracked SAM 3.1 boxes, not the SAM pixel masks. The mask encoding in the raw stream
+is not documented (a custom base85 with a length header and an unknown codec), and a box hides the whole person,
+which is safer for consent. The cost: a box also hides some background, and where tracking lost a player for more
+than 6 frames the player can still show. `framesMissed` says how many frames those are; the coach should check
+the whole clip.
+
+While `hidden.json` lists players, `GET /film/jobs/{jobId}/clip` serves `clip-hidden.mp4` and no route serves the
+original clip (404 if the hidden file is missing). The job view adds `hidden` (`null` when nobody is hidden) and
+`clipUrl` gets `?v=<at>` so browsers do not reuse a cached clip. `overlay` keeps the hidden players' boxes (the
+court view still needs positions). An empty `playerIds` deletes `clip-hidden.mp4` and `hidden.json`. The render
+runs synchronously in a threadpool.
 
 ## Pipeline
 

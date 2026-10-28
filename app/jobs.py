@@ -38,6 +38,8 @@ from app.world import load_world
 log = logging.getLogger(__name__)
 
 JOB_ID = re.compile(r"^job-[a-z2-7]{12}$")
+HIDDEN_CLIP = "clip-hidden.mp4"
+HIDDEN_JSON = "hidden.json"
 PIPELINE = ("frames", "track", "name")
 STEP_DEFS = [
     ("upload", "Upload", "Phone or file"),
@@ -104,8 +106,12 @@ def job_view(
     overlay: dict[str, Any] | None = None,
     clip_url: str | None = None,
     calibration: dict[str, Any] | None = None,
+    hidden: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     meta = (play_dna or {}).get("meta") or {}
+    shown_url = clip_url if job.get("video") else None
+    if hidden and shown_url:
+        shown_url = f"{shown_url}?v={hidden['at']}"  # a new render must not reuse the cached clip
     return {
         "jobId": job["jobId"],
         "status": job["status"],
@@ -115,11 +121,18 @@ def job_view(
         "playDna": play_dna,
         "error": job.get("error"),
         # clip.mp4 exists once the frames step has recorded the re-encoded video.
-        "clipUrl": clip_url if job.get("video") else None,
+        "clipUrl": shown_url,
         "overlay": overlay,
         "calibration": calibration_view(calibration),
         "cameraMotion": meta.get("cameraMotion"),
+        "hidden": hidden_view(hidden),
     }
+
+
+def hidden_view(record: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not record:
+        return None
+    return {key: record.get(key) for key in ("playerIds", "framesMissed", "frames", "at")}
 
 
 def job_summary(job: dict[str, Any], play_dna: dict[str, Any] | None) -> dict[str, Any]:
@@ -206,11 +219,31 @@ class JobStore:
         except FileNotFoundError:
             return None
 
+    def read_hidden(self, job_id: str) -> dict | None:
+        """hidden.json, or None when no player is hidden (an empty list counts as none)."""
+        record = self._read_json(self.dir(job_id) / HIDDEN_JSON)
+        return record if record and record.get("playerIds") else None
+
+    def write_hidden(self, job_id: str, record: dict) -> None:
+        self._write_json(self.dir(job_id) / HIDDEN_JSON, record)
+
+    def clear_hidden(self, job_id: str) -> None:
+        for name in (HIDDEN_CLIP, HIDDEN_JSON):
+            (self.dir(job_id) / name).unlink(missing_ok=True)
+        self.commit()
+
     def clip(self, job_id: str) -> Path | None:
-        """Path of clip.mp4, or None when it does not exist (reloads the Volume once before giving up)."""
+        """Path of the clip to serve, or None. A job with hidden players serves only clip-hidden.mp4: the
+        original clip is never returned then (consent). Reloads the Volume first so a hide done in another
+        container is seen."""
+        self.reload()
+        d = self.dir(job_id)
+        path = d / (HIDDEN_CLIP if self.read_hidden(job_id) else "clip.mp4")
+        return path if path.is_file() else None
+
+    def clip_original(self, job_id: str) -> Path | None:
+        """Path of the original clip.mp4 for rendering only; no route serves it."""
         path = self.dir(job_id) / "clip.mp4"
-        if not path.is_file():
-            self.reload()
         return path if path.is_file() else None
 
     def done_jobs(self, limit: int) -> list[dict]:

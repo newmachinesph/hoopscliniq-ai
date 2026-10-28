@@ -1,4 +1,4 @@
-"""FastAPI routes: health, film upload, job status, job list, clip and calibration, ClinIQ ask."""
+"""FastAPI routes: health, film upload, job status, job list, clip, calibration and hide, ClinIQ ask, quiz."""
 
 from __future__ import annotations
 
@@ -18,9 +18,11 @@ from starlette.concurrency import run_in_threadpool
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app import settings
+from app.consent import set_hidden
 from app.geometry import LANDMARKS, check_quad, parse_calibration
 from app.jobs import JOB_ID, JobStore, job_summary, job_view, new_job_id, now_iso, recalibrate
-from app.models import AskRequest, AskResponse, JobList, JobView
+from app.models import AskRequest, AskResponse, HideRequest, JobList, JobView, QuizRequest
+from app.quiz import QuizError
 
 log = logging.getLogger(__name__)
 
@@ -65,6 +67,7 @@ def create_app(
     models_reachable: Callable[[], bool],
     probe_duration: Callable[[Path], float],
     name_play: Callable[[dict], dict] | None = None,
+    make_quiz: Callable[[QuizRequest], dict[str, Any]] | None = None,
 ) -> FastAPI:
     api = FastAPI(title="hoopscliniq-ai", version=settings.VERSION)
 
@@ -165,7 +168,12 @@ def create_app(
         job_id = job["jobId"]
         clip_url = str(request.url_for("job_clip", job_id=job_id))
         return job_view(
-            job, store.read_play(job_id), store.read_overlay(job_id), clip_url, store.read_calibration(job_id)
+            job,
+            store.read_play(job_id),
+            store.read_overlay(job_id),
+            clip_url,
+            store.read_calibration(job_id),
+            store.read_hidden(job_id),
         )
 
     @api.post("/film/jobs/{job_id}/calibrate", response_model=JobView)
@@ -188,6 +196,25 @@ def create_app(
         done = await run_in_threadpool(recalibrate, store, job, frame, points, name_play, landmarks=landmarks)
         return _view(done, request)
 
+    @api.post("/film/jobs/{job_id}/hide", response_model=JobView)
+    async def hide(job_id: str, body: HideRequest, request: Request) -> Any:
+        if not JOB_ID.match(job_id):
+            return error(400, "Malformed job id.")
+        job = await run_in_threadpool(store.read, job_id)
+        if job is None:
+            return error(404, "Unknown job.")
+        overlay = await run_in_threadpool(store.read_overlay, job_id)
+        if job.get("status") != "done" or overlay is None:
+            return error(409, "This job is not finished yet. Hide players once the analysis is done.")
+        ids = list(dict.fromkeys(body.playerIds))
+        unknown = [pid for pid in ids if pid not in overlay["players"]]
+        if unknown:
+            return error(400, f"Bad request: unknown player id {unknown[0]}.")
+        if ids and await run_in_threadpool(store.clip_original, job_id) is None:
+            return error(409, "This job has no clip to hide players in.")
+        await run_in_threadpool(set_hidden, store, job_id, overlay, ids)
+        return _view(job, request)
+
     @api.api_route("/film/jobs/{job_id}/clip", methods=["GET", "HEAD"], name="job_clip")
     def job_clip(job_id: str) -> Any:
         if not JOB_ID.match(job_id):
@@ -197,6 +224,16 @@ def create_app(
             return error(404, "No clip for this job.")
         # FileResponse answers Range requests with 206 and Content-Range, so browsers can seek.
         return FileResponse(path, media_type="video/mp4", headers=CLIP_HEADERS)
+
+    @api.post("/study/quiz")
+    async def study_quiz(body: QuizRequest) -> Any:
+        if make_quiz is None:
+            return error(503, "Quiz writing is not available right now.")
+        try:
+            result = await run_in_threadpool(make_quiz, body)
+        except QuizError as exc:
+            return error(exc.status, exc.message)
+        return JSONResponse(result, headers=HEADERS)
 
     @api.post("/cliniq/ask", response_model=AskResponse)
     async def cliniq_ask(request: Request) -> Any:

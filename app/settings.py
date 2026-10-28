@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-VERSION = "0.3.3"
+VERSION = "0.4.0"
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("HOOPSCLINIQ_DATA_DIR", ROOT / "data"))
@@ -98,3 +98,15 @@ MEDIUM_HOLD_FRAMES = 6
 SHOT_RIM_FEET = 4.0
 SHOT_TOWARD_RIM_FEET = 3.0
 SHOT_RISE = 0.1  # the ball centre must clear the holder's box top by this share of the box height
+
+# Study quiz written by Muse Spark (POST /study/quiz, see app/quiz.py).
+QUIZ_EFFORT = "low"
+QUIZ_TIMEOUT = 45.0  # client timeout in seconds, no retry: the demo's proxy gives up at 55 s
+
+# Consent mask (POST /film/jobs/{jobId}/hide, see app/consent.py). It hides the tracked SAM 3.1 boxes, not the
+# SAM pixel masks (their encoding in the raw stream is undocumented, and a box hides the whole person).
+HIDE_PAD = 0.15  # each box grows by this share of its width and height on every side
+HIDE_HOLD_FRAMES = 6  # a frame with no box uses the player's nearest box within this many frames
+HIDE_PIXEL_DIV = 16  # the box is shrunk to 1/16 and scaled back up with nearest neighbour
+HIDE_DARKEN = 0.4  # then darkened by this share
+MAX_HIDDEN_PLAYERS = 4

@@ -57,8 +57,9 @@ def test_upload_queues_a_job(ctx):
         "overlay",
         "calibration",
         "cameraMotion",
+        "hidden",
     }
-    assert job["clipUrl"] is None and job["overlay"] is None
+    assert job["clipUrl"] is None and job["overlay"] is None and job["hidden"] is None
     assert job["calibration"] is None and job["cameraMotion"] is None
 
 
