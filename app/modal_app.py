@@ -45,7 +45,17 @@ def _init_observability() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     dsn = os.environ.get("SENTRY_DSN", "").strip()
     if dsn:
-        sentry_sdk.init(dsn=dsn, traces_sample_rate=0.0, send_default_pii=False)
+        from sentry_sdk.integrations.openai import OpenAIIntegration
+
+        # The OpenAI integration reports every model-call exception as unhandled, including the naming
+        # timeout that POST /calibrate catches on purpose (HOOPSCLINIQ-AI-1). Real failures still reach
+        # Sentry: job errors through capture_exception and log.exception, request errors through FastAPI.
+        sentry_sdk.init(
+            dsn=dsn,
+            traces_sample_rate=0.0,
+            send_default_pii=False,
+            disabled_integrations=[OpenAIIntegration()],
+        )
 
 
 def _reload() -> None:
@@ -98,7 +108,7 @@ def web():
 
     def name_play(play: dict) -> dict:
         client = settings.meta_client(timeout=settings.CALIBRATE_NAME_TIMEOUT, max_retries=0)
-        return suggest_name(client, world.playbook(), play)
+        return suggest_name(client, world.playbook(), play, reasoning_effort=settings.CALIBRATE_NAME_EFFORT)
 
     return create_app(
         store=_store(),

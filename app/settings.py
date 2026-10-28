@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-VERSION = "0.3.2"
+VERSION = "0.3.3"
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("HOOPSCLINIQ_DATA_DIR", ROOT / "data"))
@@ -76,6 +76,11 @@ CAMERA_MASK_PAD = 0.1  # player and ball boxes grow by 10 % before they are mask
 # Naming inside POST /calibrate gives up after this long (no retry) and keeps the previous name, so the call
 # stays under the demo's 60 s proxy timeout.
 CALIBRATE_NAME_TIMEOUT = 40.0
+# Muse Spark reasoning effort for naming inside POST /calibrate. Measured 2026-10-28 on 3 eval jobs:
+# default 28-33 s, medium 18-25 s, low 8-16 s. Lower efforts guess a play more often where default answers
+# "unknown", so the background pipeline keeps the default. Medium still took 33 s on job-brnjmhuduw6a, too
+# near the cap, so the time-capped recalibration uses low (the name is always marked for coach review).
+CALIBRATE_NAME_EFFORT = "low"
 CALIBRATION_MARGIN = 0.5  # a calibration corner may lie this share of the frame outside the image
 
 # Ball, holder and events (heuristics, see README "Ball and events").

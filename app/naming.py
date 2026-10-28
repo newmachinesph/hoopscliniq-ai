@@ -97,7 +97,10 @@ def to_suggested_name(raw: dict[str, Any], playbook: list[dict]) -> dict[str, An
     return {"playId": play_id, "title": title, "confidence": confidence, "why": why, "needsReview": True}
 
 
-def suggest_name(client: Any, playbook: list[dict], play_dna: dict[str, Any]) -> dict[str, Any]:
+def suggest_name(
+    client: Any, playbook: list[dict], play_dna: dict[str, Any], reasoning_effort: str | None = None
+) -> dict[str, Any]:
+    extra: dict[str, Any] = {"reasoning_effort": reasoning_effort} if reasoning_effort else {}
     resp = client.chat.completions.create(
         model=settings.SPARK_MODEL,
         messages=naming_messages(playbook, play_dna),
@@ -109,5 +112,6 @@ def suggest_name(client: Any, playbook: list[dict], play_dna: dict[str, Any]) ->
                 "strict": True,
             },
         },
+        **extra,
     )
     return to_suggested_name(json.loads(resp.choices[0].message.content or "{}"), playbook)
