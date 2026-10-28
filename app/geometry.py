@@ -16,6 +16,11 @@ from app.sam import Box
 # Half-court corners in court feet, in calibration order:
 # [baseline-left, baseline-right, halfcourt-right, halfcourt-left]. NFHS court: 50 ft wide, 84 ft long.
 COURT_CORNERS = [(0.0, 0.0), (50.0, 0.0), (50.0, 47.0), (0.0, 47.0)]
+# Painted-lane corners (NFHS lane 12 ft wide, free-throw line 19 ft from the baseline), in calibration order:
+# [baseline-left lane corner, baseline-right lane corner, free-throw line right end, free-throw line left].
+LANE_CORNERS = [(19.0, 0.0), (31.0, 0.0), (31.0, 19.0), (19.0, 19.0)]
+# Which court landmarks the 4 calibration points mark. "half" (the default) = the half-court corners.
+LANDMARKS = {"half": COURT_CORNERS, "lane": LANE_CORNERS}
 COURT_WIDTH = 50.0
 COURT_LENGTH = 84.0
 RIM = (25.0, 5.25)
@@ -66,6 +71,11 @@ def _num(v: object) -> bool:
 
 def load_default_calibration(path: Path = settings.DEFAULT_CALIBRATION_PATH) -> Calibration:
     return parse_calibration(json.loads(path.read_text(encoding="utf-8")), source="estimated")
+
+
+def landmark_corners(landmarks: str | None) -> list[Point]:
+    """Court feet of the 4 calibration points for a landmark set; a missing value means "half"."""
+    return LANDMARKS[landmarks or "half"]
 
 
 def homography(src: list[Point], dst: list[Point]) -> np.ndarray:

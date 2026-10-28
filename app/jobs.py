@@ -19,12 +19,12 @@ from app import settings
 from app.camera import CameraMotion, detect_features, estimate_motion, read_gray_frames
 from app.events import centre, detect_events, find_holders, near_player, pick_ball
 from app.geometry import (
-    COURT_CORNERS,
     apply_h,
     clamp,
     court_tracks,
     homography,
     image_to_court,
+    landmark_corners,
     load_default_calibration,
     parse_calibration,
     scale_h,
@@ -90,7 +90,12 @@ def calibration_view(record: dict[str, Any] | None) -> dict[str, Any] | None:
     if not record:
         return None
     source = "estimated" if record.get("source") == "estimated" else "coach"
-    return {"source": source, "frame": record.get("frame", 0), "points": record.get("points")}
+    return {
+        "source": source,
+        "frame": record.get("frame", 0),
+        "points": record.get("points"),
+        "landmarks": record.get("landmarks") or "half",
+    }
 
 
 def job_view(
@@ -304,6 +309,7 @@ def calibration_record(job: dict) -> dict[str, Any]:
     return {
         "source": cal.source,
         "frame": 0,
+        "landmarks": "half",
         "points": [[round(x * sx, 1), round(y * sy, 1)] for x, y in cal.points],
         "imageSize": list(clip_size),
     }
@@ -345,7 +351,9 @@ def build_outputs(
     clip_size = (video["width"], video["height"])
     sam_size = (sam.width or clip_size[0], sam.height or clip_size[1])
     frames = max(video["frames"] or 0, sam.frame_count)
-    h_cal = homography([tuple(p) for p in calibration["points"]], COURT_CORNERS)
+    h_cal = homography(
+        [tuple(p) for p in calibration["points"]], landmark_corners(calibration.get("landmarks"))
+    )
     mats = image_to_court(h_cal, camera.to_frame0 if camera else None, int(calibration["frame"]), frames)
     to_clip = scale_h(clip_size[0] / sam_size[0], clip_size[1] / sam_size[1])
     tracks = sam.tracks()
@@ -576,9 +584,11 @@ def recalibrate(
     points: list[list[float]],
     name_play: Callable[[dict], dict] | None,
     ffmpeg: str = "ffmpeg",
+    landmarks: str = "half",
 ) -> dict:
-    """Re-project the stored tracks with the coach's corners (no new SAM call), rebuild play.json and the
-    overlay, re-run naming, save calibration.json. `job` must be done; the caller validates the input."""
+    """Re-project the stored tracks with the coach's 4 points (no new SAM call), rebuild play.json and the
+    overlay, re-run naming, save calibration.json. `landmarks` says what the points mark: "half" (half-court
+    corners) or "lane" (painted-lane corners). `job` must be done; the caller validates the input."""
     job_id = job["jobId"]
     t0 = time.monotonic()
     sam_text = store.read_text(job_id, "sam.txt")
@@ -592,6 +602,7 @@ def recalibrate(
     calibration = {
         "source": "coach",
         "frame": frame,
+        "landmarks": landmarks,
         "points": [[round(float(x), 1), round(float(y), 1)] for x, y in points],
         "imageSize": [video["width"], video["height"]],
     }

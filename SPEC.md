@@ -29,7 +29,7 @@ Meta Global AI Developer Hackathon 2026, track Indie developer, due Nov 4 2026 9
 | `GET /health` | | `{ ok: true, version, modelsReachable: bool }` (models check cached 60 s) |
 | `POST /film/upload` | multipart `file` (mp4/mov/webm, ≤ 200 MB, ≤ 60 s), optional `calibration` (JSON string, see Geometry) | `202 { jobId, status: "queued", statusUrl: "/film/jobs/<jobId>" }` |
 | `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay, calibration, cameraMotion }` (`400` on a malformed id, `404` unknown) |
-| `POST /film/jobs/{jobId}/calibrate` | `{ frame: int, points: [[x, y] x4] }` in clip.mp4 pixels | `200` job view; `400` bad input, `404` unknown job, `409` job not done (0.3.0) |
+| `POST /film/jobs/{jobId}/calibrate` | `{ frame: int, points: [[x, y] x4], landmarks?: "lane" \| "half" }` in clip.mp4 pixels | `200` job view; `400` bad input, `404` unknown job, `409` job not done (0.3.0; `landmarks` 0.3.1) |
 | `GET /film/jobs` | | `{ jobs: [{ jobId, finishedAt, title, playersFound }] }`: status `done` only, newest first, max 10; `title` = `suggestedName.title` |
 | `GET /film/jobs/{jobId}/clip` | | `clip.mp4` (`video/mp4`), HTTP Range (206), `Cache-Control: public, max-age=3600`, `Access-Control-Allow-Origin: *`; `404 { error }` when missing |
 | `POST /cliniq/ask` | `{ question: string ≤ 500 }` | `{ question, answer: { body: string[], citations: Citation[], confidence, credits }, noSource }` (`400` on bad body) |
@@ -46,20 +46,29 @@ until tracking is done: SAM boxes of the kept players in clip.mp4 pixels (intege
 where SAM did not see that player; same ids and frame index as `playDna.tracks.players`. Stored as `overlay.json`.
 Since 0.3.0 `overlay.ball` = `([x1,y1,x2,y2] | null)[]`: the chosen ball box per frame in clip.mp4 pixels (missing
 on older jobs and when the ball call failed).
-`calibration` (0.3.0) = `{ source: "estimated" | "coach", frame, points: [[x,y] x4] }` in clip.mp4 pixels, or null
-on older jobs. The built-in estimate's baseline-right corner lies past the right edge (x ≈ 1422 on a 1280 clip): it
+`calibration` (0.3.0) = `{ source: "estimated" | "coach", frame, points: [[x,y] x4], landmarks: "lane" | "half" }` in
+clip.mp4 pixels, or null on older jobs (`landmarks` since 0.3.1; a record without it reads as `"half"`). The built-in estimate's baseline-right corner lies past the right edge (x ≈ 1422 on a 1280 clip): it
 is off-screen in the gym camera and was extrapolated. `cameraMotion` (0.3.0) = `{ framesTracked, framesFallback }`
 or null; the same object is in `playDna.meta.cameraMotion`.
 
 ### `POST /film/jobs/{jobId}/calibrate` (0.3.0)
 
-Body `{ frame, points }`: the four corners of the attacked half as seen in clip.mp4 frame `frame`, in the order
-baseline-left, baseline-right, half-court-line right sideline, half-court-line left sideline. Validation: `frame`
-is an integer in `[0, frames)`; 4 numeric points; a convex quadrilateral in that order (either winding); every
-point inside the image or at most 50 % of the frame size outside it (a side-on camera often hides the near
-baseline corner, which the coach can only extrapolate; the demo UI only taps inside the video). The backend
+Body `{ frame, points, landmarks? }`, points in clip.mp4 pixels of frame `frame`. `landmarks` (0.3.1) says what
+the four points mark:
+
+- `"half"` (default, the 0.3.0 contract): the corners of the attacked half, in the order baseline-left,
+  baseline-right, half-court-line right sideline, half-court-line left sideline = court feet (0,0), (50,0), (50,47),
+  (0,47). Every point inside the image or at most 50 % of the frame size outside it (a side-on camera often hides
+  the near baseline corner, which the coach can only extrapolate).
+- `"lane"`: the corners of the painted lane (NFHS: 12 ft wide, free-throw line 19 ft from the baseline), in the
+  order baseline left lane corner, baseline right lane corner, free-throw line right end, free-throw line left end
+  = court feet (19,0), (31,0), (31,19), (19,19). These are almost always on screen when play is in the half court,
+  so every point must be inside the image (no margin). The demo UI offers this set first.
+
+Validation: `frame` is an integer in `[0, frames)`; 4 numeric points; a convex quadrilateral in that order
+(either winding); the range rule above; `landmarks` absent, `"half"` or `"lane"`. The backend
 re-projects the stored SAM tracks with the stored camera motion (no SAM call), keeps the stored team split,
-rebuilds `play.json` and `overlay.json`, saves `calibration.json` (`source: "coach"`), re-runs naming (on a naming
+rebuilds `play.json` and `overlay.json`, saves `calibration.json` (`source: "coach"`, `landmarks`), re-runs naming (on a naming
 error it keeps the previous name) and returns the job view. `meta.timings.calibrate` records the latency.
 `Citation` = `{ kind: "play"|"clip"|"stat", label, href }` where `href` is a route in the demo app
 (`/plays/<id>`, `/film/<id>`, `/study/results`). Only hrefs that exist in `data/world.json` may be emitted.
@@ -90,7 +99,8 @@ error it keeps the previous name) and returns the job view. `meta.timings.calibr
 3. **geometry** (pure Python, tested): foot point of each box = `((x1+x2)/2, y2)`. Map to court feet
    with a homography from `calibration` = 4 image points (px) of the half-court corners in order
    `[baseline-left, baseline-right, halfcourt-right, halfcourt-left]`, mapped to court feet
-   `[(0,0), (50,0), (50,47), (0,47)]` (NFHS 84×50, x across 0–50, y out from the attacked baseline,
+   `[(0,0), (50,0), (50,47), (0,47)]` (or, for a `"lane"` calibration, the lane corners mapped to
+   `[(19,0), (31,0), (31,19), (19,19)]`; the homography extends to the whole floor plane) (NFHS 84×50, x across 0–50, y out from the attacked baseline,
    rim at (25, 5.25)). If no calibration is given, use `data/calibration/hazen-union.json` (derive it
    once by reading the 4 corners off `../clips/sam-boys-frame0.png`, which is 1280 px wide: scale ×1.5
    to source pixels; it is approximate and must be marked `"source": "estimated"`). Clamp to the court,

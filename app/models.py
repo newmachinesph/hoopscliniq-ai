@@ -58,6 +58,7 @@ class CalibrationView(BaseModel):
     source: Literal["estimated", "coach"]
     frame: int
     points: list[list[float]]
+    landmarks: Literal["lane", "half"] = "half"
 
 
 class CameraMotionView(BaseModel):

@@ -50,7 +50,7 @@ Every response carries `Cache-Control: no-store` (except the clip) and `x-demo: 
 | `GET /health` | | `{ ok: true, version, modelsReachable }` (models check cached 60 s) |
 | `POST /film/upload` | multipart `file` (mp4/mov/webm, ≤ 200 MB, ≤ 60 s), optional `calibration` JSON string | `202 { jobId, status: "queued", statusUrl: "/film/jobs/<jobId>" }` |
 | `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay, calibration, cameraMotion }`; `400` malformed id, `404` unknown |
-| `POST /film/jobs/{jobId}/calibrate` | `{ frame, points: [[x,y] x4] }` in clip.mp4 pixels | `200` job view; `400` bad input, `404` unknown, `409` not done |
+| `POST /film/jobs/{jobId}/calibrate` | `{ frame, points: [[x,y] x4], landmarks?: "lane" \| "half" }` in clip.mp4 pixels | `200` job view; `400` bad input, `404` unknown, `409` not done |
 | `GET /film/jobs` | | `{ jobs: [{ jobId, finishedAt, title, playersFound }] }`: status `done` only, newest first, max 10; `title` = `suggestedName.title` |
 | `GET /film/jobs/{jobId}/clip` | | `clip.mp4` (`video/mp4`), HTTP Range (206), `Cache-Control: public, max-age=3600`, `Access-Control-Allow-Origin: *`; `404 { error }` when missing |
 | `POST /cliniq/ask` | `{ question }` (≤ 500 chars) | `{ question, answer: { body[], citations[], confidence, credits }, noSource }`; `400` bad body |
@@ -75,6 +75,15 @@ Version 0.3.0 adds (all additive; older jobs return `null` or omit them):
   Points must form a convex quadrilateral in that order and lie inside the image or at most half a frame outside it
   (for a corner the camera does not show). Naming inside calibrate is capped at 40 s; past that the previous name
   stays.
+
+Version 0.3.1 adds lane calibration. In real sideline video at least one half-court corner is usually off screen,
+and nobody can tap off screen. `POST /calibrate` takes an optional `landmarks`: `"half"` (default, the corners
+above) or `"lane"`, the four corners of the painted lane in the order baseline left lane corner, baseline right
+lane corner, free-throw line right end, free-throw line left end, mapped to court feet (19,0), (31,0), (31,19),
+(19,19) (NFHS lane 12 ft wide, free-throw line 19 ft out). Lane points must lie inside the image. The homography
+from the lane covers the whole floor plane, so positions outside the lane come out of the same matrix; small tap
+errors grow with distance from the lane. `calibration.json` and the job view's `calibration` carry `landmarks`
+(older records read as `"half"`).
 
 ## Pipeline
 

@@ -18,7 +18,7 @@ from starlette.concurrency import run_in_threadpool
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app import settings
-from app.geometry import check_quad, parse_calibration
+from app.geometry import LANDMARKS, check_quad, parse_calibration
 from app.jobs import JOB_ID, JobStore, job_summary, job_view, new_job_id, now_iso, recalibrate
 from app.models import AskRequest, AskResponse, JobList, JobView
 
@@ -182,10 +182,10 @@ def create_app(
         except ValueError:
             body = None
         try:
-            frame, points = parse_calibrate_body(body, job["video"])
+            frame, points, landmarks = parse_calibrate_body(body, job["video"])
         except ValueError as exc:
             return error(400, f"Bad calibration: {exc}")
-        done = await run_in_threadpool(recalibrate, store, job, frame, points, name_play)
+        done = await run_in_threadpool(recalibrate, store, job, frame, points, name_play, landmarks=landmarks)
         return _view(done, request)
 
     @api.api_route("/film/jobs/{job_id}/clip", methods=["GET", "HEAD"], name="job_clip")
@@ -211,10 +211,14 @@ def create_app(
     return api
 
 
-def parse_calibrate_body(body: Any, video: dict) -> tuple[int, list[list[float]]]:
-    """`{ frame, points: [[x, y] x4] }` in clip.mp4 pixels -> (frame, points). Raises ValueError."""
+def parse_calibrate_body(body: Any, video: dict) -> tuple[int, list[list[float]], str]:
+    """`{ frame, points: [[x, y] x4], landmarks? }` in clip.mp4 pixels -> (frame, points, landmarks).
+    Raises ValueError. Lane corners are almost always on screen, so they get no off-screen margin."""
     if not isinstance(body, dict):
         raise ValueError('send JSON {"frame": int, "points": [[x, y], [x, y], [x, y], [x, y]]}')
+    landmarks = body.get("landmarks", "half")
+    if not isinstance(landmarks, str) or landmarks not in LANDMARKS:
+        raise ValueError('landmarks must be "lane" or "half"')
     frame = body.get("frame")
     if not isinstance(frame, int) or isinstance(frame, bool):
         raise ValueError("frame must be an integer")
@@ -232,5 +236,7 @@ def parse_calibrate_body(body: Any, video: dict) -> tuple[int, list[list[float]]
         ):
             raise ValueError("each point must be [x, y]")
         points.append([float(p[0]), float(p[1])])
-    check_quad([(x, y) for x, y in points], (int(video["width"]), int(video["height"])))
-    return frame, points
+    size = (int(video["width"]), int(video["height"]))
+    margin = 0.0 if landmarks == "lane" else settings.CALIBRATION_MARGIN
+    check_quad([(x, y) for x, y in points], size, margin=margin)
+    return frame, points, landmarks

@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from app import jobs
 from app.api import create_app
 from app.camera import CameraMotion
-from app.geometry import check_quad
+from app.geometry import COURT_CORNERS, LANE_CORNERS, apply_h, check_quad, homography
 from app.jobs import JobStore, build_outputs, calibration_record, new_job_id
 from app.sam import parse_sam_text
 from tests.test_sam_parse import fixture_text
@@ -85,6 +85,7 @@ def test_calibrate_reprojects_without_sam_and_renames(ctx, monkeypatch):
         "source": "coach",
         "frame": 1,
         "points": [[float(x), float(y)] for x, y in COACH],
+        "landmarks": "half",
     }
     assert view["playDna"]["meta"]["calibration"] == "coach"
     assert view["playDna"]["meta"]["calibrationFrame"] == 1
@@ -119,6 +120,14 @@ def test_calibrate_uses_the_stored_camera_motion(ctx):
         {"frame": 0, "points": [[0, 0], [1280, 0], [1280, 720], [0, "x"]]},
         {"frame": 0, "points": [[0, 0], [1280, 720], [1280, 0], [0, 720]]},  # crossed: not convex
         {"frame": 0, "points": [[0, 0], [5000, 0], [1280, 720], [0, 720]]},  # far outside the image
+        {"frame": 0, "points": COACH, "landmarks": "paint"},
+        {"frame": 0, "points": COACH, "landmarks": ["lane"]},
+        {"frame": 0, "points": COACH, "landmarks": "lane"},  # lane corners must be on screen
+        {"frame": 0, "points": [[-4, 600], [700, 600], [680, 450], [520, 450]], "landmarks": "lane"},
+        {
+            "frame": 0,
+            "landmarks": "lane",
+        },
     ],
 )
 def test_calibrate_rejects_bad_input(ctx, body):
@@ -188,3 +197,57 @@ def test_slow_naming_keeps_the_previous_name(tmp_path, monkeypatch):
     done = jobs.recalibrate(store, job, 0, COACH, slow)
     assert done["suggestedName"]["title"] == "Old"
     assert done["timings"]["calibrateName"] < 0.4
+
+
+# A synthetic camera: court feet -> 1280x720 clip pixels, from where the half-court corners appear on screen.
+CAMERA = homography(COURT_CORNERS, [(300, 650), (1100, 690), (900, 250), (420, 240)])
+LANE_PX = [[round(c, 3) for c in apply_h(CAMERA, x, y)] for x, y in LANE_CORNERS]
+HALF_PX = [[round(c, 3) for c in apply_h(CAMERA, x, y)] for x, y in COURT_CORNERS]
+
+
+def test_lane_homography_round_trip():
+    """Lane corners seen through a known camera give back that camera's court mapping everywhere."""
+    h = homography([tuple(p) for p in LANE_PX], LANE_CORNERS)
+    for x, y in [(0, 0), (50, 47), (25, 5.25), (3, 30), (44, 12), (25, 19)]:
+        u, v = apply_h(CAMERA, x, y)
+        cx, cy = apply_h(h, u, v)
+        assert abs(cx - x) < 0.01 and abs(cy - y) < 0.01
+    # Lane corners land on the NFHS lane: 12 ft wide, free-throw line 19 ft out.
+    assert LANE_CORNERS == [(19.0, 0.0), (31.0, 0.0), (31.0, 19.0), (19.0, 19.0)]
+
+
+def test_lane_and_half_calibrations_agree_on_court_positions():
+    job = {
+        "jobId": new_job_id(),
+        "video": {"fps": 12, "frames": 2, "width": 1280, "height": 720},
+        "teamLabels": {str(o): o % 2 for o in range(20)},
+    }
+    sam = parse_sam_text(fixture_text())
+    half = {"source": "coach", "frame": 0, "points": HALF_PX, "landmarks": "half"}
+    lane = {"source": "coach", "frame": 0, "points": LANE_PX, "landmarks": "lane"}
+    play_half, _, _ = build_outputs(job, sam, None, None, half, no_colors)
+    play_lane, _, _ = build_outputs(job, sam, None, None, lane, no_colors)
+    for pid, track in play_half["tracks"]["players"].items():
+        for a, b in zip(track, play_lane["tracks"]["players"][pid], strict=True):
+            assert abs(a[0] - b[0]) < 0.05 and abs(a[1] - b[1]) < 0.05
+
+
+def test_calibrate_with_lane_corners(ctx):
+    client, store, _ = ctx
+    jid = finished_job(store)
+    r = client.post(f"/film/jobs/{jid}/calibrate", json={"frame": 0, "points": LANE_PX, "landmarks": "lane"})
+    assert r.status_code == 200, r.text
+    view = r.json()
+    assert view["calibration"]["landmarks"] == "lane" and view["calibration"]["source"] == "coach"
+    assert store.read_calibration(jid)["landmarks"] == "lane"
+    assert client.get(f"/film/jobs/{jid}").json()["calibration"]["landmarks"] == "lane"
+    # The same camera marked by its half-court corners gives the same court positions.
+    half = client.post(f"/film/jobs/{jid}/calibrate", json={"frame": 0, "points": HALF_PX}).json()
+    assert half["calibration"]["landmarks"] == "half"
+    for pid, track in half["playDna"]["tracks"]["players"].items():
+        for a, b in zip(track, view["playDna"]["tracks"]["players"][pid], strict=True):
+            assert abs(a[0] - b[0]) < 0.2 and abs(a[1] - b[1]) < 0.2
+
+
+def test_older_calibration_records_read_as_half():
+    assert jobs.calibration_view({"source": "coach", "frame": 0, "points": COACH})["landmarks"] == "half"
