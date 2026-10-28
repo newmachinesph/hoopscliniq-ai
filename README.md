@@ -117,8 +117,12 @@ tracks). Every event carries `detect: "heuristic"` and a confidence of `low` or 
 - **Ball per frame**: follow the same SAM object as the last ball seen (up to 6 frames back), else the nearest
   candidate if it moved at most 6 % of the frame width per frame. Otherwise, or when the followed ball has been away
   from every player for 12 frames while another ball is near a player, start again on a ball near a player (not one
-  on the scorer's table or a rack), then the one SAM saw longest. Court position = box centre projected to the
-  floor (`z = 0`), so a ball in the air lands at the wrong spot.
+  on the scorer's table or a rack), then the one SAM saw longest. Court position (0.3.2, `app/ballpos.py`): the
+  holder's court position while held; else a linear interpolation between two held frames at most 2 s apart (a
+  shot with no later holder within 2 s flies from the shooter to the rim (25, 5.25)); else the box centre projected
+  to the floor if it lands inside the court plus a 3 ft margin; else null. It is never clamped to a court edge. The
+  floor projection ignores ball height, so a ball held high or in the air is not placed by it. Counts per source
+  are in `playDna.meta.ballSource` (`held`, `interpolated`, `projected`, `missing`).
 - **Holder**: the kept player whose box contains or is nearest the ball centre in the image, if the gap is at most
   0.25 × that player's box height; else null. Unseen ball = no holder.
 - **Segments**: runs of one holder (gaps of ≤ 2 frames allowed), runs shorter than 3 frames dropped, same-holder runs

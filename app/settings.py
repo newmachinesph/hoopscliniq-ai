@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-VERSION = "0.3.1"
+VERSION = "0.3.2"
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("HOOPSCLINIQ_DATA_DIR", ROOT / "data"))

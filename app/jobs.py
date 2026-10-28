@@ -16,11 +16,11 @@ from pathlib import Path
 from typing import Any
 
 from app import settings
+from app.ballpos import ball_court_track
 from app.camera import CameraMotion, detect_features, estimate_motion, read_gray_frames
 from app.events import centre, detect_events, find_holders, near_player, pick_ball
 from app.geometry import (
     apply_h,
-    clamp,
     court_tracks,
     homography,
     image_to_court,
@@ -386,9 +386,11 @@ def build_outputs(
     events: list[dict[str, Any]] = []
     if ball_px is not None:
         raw = [None if b is None else apply_h(mats[f], *centre(b)) for f, b in enumerate(ball_px)]
-        ball_track = [None if p is None else [*(round(v, 2) for v in clamp(p)), 0] for p in raw]
         holder = find_holders(ball_px, players_px)
         events = detect_events(holder, ball_px, raw, players_px, settings.TARGET_FPS)
+        ball_track, extra["ballSource"] = ball_court_track(
+            holder, {ids[t.obj]: t.positions for t in court}, raw, events, settings.TARGET_FPS
+        )
         extra["ballFrames"] = sum(1 for b in ball_px if b is not None)
         extra["holderFrames"] = sum(1 for h in holder if h is not None)
     play = build_play_dna(
