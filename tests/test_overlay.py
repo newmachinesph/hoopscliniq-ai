@@ -62,3 +62,41 @@ def test_build_from_sam_overlay_matches_play_dna(monkeypatch, tmp_path):
             b = tracks[obj].get(frame)
             expected = None if b is None else [round(v * 2 / 3) for v in (b.x1, b.y1, b.x2, b.y2)]
             assert overlay["players"][pid]["boxes"][frame] == expected
+
+
+def test_ball_fills_overlay_and_play_dna(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        jobs, "track_colors", lambda tracks, objs, reader: {o: (float(o % 2),) * 3 for o in objs}
+    )
+    job = {
+        "jobId": "job-abcdefghijkl",
+        "calibration": None,
+        "video": {"fps": 12, "frames": 3, "width": 1280, "height": 720, "duration": 0.25},
+    }
+    # SAM saw two balls in frame 0 (the longer-lived object 5 wins), one in frame 2, none in frame 1.
+    ball_text = (
+        "<0f>5<|box;x1=600;y1=400;x2=630;y2=430;w=1920;h=1080|>9<|box;x1=10;y1=10;x2=40;y2=40;w=1920;h=1080|>"
+        "<1f><2f>5<|box;x1=660;y1=400;x2=690;y2=430;w=1920;h=1080|>"
+    )
+    play, overlay = jobs.build_from_sam(
+        job, fixture_text(), tmp_path / "clip.mp4", "ffmpeg", ball_text=ball_text
+    )
+    assert overlay["ball"] == [[400, 267, 420, 287], None, [440, 267, 460, 287]]
+    ball = play["tracks"]["ball"]
+    assert len(ball) == 3 and ball[1] is None
+    assert len(ball[0]) == 3 and ball[0][2] == 0
+    assert len(play["tracks"]["holder"]) == 3
+    assert play["meta"]["ballFrames"] == 2 and play["meta"]["ballTracked"] is True
+    assert play["meta"]["cameraMotion"] is None  # no camera data: static calibration
+
+
+def test_without_ball_text_the_ball_stays_empty(monkeypatch, tmp_path):
+    monkeypatch.setattr(jobs, "track_colors", lambda tracks, objs, reader: {o: (0.0, 0.0, 0.0) for o in objs})
+    job = {
+        "jobId": "job-abcdefghijkl",
+        "calibration": None,
+        "video": {"frames": 2, "width": 1280, "height": 720},
+    }
+    play, overlay = jobs.build_from_sam(job, fixture_text(), tmp_path / "clip.mp4", "ffmpeg")
+    assert "ball" not in overlay and play["tracks"]["ball"] == [] and play["events"] == []
+    assert play["meta"]["ballTracked"] is False

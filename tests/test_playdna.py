@@ -140,3 +140,21 @@ def test_suggested_name_rules():
     assert u["title"] == UNNAMED and u["playId"] == "unknown" and len(u["why"]) == 160
     bad = to_suggested_name({"playId": "made-up", "confidence": "sure"}, PLAYBOOK)
     assert bad["playId"] == "unknown" and bad["confidence"] == "low"
+
+
+def test_naming_prompt_lists_ball_events():
+    from app.naming import events_summary
+
+    play = build()
+    assert events_summary(play) == "Ball not tracked in this clip."
+    play["tracks"]["ball"] = [[25.0, 20.0, 0]] * 24
+    assert events_summary(play) == "No passes or shots detected."
+    play["events"] = [
+        {"type": "pass", "from": "o1", "to": "o2", "frame": 12, "end": 15, "confidence": "low"},
+        {"type": "shot", "from": "o2", "frame": 18, "end": 22, "made": None, "confidence": "medium"},
+    ]
+    assert events_summary(play).splitlines() == [
+        "1.0s pass o1 -> o2 (low confidence)",
+        "1.5s shot by o2 (medium confidence)",
+    ]
+    assert "1.0s pass o1 -> o2" in naming_messages(PLAYBOOK, play)[1]["content"]

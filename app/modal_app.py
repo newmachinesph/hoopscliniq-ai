@@ -25,6 +25,7 @@ image = (
         "pillow>=10.4",
         "python-multipart>=0.0.9",
         "sentry-sdk[fastapi]>=2.10",
+        "opencv-python-headless>=4.10",
     )
     .env({"HOOPSCLINIQ_FILM_ROOT": FILM_MOUNT, "HOOPSCLINIQ_DATA_DIR": "/root/data"})
     .add_local_dir(ROOT / "data", "/root/data")
@@ -81,6 +82,7 @@ def web():
     from app.api import ModelsCheck, create_app
     from app.cliniq import ask
     from app.jobs import probe
+    from app.naming import suggest_name
     from app.world import load_world
 
     _init_observability()
@@ -94,10 +96,15 @@ def web():
     def start(job_id: str) -> None:
         process_job.spawn(job_id)
 
+    def name_play(play: dict) -> dict:
+        client = settings.meta_client(timeout=settings.CALIBRATE_NAME_TIMEOUT, max_retries=0)
+        return suggest_name(client, world.playbook(), play)
+
     return create_app(
         store=_store(),
         start_job=start,
         ask=answer,
         models_reachable=check,
         probe_duration=lambda p: probe(p)["duration"],
+        name_play=name_play,
     )

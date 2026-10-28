@@ -20,7 +20,7 @@ def _team(pid: str) -> str:
     return "offense" if pid.startswith("o") else "defense"
 
 
-def _to_clip_pixels(b: Box, sx: float, sy: float, w: int, h: int) -> PixelBox:
+def to_clip_pixels(b: Box, sx: float, sy: float, w: int, h: int) -> PixelBox:
     """SAM box (SAM's frame size) -> integer box in clip.mp4 pixels, clamped to the frame."""
     x1, x2 = (min(max(round(v * sx), 0), w) for v in (b.x1, b.x2))
     y1, y2 = (min(max(round(v * sy), 0), h) for v in (b.y1, b.y2))
@@ -35,11 +35,12 @@ def build_overlay(
     frames: int,
     sam_size: tuple[int, int],
     clip_size: tuple[int, int],
+    ball: list[PixelBox | None] | None = None,
 ) -> dict[str, Any]:
-    """Per-frame SAM boxes of the kept players, for drawing on clip.mp4.
+    """Per-frame SAM boxes of the kept players (and the ball), for drawing on clip.mp4.
 
     `boxes[i]` is frame i of clip.mp4 (the same index as playDna `tracks.players[id][i]`), or None where SAM
-    did not see that player in that frame. Nothing is interpolated here.
+    did not see that player in that frame. Nothing is interpolated here. `ball` is already in clip pixels.
     """
     w, h = clip_size
     sx = w / sam_size[0] if sam_size[0] else 1.0
@@ -49,9 +50,12 @@ def build_overlay(
         boxes: list[PixelBox | None] = [None] * frames
         for f, b in tracks.get(obj, {}).items():
             if 0 <= f < frames:
-                boxes[f] = _to_clip_pixels(b, sx, sy, w, h)
+                boxes[f] = to_clip_pixels(b, sx, sy, w, h)
         players[pid] = {"team": _team(pid), "boxes": boxes}
-    return {"fps": fps, "frames": frames, "imageSize": [w, h], "players": players}
+    out: dict[str, Any] = {"fps": fps, "frames": frames, "imageSize": [w, h], "players": players}
+    if ball is not None:
+        out["ball"] = ball
+    return out
 
 
 def build_play_dna(
@@ -65,6 +69,10 @@ def build_play_dna(
     sam_frames: int,
     image_size: tuple[int, int],
     name: str = UNNAMED,
+    ball: list[list[float] | None] | None = None,
+    holder: list[str | None] | None = None,
+    events: list[dict[str, Any]] | None = None,
+    extra_meta: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     by_id = {ids[t.obj]: t for t in court_tracks}
     order = sorted(by_id, key=_id_key)
@@ -83,11 +91,11 @@ def build_play_dna(
         "players": {pid: {"team": _team(pid)} for pid in order},
         "tracks": {
             "players": {pid: [[x, y] for x, y in by_id[pid].positions] for pid in order},
-            "ball": [],
-            "holder": [],
+            "ball": ball or [],
+            "holder": holder or [],
             "areas": [],
         },
-        "events": [],
+        "events": events or [],
         "actions": [],
         "moments": [{"frame": 0, "label": "Start"}],
         "fixes": [],
@@ -99,5 +107,6 @@ def build_play_dna(
             # Share of clip frames where SAM actually saw each player; the rest is interpolated or held.
             "coverage": {pid: round(by_id[pid].observed / frames, 3) if frames else 0.0 for pid in order},
             "samObjectIds": {pid: by_id[pid].obj for pid in order},
+            **(extra_meta or {}),
         },
     }

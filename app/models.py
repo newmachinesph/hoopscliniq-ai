@@ -49,6 +49,20 @@ class Overlay(BaseModel):
     frames: int
     imageSize: list[int]
     players: dict[str, OverlayPlayer]
+    # One entry per clip.mp4 frame: the ball box in clip.mp4 pixels, None where SAM did not see the ball.
+    # Missing (None) on jobs from before 0.3.0.
+    ball: list[list[int] | None] | None = None
+
+
+class CalibrationView(BaseModel):
+    source: Literal["estimated", "coach"]
+    frame: int
+    points: list[list[float]]
+
+
+class CameraMotionView(BaseModel):
+    framesTracked: int
+    framesFallback: int
 
 
 class JobView(BaseModel):
@@ -61,6 +75,8 @@ class JobView(BaseModel):
     error: str | None
     clipUrl: str | None
     overlay: Overlay | None
+    calibration: CalibrationView | None = None
+    cameraMotion: CameraMotionView | None = None
 
 
 class JobSummary(BaseModel):

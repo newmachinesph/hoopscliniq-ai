@@ -82,7 +82,7 @@ def upload_clip(client: Any, path: Path) -> str:
     return uploaded.id
 
 
-def stream_sam(client: Any, file_id: str, out_path: Path) -> str:
+def stream_sam(client: Any, file_id: str, out_path: Path, prompt: str = settings.SAM_PROMPT) -> str:
     """Run SAM 3.1 on an uploaded clip, write the raw text to `out_path` and return it."""
     stream = client.responses.create(
         model=settings.SAM_MODEL,
@@ -90,7 +90,7 @@ def stream_sam(client: Any, file_id: str, out_path: Path) -> str:
             {
                 "role": "user",
                 "content": [
-                    {"type": "input_text", "text": settings.SAM_PROMPT},
+                    {"type": "input_text", "text": prompt},
                     {"type": "input_video", "file_id": file_id},
                 ],
             }
@@ -107,3 +107,22 @@ def stream_sam(client: Any, file_id: str, out_path: Path) -> str:
     text = "".join(chunks)
     out_path.write_text(text, encoding="utf-8")
     return text
+
+
+def file_gone(exc: BaseException) -> bool:
+    """True when the API says the uploaded file no longer exists (expired or deleted)."""
+    status = getattr(exc, "status_code", None)
+    text = str(exc).lower()
+    return status in (404, 410) or ("file" in text and ("expired" in text or "not found" in text))
+
+
+def stream_sam_reusing(client: Any, file_id: str, clip: Path, out_path: Path, prompt: str) -> tuple[str, str]:
+    """Run SAM on an already uploaded file; upload the clip again only if that file has expired.
+    Returns (text, file id actually used)."""
+    try:
+        return stream_sam(client, file_id, out_path, prompt), file_id
+    except Exception as exc:
+        if not file_gone(exc):
+            raise
+    new_id = upload_clip(client, clip)
+    return stream_sam(client, new_id, out_path, prompt), new_id

@@ -1,4 +1,4 @@
-"""FastAPI routes: health, film upload, job status, job list and clip, ClinIQ ask."""
+"""FastAPI routes: health, film upload, job status, job list, clip and calibration, ClinIQ ask."""
 
 from __future__ import annotations
 
@@ -18,8 +18,8 @@ from starlette.concurrency import run_in_threadpool
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app import settings
-from app.geometry import parse_calibration
-from app.jobs import JOB_ID, JobStore, job_summary, job_view, new_job_id, now_iso
+from app.geometry import check_quad, parse_calibration
+from app.jobs import JOB_ID, JobStore, job_summary, job_view, new_job_id, now_iso, recalibrate
 from app.models import AskRequest, AskResponse, JobList, JobView
 
 log = logging.getLogger(__name__)
@@ -64,6 +64,7 @@ def create_app(
     ask: Callable[[str], dict[str, Any]],
     models_reachable: Callable[[], bool],
     probe_duration: Callable[[Path], float],
+    name_play: Callable[[dict], dict] | None = None,
 ) -> FastAPI:
     api = FastAPI(title="hoopscliniq-ai", version=settings.VERSION)
 
@@ -158,8 +159,34 @@ def create_app(
         job = store.read(job_id)
         if job is None:
             return error(404, "Unknown job.")
+        return _view(job, request)
+
+    def _view(job: dict, request: Request) -> dict[str, Any]:
+        job_id = job["jobId"]
         clip_url = str(request.url_for("job_clip", job_id=job_id))
-        return job_view(job, store.read_play(job_id), store.read_overlay(job_id), clip_url)
+        return job_view(
+            job, store.read_play(job_id), store.read_overlay(job_id), clip_url, store.read_calibration(job_id)
+        )
+
+    @api.post("/film/jobs/{job_id}/calibrate", response_model=JobView)
+    async def calibrate(job_id: str, request: Request) -> Any:
+        if not JOB_ID.match(job_id):
+            return error(400, "Malformed job id.")
+        job = await run_in_threadpool(store.read, job_id)
+        if job is None:
+            return error(404, "Unknown job.")
+        if job.get("status") != "done":
+            return error(409, "This job is not finished yet. Calibrate once the analysis is done.")
+        try:
+            body = await request.json()
+        except ValueError:
+            body = None
+        try:
+            frame, points = parse_calibrate_body(body, job["video"])
+        except ValueError as exc:
+            return error(400, f"Bad calibration: {exc}")
+        done = await run_in_threadpool(recalibrate, store, job, frame, points, name_play)
+        return _view(done, request)
 
     @api.api_route("/film/jobs/{job_id}/clip", methods=["GET", "HEAD"], name="job_clip")
     def job_clip(job_id: str) -> Any:
@@ -182,3 +209,28 @@ def create_app(
         return await run_in_threadpool(ask, body.question)
 
     return api
+
+
+def parse_calibrate_body(body: Any, video: dict) -> tuple[int, list[list[float]]]:
+    """`{ frame, points: [[x, y] x4] }` in clip.mp4 pixels -> (frame, points). Raises ValueError."""
+    if not isinstance(body, dict):
+        raise ValueError('send JSON {"frame": int, "points": [[x, y], [x, y], [x, y], [x, y]]}')
+    frame = body.get("frame")
+    if not isinstance(frame, int) or isinstance(frame, bool):
+        raise ValueError("frame must be an integer")
+    if not 0 <= frame < int(video.get("frames") or 0):
+        raise ValueError(f"frame must be between 0 and {int(video.get('frames') or 0) - 1}")
+    raw = body.get("points")
+    if not isinstance(raw, list) or len(raw) != 4:
+        raise ValueError("send exactly 4 points")
+    points = []
+    for p in raw:
+        if not (
+            isinstance(p, list)
+            and len(p) == 2
+            and all(isinstance(v, int | float) and not isinstance(v, bool) for v in p)
+        ):
+            raise ValueError("each point must be [x, y]")
+        points.append([float(p[0]), float(p[1])])
+    check_quad([(x, y) for x, y in points], (int(video["width"]), int(video["height"])))
+    return frame, points

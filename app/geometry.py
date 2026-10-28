@@ -1,4 +1,5 @@
-"""Image boxes to court feet: foot points, a 4-point homography, clamping, smoothing and gap filling."""
+"""Image boxes to court feet: foot points, a 4-point homography (per frame when the camera moves), clamping,
+smoothing and gap filling."""
 
 from __future__ import annotations
 
@@ -17,6 +18,7 @@ from app.sam import Box
 COURT_CORNERS = [(0.0, 0.0), (50.0, 0.0), (50.0, 47.0), (0.0, 47.0)]
 COURT_WIDTH = 50.0
 COURT_LENGTH = 84.0
+RIM = (25.0, 5.25)
 
 Point = tuple[float, float]
 
@@ -140,21 +142,72 @@ def top_tracks(tracks: dict[int, dict[int, Box]], limit: int = settings.MAX_TRAC
     return [obj for obj, _ in sorted(tracks.items(), key=lambda kv: (-len(kv[1]), kv[0]))[:limit]]
 
 
-def court_tracks(
-    tracks: dict[int, dict[int, Box]],
-    calibration: Calibration,
-    image_size: tuple[int, int],
-    frames: int,
-) -> list[CourtTrack]:
-    h = homography(calibration.scaled_to(*image_size), COURT_CORNERS)
+def court_tracks(tracks: dict[int, dict[int, Box]], mats: list[np.ndarray], frames: int) -> list[CourtTrack]:
+    """Court tracks of the longest objects. `mats[i]` maps box pixels of frame i to court feet."""
     out = []
     for obj in top_tracks(tracks):
         boxes = tracks[obj]
         raw: list[Point | None] = [None] * frames
         for f, b in boxes.items():
             if 0 <= f < frames:
-                raw[f] = clamp(apply_h(h, *foot_point(b)))
+                raw[f] = clamp(apply_h(mats[f], *foot_point(b)))
         filled = hold_nearest(fill_gaps(raw))
         positions = [(round(x, 2), round(y, 2)) for x, y in smooth(filled)]
         out.append(CourtTrack(obj, sum(1 for p in raw if p is not None), positions))
     return out
+
+
+def scale_h(sx: float, sy: float) -> np.ndarray:
+    return np.diag([sx, sy, 1.0])
+
+
+def image_to_court(
+    h_cal: np.ndarray, to_frame0: list[np.ndarray | None] | None, cal_frame: int, frames: int
+) -> list[np.ndarray]:
+    """Per-frame image-to-court matrices: H_cal . H_(i->calFrame), with H_(i->calFrame) = inv(G_cal) . G_i
+    where G_i maps frame i to frame 0. A frame without camera motion (None, or no motion data at all) uses the
+    static H_cal. If the calibration frame itself was not registered, the nearest registered frame stands
+    in."""
+    if not to_frame0:
+        return [h_cal] * frames
+    g_cal = _nearest_registered(to_frame0, cal_frame)
+    if g_cal is None:
+        return [h_cal] * frames
+    base = h_cal @ np.linalg.inv(g_cal)
+    padded = list(to_frame0[:frames]) + [None] * max(0, frames - len(to_frame0))
+    return [base @ g if g is not None else h_cal for g in padded]
+
+
+def _nearest_registered(to_frame0: list[np.ndarray | None], frame: int) -> np.ndarray | None:
+    for d in range(len(to_frame0)):
+        for i in (frame - d, frame + d):
+            if 0 <= i < len(to_frame0) and to_frame0[i] is not None:
+                return to_frame0[i]
+    return None
+
+
+def check_quad(
+    points: list[Point], size: tuple[int, int], margin: float = settings.CALIBRATION_MARGIN
+) -> None:
+    """Raise ValueError unless the 4 points form a convex quadrilateral inside the image.
+
+    A corner may sit up to `margin` of the frame size outside the image: on a side-on camera the near
+    baseline corner is often just off-screen and can only be extrapolated from the lines.
+    """
+    if len(points) != 4:
+        raise ValueError("send exactly 4 points")
+    w, h = size
+    for x, y in points:
+        if not (-margin * w <= x <= (1 + margin) * w and -margin * h <= y <= (1 + margin) * h):
+            raise ValueError("a point is outside the image")
+    crosses = []
+    for i in range(4):
+        (ax, ay), (bx, by), (cx, cy) = points[i], points[(i + 1) % 4], points[(i + 2) % 4]
+        crosses.append((bx - ax) * (cy - by) - (by - ay) * (cx - bx))
+    if not (all(c > 0 for c in crosses) or all(c < 0 for c in crosses)):
+        raise ValueError("the 4 points must form a convex quadrilateral, in corner order")
+    area = 0.5 * sum(
+        points[i][0] * points[(i + 1) % 4][1] - points[(i + 1) % 4][0] * points[i][1] for i in range(4)
+    )
+    if abs(area) < 1e-3 * w * h:
+        raise ValueError("the 4 points are too close together")

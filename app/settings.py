@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("HOOPSCLINIQ_DATA_DIR", ROOT / "data"))
@@ -44,10 +44,12 @@ def env(name: str, default: str = "") -> str:
     return os.environ.get(name, default).strip()
 
 
-def meta_client(timeout: float = 600.0):
+def meta_client(timeout: float = 600.0, max_retries: int = 1):
     from openai import OpenAI
 
-    return OpenAI(api_key=env("META_API_KEY"), base_url=META_BASE_URL, timeout=timeout, max_retries=1)
+    return OpenAI(
+        api_key=env("META_API_KEY"), base_url=META_BASE_URL, timeout=timeout, max_retries=max_retries
+    )
 
 
 def cliniq_client():
@@ -60,3 +62,34 @@ def cliniq_client():
         )
         return client, env("BASETEN_MODEL_ID")
     return meta_client(timeout=120.0), SPARK_MODEL
+
+
+# Camera motion (OpenCV ORB + RANSAC on background features, see app/camera.py).
+CAMERA_SCALE = 0.5  # features are found on a half-size frame
+CAMERA_FEATURES = 1000
+CAMERA_RATIO = 0.75  # Lowe ratio test
+CAMERA_RANSAC_PX = 3.0  # reprojection threshold, work pixels
+CAMERA_MIN_INLIERS = 30  # fewer inliers = poor match: the frame falls back to the static calibration
+CAMERA_REANCHOR_INLIERS = 80  # overlap with the keyframe is getting thin: this frame becomes the keyframe
+CAMERA_KEYFRAME_EVERY = 12  # frames (1 s at 12 fps)
+CAMERA_MASK_PAD = 0.1  # player and ball boxes grow by 10 % before they are masked out
+# Naming inside POST /calibrate gives up after this long (no retry) and keeps the previous name, so the call
+# stays under the demo's 60 s proxy timeout.
+CALIBRATE_NAME_TIMEOUT = 40.0
+CALIBRATION_MARGIN = 0.5  # a calibration corner may lie this share of the frame outside the image
+
+# Ball, holder and events (heuristics, see README "Ball and events").
+SAM_BALL_PROMPT = "basketball"
+SAM_BALL_ATTEMPTS = 2
+BALL_MEMORY_FRAMES = 6  # the previous ball counts for continuity up to this many frames back
+BALL_IDLE_FRAMES = 12  # a followed ball away from every player this long gives way to a ball in play
+BALL_MAX_JUMP = 0.06  # continuity jump limit, share of the frame width per frame
+HOLDER_REACH = 0.25  # ball centre within this share of the player box height from the box = holder
+HOLD_MERGE_GAP = 2  # same holder on both sides of a gap this short = one possession segment
+MIN_HOLD_FRAMES = 3  # shorter holder segments are ignored for events
+PASS_MAX_GAP_SECONDS = 1.5
+PASS_MEDIUM_GAP_SECONDS = 0.75
+MEDIUM_HOLD_FRAMES = 6
+SHOT_RIM_FEET = 4.0
+SHOT_TOWARD_RIM_FEET = 3.0
+SHOT_RISE = 0.1  # the ball centre must clear the holder's box top by this share of the box height

@@ -14,7 +14,7 @@ Meta Global AI Developer Hackathon 2026, track Indie developer, due Nov 4 2026 9
   `BASETEN_API_KEY`, `BASETEN_MODEL_ID`) plus a new Modal Secret `hoopscliniq-sentry` with
   `SENTRY_DSN` (create it from `.env` with `python -m modal secret create hoopscliniq-sentry SENTRY_DSN=...`).
   Locally, `.env` (gitignored) holds the same keys for `scripts/` and tests. Never print keys.
-- **Storage**: Modal Volume `hoopscliniq-film`, layout `jobs/<jobId>/{clip.mp4,job.json,sam.txt,play.json,overlay.json}`.
+- **Storage**: Modal Volume `hoopscliniq-film`, layout `jobs/<jobId>/{clip.mp4,job.json,sam.txt,sam-ball.txt,camera.json,calibration.json,play.json,overlay.json}`.
 - **Every response** carries `Cache-Control: no-store` and `x-demo: live`. JSON shapes below are a
   contract with the frontend: keep the keys exactly.
 - **Honesty**: anything not measured is reported as such. No invented numbers anywhere.
@@ -28,7 +28,8 @@ Meta Global AI Developer Hackathon 2026, track Indie developer, due Nov 4 2026 9
 |---|---|---|
 | `GET /health` | | `{ ok: true, version, modelsReachable: bool }` (models check cached 60 s) |
 | `POST /film/upload` | multipart `file` (mp4/mov/webm, ≤ 200 MB, ≤ 60 s), optional `calibration` (JSON string, see Geometry) | `202 { jobId, status: "queued", statusUrl: "/film/jobs/<jobId>" }` |
-| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay }` (`400` on a malformed id, `404` unknown) |
+| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay, calibration, cameraMotion }` (`400` on a malformed id, `404` unknown) |
+| `POST /film/jobs/{jobId}/calibrate` | `{ frame: int, points: [[x, y] x4] }` in clip.mp4 pixels | `200` job view; `400` bad input, `404` unknown job, `409` job not done (0.3.0) |
 | `GET /film/jobs` | | `{ jobs: [{ jobId, finishedAt, title, playersFound }] }`: status `done` only, newest first, max 10; `title` = `suggestedName.title` |
 | `GET /film/jobs/{jobId}/clip` | | `clip.mp4` (`video/mp4`), HTTP Range (206), `Cache-Control: public, max-age=3600`, `Access-Control-Allow-Origin: *`; `404 { error }` when missing |
 | `POST /cliniq/ask` | `{ question: string ≤ 500 }` | `{ question, answer: { body: string[], citations: Citation[], confidence, credits }, noSource }` (`400` on bad body) |
@@ -43,6 +44,23 @@ from the backend's view; the frontend owns them).
 `overlay` = `{ fps, frames, imageSize: [w, h], players: { <id>: { team, boxes: ([x1,y1,x2,y2] | null)[] } } }` or null
 until tracking is done: SAM boxes of the kept players in clip.mp4 pixels (integers), one entry per clip frame, null
 where SAM did not see that player; same ids and frame index as `playDna.tracks.players`. Stored as `overlay.json`.
+Since 0.3.0 `overlay.ball` = `([x1,y1,x2,y2] | null)[]`: the chosen ball box per frame in clip.mp4 pixels (missing
+on older jobs and when the ball call failed).
+`calibration` (0.3.0) = `{ source: "estimated" | "coach", frame, points: [[x,y] x4] }` in clip.mp4 pixels, or null
+on older jobs. The built-in estimate's baseline-right corner lies past the right edge (x ≈ 1422 on a 1280 clip): it
+is off-screen in the gym camera and was extrapolated. `cameraMotion` (0.3.0) = `{ framesTracked, framesFallback }`
+or null; the same object is in `playDna.meta.cameraMotion`.
+
+### `POST /film/jobs/{jobId}/calibrate` (0.3.0)
+
+Body `{ frame, points }`: the four corners of the attacked half as seen in clip.mp4 frame `frame`, in the order
+baseline-left, baseline-right, half-court-line right sideline, half-court-line left sideline. Validation: `frame`
+is an integer in `[0, frames)`; 4 numeric points; a convex quadrilateral in that order (either winding); every
+point inside the image or at most 50 % of the frame size outside it (a side-on camera often hides the near
+baseline corner, which the coach can only extrapolate; the demo UI only taps inside the video). The backend
+re-projects the stored SAM tracks with the stored camera motion (no SAM call), keeps the stored team split,
+rebuilds `play.json` and `overlay.json`, saves `calibration.json` (`source: "coach"`), re-runs naming (on a naming
+error it keeps the previous name) and returns the job view. `meta.timings.calibrate` records the latency.
 `Citation` = `{ kind: "play"|"clip"|"stat", label, href }` where `href` is a route in the demo app
 (`/plays/<id>`, `/film/<id>`, `/study/results`). Only hrefs that exist in `data/world.json` may be emitted.
 
@@ -60,6 +78,15 @@ where SAM did not see that player; same ids and frame index as `playDna.tracks.p
    stable across frames. Ignore masks (do not store them in `play.json`). Verified on 2026-10-28:
    a 20 s 60 fps clip = 1200 frames, ~70 s, output 120–230 MB; at 12 fps expect ~15 s and ~30 MB.
    Reference streams and clips: `../clips/` (CC BY 4.0, attribution in `../clips/README.md`).
+2b. **ball** (SAM 3.1, 0.3.0): a second streamed call with the prompt `"basketball"` on the same uploaded file id,
+   run in parallel with the player call (re-upload only if the API says the file is gone; one retry on a stream
+   error; a failure leaves the ball empty and the job continues). Raw text saved as `sam-ball.txt`.
+2c. **camera motion** (OpenCV, 0.3.0): ORB features (1000 per frame, half-size grey frames, detected while SAM
+   runs), keypoints inside any SAM player or ball box (+10 %) dropped, ratio-test matches to the current keyframe,
+   RANSAC homography. The keyframe moves every 12 frames or when inliers fall under 80; when the keyframe match
+   fails the frame is chained from the previous frame. Fewer than 30 inliers (or a degenerate fit) = fallback for
+   that frame (no homography). Stored once per job as `camera.json` (`toFrame0`: frame i -> frame 0, clip.mp4
+   pixels). Court position in frame i = `H_cal · inv(G_calFrame) · G_i · p`; a fallback frame uses `H_cal`.
 3. **geometry** (pure Python, tested): foot point of each box = `((x1+x2)/2, y2)`. Map to court feet
    with a homography from `calibration` = 4 image points (px) of the half-court corners in order
    `[baseline-left, baseline-right, halfcourt-right, halfcourt-left]`, mapped to court feet
@@ -77,8 +104,14 @@ where SAM did not see that player; same ids and frame index as `playDna.tracks.p
    court: { units:"ft", x:"across, 0-50", y:"out from the attacked baseline", rim:[25,5.25], dimensions:"NFHS" },
    players: { o1: {team:"offense"}, ... }, tracks: { players: { id: [[x,y], ...] per frame }, ball: [], holder: [], areas: [] },
    events: [], actions: [], moments: [{frame:0,label:"Start"}], fixes: []`. Add a backend-only block
-   `meta: { playersFound, calibration: "given"|"estimated", samFrames, imageSize:[w,h] }`.
-6. **name** (Muse Spark 1.3, structured output): prompt = the coach's playbook (titles + one-line
+   `meta: { playersFound, calibration: "given"|"estimated"|"coach", samFrames, imageSize:[w,h] }`.
+   0.3.0 fills `tracks.ball` (`[x, y, 0]` per frame, the ball box centre projected to the floor, null when unseen),
+   `tracks.holder` (player id or null per frame) and `events` (`{type:"pass", from, to, frame, end}` and
+   `{type:"shot", from, frame, end, made:null}`, each with `detect:"heuristic"` and `confidence:"low"|"medium"`;
+   rules in README "Ball and events"), and adds `meta.calibrationFrame`, `meta.cameraMotion`, `meta.ballTracked`,
+   `meta.ballFrames`, `meta.holderFrames`.
+6. **name** (Muse Spark 1.3, structured output; 0.3.0 adds the detected passes and shots with time stamps to the
+   prompt): prompt = the coach's playbook (titles + one-line
    descriptions from `data/world.json`) and a compact track summary (each player's court position
    every second, rounded to 1 ft, plus start/end). `response_format` json_schema
    `{ playId: enum of playbook ids + "unknown", title, confidence: high|medium|low, why: ≤ 160 chars }`.

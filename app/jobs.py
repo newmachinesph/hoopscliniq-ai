@@ -10,15 +10,28 @@ import re
 import subprocess
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from app import settings
-from app.geometry import Calibration, court_tracks, load_default_calibration, parse_calibration
+from app.camera import CameraMotion, detect_features, estimate_motion, read_gray_frames
+from app.events import centre, detect_events, find_holders, near_player, pick_ball
+from app.geometry import (
+    COURT_CORNERS,
+    apply_h,
+    clamp,
+    court_tracks,
+    homography,
+    image_to_court,
+    load_default_calibration,
+    parse_calibration,
+    scale_h,
+)
 from app.naming import suggest_name
-from app.playdna import build_overlay, build_play_dna
-from app.sam import parse_sam_text, stream_sam, upload_clip
+from app.playdna import build_overlay, build_play_dna, to_clip_pixels
+from app.sam import Box, SamResult, parse_sam_text, stream_sam, stream_sam_reusing, upload_clip
 from app.teams import assign_ids, ffmpeg_frame_reader, pick_offense, track_colors, two_means
 from app.world import load_world
 
@@ -71,12 +84,23 @@ def steps_for(status: str, failed_step: str | None = None) -> list[dict[str, str
     return out
 
 
+def calibration_view(record: dict[str, Any] | None) -> dict[str, Any] | None:
+    """`calibration` of the job view: the corners in clip.mp4 pixels. An upload-time calibration came from the
+    coach too, so only the built-in estimate says "estimated"."""
+    if not record:
+        return None
+    source = "estimated" if record.get("source") == "estimated" else "coach"
+    return {"source": source, "frame": record.get("frame", 0), "points": record.get("points")}
+
+
 def job_view(
     job: dict[str, Any],
     play_dna: dict[str, Any] | None,
     overlay: dict[str, Any] | None = None,
     clip_url: str | None = None,
+    calibration: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    meta = (play_dna or {}).get("meta") or {}
     return {
         "jobId": job["jobId"],
         "status": job["status"],
@@ -88,6 +112,8 @@ def job_view(
         # clip.mp4 exists once the frames step has recorded the re-encoded video.
         "clipUrl": clip_url if job.get("video") else None,
         "overlay": overlay,
+        "calibration": calibration_view(calibration),
+        "cameraMotion": meta.get("cameraMotion"),
     }
 
 
@@ -155,6 +181,25 @@ class JobStore:
 
     def write_overlay(self, job_id: str, overlay: dict) -> None:
         self._write_json(self.dir(job_id) / "overlay.json", overlay)
+
+    def read_calibration(self, job_id: str) -> dict | None:
+        return self._read_json(self.dir(job_id) / "calibration.json")
+
+    def write_calibration(self, job_id: str, record: dict) -> None:
+        self._write_json(self.dir(job_id) / "calibration.json", record)
+
+    def read_camera(self, job_id: str) -> CameraMotion | None:
+        data = self._read_json(self.dir(job_id) / "camera.json")
+        return CameraMotion.from_json(data) if data else None
+
+    def write_camera(self, job_id: str, camera: CameraMotion) -> None:
+        self._write_json(self.dir(job_id) / "camera.json", camera.to_json())
+
+    def read_text(self, job_id: str, name: str) -> str | None:
+        try:
+            return (self.dir(job_id) / name).read_text(encoding="utf-8")
+        except FileNotFoundError:
+            return None
 
     def clip(self, job_id: str) -> Path | None:
         """Path of clip.mp4, or None when it does not exist (reloads the Volume once before giving up)."""
@@ -244,16 +289,24 @@ def reencode(src: Path, dst: Path, ffmpeg: str = "ffmpeg") -> None:
 
 # ---------- pipeline ----------
 
+ColorFn = Callable[[dict[int, dict], list[int], tuple[int, int]], dict[int, tuple[float, float, float]]]
 
-def _calibration(job: dict) -> Calibration:
+
+def calibration_record(job: dict) -> dict[str, Any]:
+    """The calibration the pipeline starts with, in clip.mp4 pixels at frame 0: the coach's (upload field)
+    or the built-in Hazen Union estimate."""
+    video = job["video"]
+    clip_size = (video["width"], video["height"])
     raw = job.get("calibration")
-    if raw is None:
-        return load_default_calibration()
-    cal = parse_calibration(raw)
-    if cal.image_size is None and job.get("video", {}).get("sourceSize"):
-        # Points given without a size are in the uploaded video's pixels.
-        cal = Calibration(cal.points, tuple(job["video"]["sourceSize"]), cal.source)
-    return cal
+    cal = load_default_calibration() if raw is None else parse_calibration(raw)
+    size = cal.image_size or tuple(video.get("sourceSize") or clip_size)
+    sx, sy = clip_size[0] / size[0], clip_size[1] / size[1]
+    return {
+        "source": cal.source,
+        "frame": 0,
+        "points": [[round(x * sx, 1), round(y * sy, 1)] for x, y in cal.points],
+        "imageSize": list(clip_size),
+    }
 
 
 def _scaled_reader(reader: Callable, size: tuple[int, int]) -> Callable:
@@ -265,42 +318,177 @@ def _scaled_reader(reader: Callable, size: tuple[int, int]) -> Callable:
     return read
 
 
-def build_from_sam(
-    job: dict, sam_text: str, clip: Path, ffmpeg: str
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    """(play-dna, overlay) from the raw SAM text. Both use the same player ids and frame index."""
+def clip_colors(clip: Path, ffmpeg: str) -> ColorFn:
+    """Jersey colors read from clip.mp4 (ffmpeg), for the team split."""
+
+    def colors(tracks: dict[int, dict], objs: list[int], sam_size: tuple[int, int]) -> dict:
+        return track_colors(tracks, objs, _scaled_reader(ffmpeg_frame_reader(clip, ffmpeg), sam_size))
+
+    return colors
+
+
+def build_outputs(
+    job: dict,
+    sam: SamResult,
+    ball_sam: SamResult | None,
+    camera: CameraMotion | None,
+    calibration: dict[str, Any],
+    colors: ColorFn,
+) -> tuple[dict[str, Any], dict[str, Any], dict[int, int]]:
+    """(play-dna, overlay, team labels) from parsed SAM output, camera motion and a calibration record.
+
+    Positions: court = H_cal . H_(i->calFrame) . p for a box foot point (players) or box centre (ball) in
+    clip.mp4 pixels. Team labels come from `job["teamLabels"]` when they cover the kept objects (calibrate
+    re-uses them), else from jersey colors.
+    """
     video = job["video"]
-    sam = parse_sam_text(sam_text)
-    size = (sam.width or video["width"], sam.height or video["height"])
+    clip_size = (video["width"], video["height"])
+    sam_size = (sam.width or clip_size[0], sam.height or clip_size[1])
     frames = max(video["frames"] or 0, sam.frame_count)
+    h_cal = homography([tuple(p) for p in calibration["points"]], COURT_CORNERS)
+    mats = image_to_court(h_cal, camera.to_frame0 if camera else None, int(calibration["frame"]), frames)
+    to_clip = scale_h(clip_size[0] / sam_size[0], clip_size[1] / sam_size[1])
     tracks = sam.tracks()
-    cal = _calibration(job)
-    court = court_tracks(tracks, cal, size, frames)
+    court = court_tracks(tracks, [m @ to_clip for m in mats], frames)
     objs = [t.obj for t in court]
-    colors = track_colors(tracks, objs, _scaled_reader(ffmpeg_frame_reader(clip, ffmpeg), size))
-    labels = dict(zip(objs, two_means([colors[o] for o in objs]), strict=True))
+    stored = {int(k): v for k, v in (job.get("teamLabels") or {}).items()}
+    if objs and all(o in stored for o in objs):
+        labels = {o: stored[o] for o in objs}
+    else:
+        rgb = colors(tracks, objs, sam_size)
+        labels = dict(zip(objs, two_means([rgb[o] for o in objs]), strict=True))
     by_obj = {t.obj: t for t in court}
     offense = pick_offense(labels, by_obj, frames // 2) if court else 0
     ids = assign_ids(court, labels, offense)
+
+    overlay = build_overlay(
+        tracks=tracks, ids=ids, fps=settings.TARGET_FPS, frames=frames, sam_size=sam_size, clip_size=clip_size
+    )
+    players_px = {pid: p["boxes"] for pid, p in overlay["players"].items()}
+    ball_px = _ball_pixels(ball_sam, frames, clip_size, players_px) if ball_sam is not None else None
+    if ball_px is not None:
+        overlay["ball"] = ball_px
+    extra: dict[str, Any] = {
+        "calibrationFrame": int(calibration["frame"]),
+        "cameraMotion": camera.summary() if camera else None,
+        "ballTracked": ball_px is not None,
+    }
+    ball_track: list[list[float] | None] = []
+    holder: list[str | None] = []
+    events: list[dict[str, Any]] = []
+    if ball_px is not None:
+        raw = [None if b is None else apply_h(mats[f], *centre(b)) for f, b in enumerate(ball_px)]
+        ball_track = [None if p is None else [*(round(v, 2) for v in clamp(p)), 0] for p in raw]
+        holder = find_holders(ball_px, players_px)
+        events = detect_events(holder, ball_px, raw, players_px, settings.TARGET_FPS)
+        extra["ballFrames"] = sum(1 for b in ball_px if b is not None)
+        extra["holderFrames"] = sum(1 for h in holder if h is not None)
     play = build_play_dna(
         job_id=job["jobId"],
         fps=settings.TARGET_FPS,
         frames=frames,
         court_tracks=court,
         ids=ids,
-        calibration_source=cal.source,
+        calibration_source=calibration["source"],
         sam_frames=sam.frame_count,
-        image_size=size,
+        image_size=sam_size,
+        ball=ball_track,
+        holder=holder,
+        events=events,
+        extra_meta=extra,
     )
-    overlay = build_overlay(
-        tracks=tracks,
-        ids=ids,
-        fps=settings.TARGET_FPS,
-        frames=frames,
-        sam_size=size,
-        clip_size=(video["width"], video["height"]),
+    return play, overlay, labels
+
+
+def _ball_pixels(
+    ball_sam: SamResult, frames: int, clip_size: tuple[int, int], players_px: dict[str, list]
+) -> list[list[int] | None]:
+    w, h = clip_size
+    sx = w / ball_sam.width if ball_sam.width else 1.0
+    sy = h / ball_sam.height if ball_sam.height else 1.0
+
+    def px(b: Box) -> list[int]:
+        return to_clip_pixels(b, sx, sy, w, h)
+
+    picked = pick_ball(
+        ball_sam.frames,
+        frames,
+        lambda f, b: near_player(players_px, f, px(b)),
+        max_jump=settings.BALL_MAX_JUMP * (ball_sam.width or w),
+    )
+    return [None if b is None else px(b) for b in picked]
+
+
+def build_from_sam(
+    job: dict,
+    sam_text: str,
+    clip: Path,
+    ffmpeg: str,
+    ball_text: str | None = None,
+    camera: CameraMotion | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """(play-dna, overlay) from the raw SAM text. Both use the same player ids and frame index."""
+    ball = parse_sam_text(ball_text) if ball_text is not None else None
+    play, overlay, _ = build_outputs(
+        job, parse_sam_text(sam_text), ball, camera, calibration_record(job), clip_colors(clip, ffmpeg)
     )
     return play, overlay
+
+
+def _timed(fn: Callable, *args: Any) -> tuple[Any, float]:
+    t0 = time.monotonic()
+    return fn(*args), round(time.monotonic() - t0, 2)
+
+
+def _ball_sam(client: Any, file_id: str, clip: Path, out: Path) -> str | None:
+    """Second SAM call ("basketball") on the same uploaded file, tried twice (seen live: a one-off
+    `server_error` mid-stream). A failure costs the ball, not the job."""
+    for attempt in range(1, settings.SAM_BALL_ATTEMPTS + 1):
+        try:
+            text, file_id = stream_sam_reusing(client, file_id, clip, out, settings.SAM_BALL_PROMPT)
+            return text
+        except Exception:
+            log.warning("ball tracking attempt %d failed", attempt, exc_info=True)
+    return None
+
+
+def _mask_boxes(sam: SamResult, ball: SamResult | None, clip_size: tuple[int, int]) -> Callable[[int], list]:
+    """Every SAM player and ball box of a frame, in clip.mp4 pixels (kept out of the camera features)."""
+
+    def scaled(res: SamResult, f: int) -> list[tuple[float, float, float, float]]:
+        sx = clip_size[0] / res.width if res.width else 1.0
+        sy = clip_size[1] / res.height if res.height else 1.0
+        return [(b.x1 * sx, b.y1 * sy, b.x2 * sx, b.y2 * sy) for b in res.frames.get(f, [])]
+
+    return lambda f: scaled(sam, f) + (scaled(ball, f) if ball else [])
+
+
+def track_step(
+    job: dict, d: Path, meta_client: Any
+) -> tuple[SamResult, SamResult | None, CameraMotion, dict]:
+    """SAM players + SAM ball (same uploaded file) + camera features run side by side; then camera motion."""
+    clip = d / "clip.mp4"
+    timings: dict[str, float] = {}
+    t0 = time.monotonic()
+    file_id = upload_clip(meta_client, clip)
+    job["samFile"] = {"id": file_id, "uploadedAt": now_iso()}
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        players = pool.submit(_timed, stream_sam, meta_client, file_id, d / "sam.txt")
+        ball = pool.submit(_timed, _ball_sam, meta_client, file_id, clip, d / "sam-ball.txt")
+        feats = pool.submit(_timed, lambda: detect_features(read_gray_frames(clip)))
+        sam_text, timings["samPlayers"] = players.result()
+        ball_text, timings["samBall"] = ball.result()
+        features, timings["cameraFeatures"] = feats.result()
+    timings["track"] = round(time.monotonic() - t0, 2)
+    sam = parse_sam_text(sam_text)
+    ball_sam = parse_sam_text(ball_text) if ball_text is not None else None
+    video = job["video"]
+    clip_size = (video["width"], video["height"])
+    frames = max(video["frames"] or 0, sam.frame_count)
+    camera, timings["camera"] = _timed(
+        estimate_motion, features, _mask_boxes(sam, ball_sam, clip_size), clip_size, frames
+    )
+    return sam, ball_sam, camera, timings
 
 
 def run_job(
@@ -326,6 +514,7 @@ def run_job(
         t0 = time.monotonic()
         upload = d / job["upload"]["file"]
         clip = d / "clip.mp4"
+        source = probe(upload, ffprobe)
         reencode(upload, clip, ffmpeg)
         info = probe(clip, ffprobe, count_frames=True)
         job["video"] = {
@@ -335,20 +524,24 @@ def run_job(
             "width": info["width"],
             "height": info["height"],
             "duration": info["duration"],
+            "sourceSize": [source["width"], source["height"]],
         }
         upload.unlink(missing_ok=True)
         timings["frames"] = round(time.monotonic() - t0, 2)
 
         advance("track")
+        sam, ball_sam, camera, track_timings = track_step(job, d, meta_client)
+        timings.update(track_timings)
+        store.write_camera(job_id, camera)
         t0 = time.monotonic()
-        file_id = upload_clip(meta_client, clip)
-        sam_text = stream_sam(meta_client, file_id, d / "sam.txt")
-        store.commit()
-        timings["track"] = round(time.monotonic() - t0, 2)
-        t0 = time.monotonic()
-        play, overlay = build_from_sam(job, sam_text, clip, ffmpeg)
+        calibration = calibration_record(job)
+        play, overlay, labels = build_outputs(
+            job, sam, ball_sam, camera, calibration, clip_colors(clip, ffmpeg)
+        )
+        job["teamLabels"] = {str(k): v for k, v in labels.items()}
         timings["build"] = round(time.monotonic() - t0, 2)
         play["meta"]["timings"] = dict(timings)
+        store.write_calibration(job_id, calibration)
         store.write_overlay(job_id, overlay)
         store.write_play(job_id, play)
 
@@ -370,4 +563,66 @@ def run_job(
         job["error"] = FRIENDLY[job["failedStep"]]
         job["finishedAt"] = now_iso()
         advance("failed")
+    return job
+
+
+# ---------- coach calibration ----------
+
+
+def recalibrate(
+    store: JobStore,
+    job: dict,
+    frame: int,
+    points: list[list[float]],
+    name_play: Callable[[dict], dict] | None,
+    ffmpeg: str = "ffmpeg",
+) -> dict:
+    """Re-project the stored tracks with the coach's corners (no new SAM call), rebuild play.json and the
+    overlay, re-run naming, save calibration.json. `job` must be done; the caller validates the input."""
+    job_id = job["jobId"]
+    t0 = time.monotonic()
+    sam_text = store.read_text(job_id, "sam.txt")
+    if sam_text is None:
+        raise FileNotFoundError("sam.txt")
+    ball_text = store.read_text(job_id, "sam-ball.txt")
+    sam = parse_sam_text(sam_text)
+    ball_sam = parse_sam_text(ball_text) if ball_text is not None else None
+    camera = store.read_camera(job_id)
+    video = job["video"]
+    calibration = {
+        "source": "coach",
+        "frame": frame,
+        "points": [[round(float(x), 1), round(float(y), 1)] for x, y in points],
+        "imageSize": [video["width"], video["height"]],
+    }
+    clip = store.dir(job_id) / "clip.mp4"
+    play, overlay, labels = build_outputs(job, sam, ball_sam, camera, calibration, clip_colors(clip, ffmpeg))
+    timings = dict(job.get("timings") or {})
+    timings["calibrateBuild"] = round(time.monotonic() - t0, 2)
+    suggestion = job.get("suggestedName")
+    if name_play is not None:
+        t1 = time.monotonic()
+        # Wall-clock cap: the HTTP client timeout alone did not stop a 104 s call. Past it, keep the old name.
+        pool = ThreadPoolExecutor(max_workers=1)
+        try:
+            suggestion = pool.submit(name_play, play).result(timeout=settings.CALIBRATE_NAME_TIMEOUT)
+        except Exception:
+            log.warning(
+                "naming after calibration failed or timed out; keeping the previous name", exc_info=True
+            )
+        finally:
+            pool.shutdown(wait=False)
+        timings["calibrateName"] = round(time.monotonic() - t1, 2)
+    timings["calibrate"] = round(time.monotonic() - t0, 2)
+    if suggestion:
+        play["name"] = suggestion["title"]
+    play["meta"]["timings"] = timings
+    job["teamLabels"] = {str(k): v for k, v in labels.items()}
+    job["suggestedName"] = suggestion
+    job["calibratedAt"] = now_iso()
+    job["timings"] = timings
+    store.write_calibration(job_id, calibration)
+    store.write_overlay(job_id, overlay)
+    store.write_play(job_id, play)
+    store.write(job)
     return job

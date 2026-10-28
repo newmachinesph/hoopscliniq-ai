@@ -18,7 +18,9 @@ SYSTEM = (
     "approximate court calibration, so positions are noisy and team labels can be wrong. Choose a playbook "
     "id "
     'only when the movement really matches its description; otherwise answer "unknown". Be honest about '
-    "confidence. `why` is one short sentence (max 160 characters) a coach can check against the clip."
+    "confidence. Ball events (passes, shots) come from a simple heuristic on the tracked ball and can be "
+    "wrong or missing: weigh them with the positions, never instead of them. `why` is one short sentence "
+    "(max 160 characters) a coach can check against the clip."
 )
 
 
@@ -55,6 +57,21 @@ def track_summary(play_dna: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def events_summary(play_dna: dict[str, Any]) -> str:
+    """One line per detected pass or shot with its time stamp, or a note that none were found."""
+    fps = play_dna["source"]["fps"]
+    if not play_dna.get("tracks", {}).get("ball"):
+        return "Ball not tracked in this clip."
+    lines = []
+    for e in play_dna.get("events", []):
+        t = f"{e['frame'] / fps:.1f}s"
+        if e["type"] == "pass":
+            lines.append(f"{t} pass {e['from']} -> {e['to']} ({e['confidence']} confidence)")
+        elif e["type"] == "shot":
+            lines.append(f"{t} shot by {e['from']} ({e['confidence']} confidence)")
+    return "\n".join(lines) if lines else "No passes or shots detected."
+
+
 def naming_messages(playbook: list[dict], play_dna: dict[str, Any]) -> list[dict[str, str]]:
     book = "\n".join(f"- {p['id']}: {p['title']}. {p['description']}" for p in playbook)
     meta = play_dna.get("meta", {})
@@ -63,6 +80,7 @@ def naming_messages(playbook: list[dict], play_dna: dict[str, Any]) -> list[dict
         f"Tracked clip ({meta.get('playersFound', '?')} players found, "
         f"calibration {meta.get('calibration', '?')}):\n"
         f"{track_summary(play_dna)}\n\n"
+        f"Ball events (heuristic):\n{events_summary(play_dna)}\n\n"
         "Which playbook play is this? Reply with the JSON object only."
     )
     return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]

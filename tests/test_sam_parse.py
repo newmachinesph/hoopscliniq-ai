@@ -50,3 +50,34 @@ def test_parse_empty_text():
     sam = parse_sam_text("")
     assert sam.frame_count == 0
     assert sam.tracks() == {}
+
+
+class Gone(Exception):
+    status_code = 404
+
+
+def test_ball_call_reuses_the_file_and_uploads_again_only_when_it_expired(monkeypatch, tmp_path):
+    from app import sam
+
+    calls: list[str] = []
+    uploads: list[str] = []
+
+    def fake_stream(client, file_id, out_path, prompt):
+        calls.append(file_id)
+        if file_id == "old":
+            raise Gone("file not found")
+        return "<0f>"
+
+    monkeypatch.setattr(sam, "stream_sam", fake_stream)
+    monkeypatch.setattr(sam, "upload_clip", lambda client, path: uploads.append(str(path)) or "new")
+    assert sam.stream_sam_reusing(None, "fresh", tmp_path / "c.mp4", tmp_path / "b.txt", "basketball") == (
+        "<0f>",
+        "fresh",
+    )
+    assert uploads == []
+    assert sam.stream_sam_reusing(None, "old", tmp_path / "c.mp4", tmp_path / "b.txt", "basketball") == (
+        "<0f>",
+        "new",
+    )
+    assert calls == ["fresh", "old", "new"] and len(uploads) == 1
+    assert not sam.file_gone(RuntimeError("rate limited"))

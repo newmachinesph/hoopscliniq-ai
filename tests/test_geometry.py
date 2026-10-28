@@ -71,9 +71,9 @@ def test_top_tracks_keeps_the_longest():
 
 
 def test_court_tracks_cover_every_frame_and_count_observed():
-    cal = Calibration([(0, 0), (100, 0), (100, 94), (0, 94)], (100, 94), "given")
+    h = homography([(0, 0), (100, 0), (100, 94), (0, 94)], COURT_CORNERS)
     tracks = {7: {0: Box(7, 40, 0, 60, 47), 4: Box(7, 40, 0, 60, 47)}}
-    out = court_tracks(tracks, cal, (100, 94), frames=6)
+    out = court_tracks(tracks, [h] * 6, frames=6)
     assert len(out) == 1
     t = out[0]
     assert t.obj == 7 and t.observed == 2

@@ -55,8 +55,11 @@ def test_upload_queues_a_job(ctx):
         "error",
         "clipUrl",
         "overlay",
+        "calibration",
+        "cameraMotion",
     }
     assert job["clipUrl"] is None and job["overlay"] is None
+    assert job["calibration"] is None and job["cameraMotion"] is None
 
 
 def test_upload_rejects_wrong_type_and_bad_calibration(ctx):
@@ -149,7 +152,7 @@ def test_job_view_has_absolute_clip_url_and_overlay(ctx):
     store.write_overlay(jid, overlay)
     job = client.get(f"/film/jobs/{jid}").json()
     assert job["clipUrl"] == f"http://testserver/film/jobs/{jid}/clip"
-    assert job["overlay"] == overlay
+    assert job["overlay"] == {**overlay, "ball": None}  # jobs from before 0.3.0 have no ball
 
 
 def test_clip_404_when_missing(ctx):
