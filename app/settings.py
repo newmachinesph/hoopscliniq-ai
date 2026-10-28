@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("HOOPSCLINIQ_DATA_DIR", ROOT / "data"))
@@ -34,6 +34,9 @@ TEAM_CROP_TOP = 0.4
 
 MAX_QUESTION = 500
 MAX_TOOL_CALLS = 6
+RECENT_JOBS = 10
+CLIP_CACHE_SECONDS = 3600
+JOB_READ_RETRY_SECONDS = 0.5
 MODELS_CHECK_TTL = 60.0
 
 

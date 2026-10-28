@@ -17,7 +17,7 @@ from typing import Any
 from app import settings
 from app.geometry import Calibration, court_tracks, load_default_calibration, parse_calibration
 from app.naming import suggest_name
-from app.playdna import build_play_dna
+from app.playdna import build_overlay, build_play_dna
 from app.sam import parse_sam_text, stream_sam, upload_clip
 from app.teams import assign_ids, ffmpeg_frame_reader, pick_offense, track_colors, two_means
 from app.world import load_world
@@ -71,7 +71,12 @@ def steps_for(status: str, failed_step: str | None = None) -> list[dict[str, str
     return out
 
 
-def job_view(job: dict[str, Any], play_dna: dict[str, Any] | None) -> dict[str, Any]:
+def job_view(
+    job: dict[str, Any],
+    play_dna: dict[str, Any] | None,
+    overlay: dict[str, Any] | None = None,
+    clip_url: str | None = None,
+) -> dict[str, Any]:
     return {
         "jobId": job["jobId"],
         "status": job["status"],
@@ -80,6 +85,21 @@ def job_view(job: dict[str, Any], play_dna: dict[str, Any] | None) -> dict[str, 
         "suggestedName": job.get("suggestedName"),
         "playDna": play_dna,
         "error": job.get("error"),
+        # clip.mp4 exists once the frames step has recorded the re-encoded video.
+        "clipUrl": clip_url if job.get("video") else None,
+        "overlay": overlay,
+    }
+
+
+def job_summary(job: dict[str, Any], play_dna: dict[str, Any] | None) -> dict[str, Any]:
+    """One row of `GET /film/jobs`."""
+    name = job.get("suggestedName") or {}
+    meta = (play_dna or {}).get("meta") or {}
+    return {
+        "jobId": job["jobId"],
+        "finishedAt": job.get("finishedAt"),
+        "title": name.get("title"),
+        "playersFound": meta.get("playersFound", 0),
     }
 
 
@@ -112,7 +132,14 @@ class JobStore:
     def read(self, job_id: str, fresh: bool = True) -> dict | None:
         if fresh:
             self.reload()
-        return self._read_json(self.dir(job_id) / "job.json")
+        path = self.dir(job_id) / "job.json"
+        job = self._read_json(path)
+        if job is None and fresh:
+            # Seen live: a reload while the job function commits can briefly hide job.json. Look once more.
+            time.sleep(settings.JOB_READ_RETRY_SECONDS)
+            self.reload()
+            job = self._read_json(path)
+        return job
 
     def write(self, job: dict) -> None:
         self._write_json(self.dir(job["jobId"]) / "job.json", job)
@@ -122,6 +149,34 @@ class JobStore:
 
     def write_play(self, job_id: str, play: dict) -> None:
         self._write_json(self.dir(job_id) / "play.json", play)
+
+    def read_overlay(self, job_id: str) -> dict | None:
+        return self._read_json(self.dir(job_id) / "overlay.json")
+
+    def write_overlay(self, job_id: str, overlay: dict) -> None:
+        self._write_json(self.dir(job_id) / "overlay.json", overlay)
+
+    def clip(self, job_id: str) -> Path | None:
+        """Path of clip.mp4, or None when it does not exist (reloads the Volume once before giving up)."""
+        path = self.dir(job_id) / "clip.mp4"
+        if not path.is_file():
+            self.reload()
+        return path if path.is_file() else None
+
+    def done_jobs(self, limit: int) -> list[dict]:
+        """Finished jobs, newest first (by finishedAt), at most `limit`."""
+        self.reload()
+        jobs = []
+        for path in (self.root / "jobs").glob("*/job.json"):
+            try:
+                job = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                log.warning("unreadable job file %s", path)
+                continue
+            if job.get("status") == "done":
+                jobs.append(job)
+        jobs.sort(key=lambda j: j.get("finishedAt") or "", reverse=True)
+        return jobs[:limit]
 
 
 # ---------- ffmpeg ----------
@@ -210,7 +265,10 @@ def _scaled_reader(reader: Callable, size: tuple[int, int]) -> Callable:
     return read
 
 
-def build_from_sam(job: dict, sam_text: str, clip: Path, ffmpeg: str) -> dict[str, Any]:
+def build_from_sam(
+    job: dict, sam_text: str, clip: Path, ffmpeg: str
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """(play-dna, overlay) from the raw SAM text. Both use the same player ids and frame index."""
     video = job["video"]
     sam = parse_sam_text(sam_text)
     size = (sam.width or video["width"], sam.height or video["height"])
@@ -224,7 +282,7 @@ def build_from_sam(job: dict, sam_text: str, clip: Path, ffmpeg: str) -> dict[st
     by_obj = {t.obj: t for t in court}
     offense = pick_offense(labels, by_obj, frames // 2) if court else 0
     ids = assign_ids(court, labels, offense)
-    return build_play_dna(
+    play = build_play_dna(
         job_id=job["jobId"],
         fps=settings.TARGET_FPS,
         frames=frames,
@@ -234,6 +292,15 @@ def build_from_sam(job: dict, sam_text: str, clip: Path, ffmpeg: str) -> dict[st
         sam_frames=sam.frame_count,
         image_size=size,
     )
+    overlay = build_overlay(
+        tracks=tracks,
+        ids=ids,
+        fps=settings.TARGET_FPS,
+        frames=frames,
+        sam_size=size,
+        clip_size=(video["width"], video["height"]),
+    )
+    return play, overlay
 
 
 def run_job(
@@ -279,9 +346,10 @@ def run_job(
         store.commit()
         timings["track"] = round(time.monotonic() - t0, 2)
         t0 = time.monotonic()
-        play = build_from_sam(job, sam_text, clip, ffmpeg)
+        play, overlay = build_from_sam(job, sam_text, clip, ffmpeg)
         timings["build"] = round(time.monotonic() - t0, 2)
         play["meta"]["timings"] = dict(timings)
+        store.write_overlay(job_id, overlay)
         store.write_play(job_id, play)
 
         advance("name")

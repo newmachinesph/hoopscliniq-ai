@@ -47,10 +47,18 @@ def _init_observability() -> None:
         sentry_sdk.init(dsn=dsn, traces_sample_rate=0.0, send_default_pii=False)
 
 
+def _reload() -> None:
+    # Volume.reload() refuses while a file is open (a clip being streamed); serve the current view instead.
+    try:
+        volume.reload()
+    except Exception:
+        logging.getLogger(__name__).warning("volume reload skipped", exc_info=True)
+
+
 def _store():
     from app.jobs import JobStore
 
-    return JobStore(Path(FILM_MOUNT), commit=volume.commit, reload=volume.reload)
+    return JobStore(Path(FILM_MOUNT), commit=volume.commit, reload=_reload)
 
 
 @app.function(image=image, volumes={FILM_MOUNT: volume}, secrets=secrets, cpu=4.0, memory=4096, timeout=900)

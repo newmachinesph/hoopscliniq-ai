@@ -1,4 +1,4 @@
-"""FastAPI routes: health, film upload and job status, ClinIQ ask."""
+"""FastAPI routes: health, film upload, job status, job list and clip, ClinIQ ask."""
 
 from __future__ import annotations
 
@@ -12,19 +12,23 @@ from typing import Any
 
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import ValidationError
 from starlette.concurrency import run_in_threadpool
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app import settings
 from app.geometry import parse_calibration
-from app.jobs import JOB_ID, JobStore, job_view, new_job_id, now_iso
-from app.models import AskRequest, AskResponse, JobView
+from app.jobs import JOB_ID, JobStore, job_summary, job_view, new_job_id, now_iso
+from app.models import AskRequest, AskResponse, JobList, JobView
 
 log = logging.getLogger(__name__)
 
 HEADERS = {"Cache-Control": "no-store", "x-demo": "live"}
+CLIP_HEADERS = {
+    "Cache-Control": f"public, max-age={settings.CLIP_CACHE_SECONDS}",
+    "Access-Control-Allow-Origin": "*",
+}
 CHUNK = 1024 * 1024
 
 
@@ -66,7 +70,9 @@ def create_app(
     @api.middleware("http")
     async def demo_headers(request: Request, call_next):
         response = await call_next(request)
-        response.headers.update(HEADERS)
+        # Routes that set their own caching (the clip) keep it; everything else is no-store.
+        for key, value in HEADERS.items():
+            response.headers.setdefault(key, value)
         return response
 
     @api.exception_handler(RequestValidationError)
@@ -140,14 +146,30 @@ def create_app(
             {"jobId": job_id, "status": "queued", "statusUrl": f"/film/jobs/{job_id}"}, status_code=202
         )
 
+    @api.get("/film/jobs", response_model=JobList)
+    def job_list() -> Any:
+        jobs = store.done_jobs(settings.RECENT_JOBS)
+        return {"jobs": [job_summary(job, store.read_play(job["jobId"])) for job in jobs]}
+
     @api.get("/film/jobs/{job_id}", response_model=JobView)
-    def job_status(job_id: str) -> Any:
+    def job_status(job_id: str, request: Request) -> Any:
         if not JOB_ID.match(job_id):
             return error(400, "Malformed job id.")
         job = store.read(job_id)
         if job is None:
             return error(404, "Unknown job.")
-        return job_view(job, store.read_play(job_id))
+        clip_url = str(request.url_for("job_clip", job_id=job_id))
+        return job_view(job, store.read_play(job_id), store.read_overlay(job_id), clip_url)
+
+    @api.api_route("/film/jobs/{job_id}/clip", methods=["GET", "HEAD"], name="job_clip")
+    def job_clip(job_id: str) -> Any:
+        if not JOB_ID.match(job_id):
+            return error(400, "Malformed job id.")
+        path = store.clip(job_id)
+        if path is None:
+            return error(404, "No clip for this job.")
+        # FileResponse answers Range requests with 206 and Content-Range, so browsers can seek.
+        return FileResponse(path, media_type="video/mp4", headers=CLIP_HEADERS)
 
     @api.post("/cliniq/ask", response_model=AskResponse)
     async def cliniq_ask(request: Request) -> Any:

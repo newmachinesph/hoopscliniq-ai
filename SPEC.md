@@ -14,7 +14,7 @@ Meta Global AI Developer Hackathon 2026, track Indie developer, due Nov 4 2026 9
   `BASETEN_API_KEY`, `BASETEN_MODEL_ID`) plus a new Modal Secret `hoopscliniq-sentry` with
   `SENTRY_DSN` (create it from `.env` with `python -m modal secret create hoopscliniq-sentry SENTRY_DSN=...`).
   Locally, `.env` (gitignored) holds the same keys for `scripts/` and tests. Never print keys.
-- **Storage**: Modal Volume `hoopscliniq-film`, layout `jobs/<jobId>/{clip.mp4,job.json,sam.txt,play.json}`.
+- **Storage**: Modal Volume `hoopscliniq-film`, layout `jobs/<jobId>/{clip.mp4,job.json,sam.txt,play.json,overlay.json}`.
 - **Every response** carries `Cache-Control: no-store` and `x-demo: live`. JSON shapes below are a
   contract with the frontend: keep the keys exactly.
 - **Honesty**: anything not measured is reported as such. No invented numbers anywhere.
@@ -28,7 +28,9 @@ Meta Global AI Developer Hackathon 2026, track Indie developer, due Nov 4 2026 9
 |---|---|---|
 | `GET /health` | | `{ ok: true, version, modelsReachable: bool }` (models check cached 60 s) |
 | `POST /film/upload` | multipart `file` (mp4/mov/webm, ≤ 200 MB, ≤ 60 s), optional `calibration` (JSON string, see Geometry) | `202 { jobId, status: "queued", statusUrl: "/film/jobs/<jobId>" }` |
-| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error }` (`400` on a malformed id, `404` unknown) |
+| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay }` (`400` on a malformed id, `404` unknown) |
+| `GET /film/jobs` | | `{ jobs: [{ jobId, finishedAt, title, playersFound }] }`: status `done` only, newest first, max 10; `title` = `suggestedName.title` |
+| `GET /film/jobs/{jobId}/clip` | | `clip.mp4` (`video/mp4`), HTTP Range (206), `Cache-Control: public, max-age=3600`, `Access-Control-Allow-Origin: *`; `404 { error }` when missing |
 | `POST /cliniq/ask` | `{ question: string ≤ 500 }` | `{ question, answer: { body: string[], citations: Citation[], confidence, credits }, noSource }` (`400` on bad body) |
 
 `jobId` = `job-` + 12 lowercase base32 chars. `status` ∈ `queued | frames | track | name | done | failed`.
@@ -37,6 +39,10 @@ engine labels exactly `Phone or file`, `Modal`, `SAM 3.1`, `Muse Spark`, `Coach 
 per-step `status` ∈ `done | running | queued | failed | planned` (`review` and `cite` are always `planned`
 from the backend's view; the frontend owns them).
 `suggestedName` = `{ playId, title, confidence: "high"|"medium"|"low", why, needsReview: true }` or null until named.
+`clipUrl` = absolute URL of `GET /film/jobs/{jobId}/clip`, null until the frames step is done.
+`overlay` = `{ fps, frames, imageSize: [w, h], players: { <id>: { team, boxes: ([x1,y1,x2,y2] | null)[] } } }` or null
+until tracking is done: SAM boxes of the kept players in clip.mp4 pixels (integers), one entry per clip frame, null
+where SAM did not see that player; same ids and frame index as `playDna.tracks.players`. Stored as `overlay.json`.
 `Citation` = `{ kind: "play"|"clip"|"stat", label, href }` where `href` is a route in the demo app
 (`/plays/<id>`, `/film/<id>`, `/study/results`). Only hrefs that exist in `data/world.json` may be emitted.
 

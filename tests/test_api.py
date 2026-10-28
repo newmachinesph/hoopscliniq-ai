@@ -45,7 +45,18 @@ def test_upload_queues_a_job(ctx):
     job = client.get(body["statusUrl"]).json()
     assert job["status"] == "queued" and job["playDna"] is None and job["suggestedName"] is None
     assert [s["status"] for s in job["steps"]] == ["done", "queued", "queued", "queued", "planned", "planned"]
-    assert set(job) == {"jobId", "status", "finishedAt", "steps", "suggestedName", "playDna", "error"}
+    assert set(job) == {
+        "jobId",
+        "status",
+        "finishedAt",
+        "steps",
+        "suggestedName",
+        "playDna",
+        "error",
+        "clipUrl",
+        "overlay",
+    }
+    assert job["clipUrl"] is None and job["overlay"] is None
 
 
 def test_upload_rejects_wrong_type_and_bad_calibration(ctx):
@@ -78,6 +89,96 @@ def test_job_ids_400_and_404(ctx):
     assert client.get("/film/jobs/job-ABCDEFGHIJKL").status_code == 400
     r = client.get(f"/film/jobs/{new_job_id()}")
     assert r.status_code == 404 and r.headers["cache-control"] == "no-store"
+
+
+def done_job(store, job_id, finished_at, players=7, status="done"):
+    store.write(
+        {
+            "jobId": job_id,
+            "status": status,
+            "createdAt": finished_at,
+            "finishedAt": finished_at,
+            "suggestedName": {
+                "playId": "unknown",
+                "title": f"Play {job_id[-2:]}",
+                "confidence": "low",
+                "why": "w",
+                "needsReview": True,
+            },
+            "error": None,
+            "video": {"fps": 12, "frames": 2, "width": 40, "height": 20, "duration": 0.2},
+        }
+    )
+    store.write_play(job_id, {"meta": {"playersFound": players}})
+
+
+def test_job_list_is_done_only_newest_first_max_ten(ctx):
+    client, store, _ = ctx
+    ids = [f"job-aaaaaaaaaa{c}{d}" for c in "bc" for d in "234567"]  # 12 ids
+    for n, jid in enumerate(ids):
+        done_job(store, jid, f"2026-10-28T10:{n:02d}:00Z", players=n)
+    done_job(store, "job-zzzzzzzzzzzz", "2026-10-28T11:00:00Z", status="failed")
+    store.write({"jobId": "job-yyyyyyyyyyyy", "status": "track", "finishedAt": None})
+    r = client.get("/film/jobs")
+    assert r.status_code == 200 and r.headers["cache-control"] == "no-store"
+    jobs = r.json()["jobs"]
+    assert [j["jobId"] for j in jobs] == ids[::-1][:10]
+    assert jobs[0] == {
+        "jobId": ids[-1],
+        "finishedAt": "2026-10-28T10:11:00Z",
+        "title": f"Play {ids[-1][-2:]}",
+        "playersFound": 11,
+    }
+
+
+def test_job_list_empty(ctx):
+    client, _, _ = ctx
+    assert client.get("/film/jobs").json() == {"jobs": []}
+
+
+def test_job_view_has_absolute_clip_url_and_overlay(ctx):
+    client, store, _ = ctx
+    jid = new_job_id()
+    done_job(store, jid, "2026-10-28T10:00:00Z")
+    overlay = {
+        "fps": 12,
+        "frames": 2,
+        "imageSize": [40, 20],
+        "players": {"o1": {"team": "offense", "boxes": [[1, 2, 3, 4], None]}},
+    }
+    store.write_overlay(jid, overlay)
+    job = client.get(f"/film/jobs/{jid}").json()
+    assert job["clipUrl"] == f"http://testserver/film/jobs/{jid}/clip"
+    assert job["overlay"] == overlay
+
+
+def test_clip_404_when_missing(ctx):
+    client, store, _ = ctx
+    jid = new_job_id()
+    done_job(store, jid, "2026-10-28T10:00:00Z")
+    r = client.get(f"/film/jobs/{jid}/clip")
+    assert r.status_code == 404 and "error" in r.json()
+    assert client.get(f"/film/jobs/{new_job_id()}/clip").status_code == 404
+    assert client.get("/film/jobs/nope/clip").status_code == 400
+
+
+def test_clip_serves_ranges(ctx):
+    client, store, _ = ctx
+    jid = new_job_id()
+    data = bytes(range(256)) * 4
+    store.dir(jid).mkdir(parents=True)
+    (store.dir(jid) / "clip.mp4").write_bytes(data)
+    full = client.get(f"/film/jobs/{jid}/clip")
+    assert full.status_code == 200 and full.content == data
+    assert full.headers["content-type"] == "video/mp4"
+    assert full.headers["accept-ranges"] == "bytes"
+    r = client.get(f"/film/jobs/{jid}/clip", headers={"Range": "bytes=0-99"})
+    assert r.status_code == 206
+    assert r.headers["content-range"] == f"bytes 0-99/{len(data)}"
+    assert r.content == data[:100]
+    assert r.headers["cache-control"] == "public, max-age=3600"
+    assert r.headers["access-control-allow-origin"] == "*"
+    assert r.headers["x-demo"] == "live"
 
 
 def test_ask_validation(ctx):
@@ -113,3 +214,19 @@ def test_models_check_caches():
     assert len(calls) == 1
     failing = ModelsCheck(lambda: (_ for _ in ()).throw(RuntimeError("down")))
     assert failing() is False
+
+
+def test_store_read_looks_again_when_job_file_is_briefly_missing(tmp_path, monkeypatch):
+    monkeypatch.setattr("app.settings.JOB_READ_RETRY_SECONDS", 0.0)
+    reloads: list[int] = []
+    store = JobStore(tmp_path)
+    jid = new_job_id()
+
+    def reload() -> None:
+        reloads.append(1)
+        if len(reloads) == 2:  # the file shows up on the second look
+            store.write({"jobId": jid, "status": "track"})
+
+    store.reload = reload
+    assert store.read(jid)["status"] == "track"
+    assert len(reloads) == 2

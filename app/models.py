@@ -38,6 +38,19 @@ class SuggestedName(BaseModel):
     needsReview: Literal[True] = True
 
 
+class OverlayPlayer(BaseModel):
+    team: Literal["offense", "defense"]
+    # One entry per clip.mp4 frame: [x1, y1, x2, y2] in clip.mp4 pixels, None where SAM missed the player.
+    boxes: list[list[int] | None]
+
+
+class Overlay(BaseModel):
+    fps: int
+    frames: int
+    imageSize: list[int]
+    players: dict[str, OverlayPlayer]
+
+
 class JobView(BaseModel):
     jobId: str
     status: JobStatus
@@ -46,6 +59,19 @@ class JobView(BaseModel):
     suggestedName: SuggestedName | None
     playDna: dict | None
     error: str | None
+    clipUrl: str | None
+    overlay: Overlay | None
+
+
+class JobSummary(BaseModel):
+    jobId: str
+    finishedAt: str | None
+    title: str | None
+    playersFound: int
+
+
+class JobList(BaseModel):
+    jobs: list[JobSummary]
 
 
 class Citation(BaseModel):

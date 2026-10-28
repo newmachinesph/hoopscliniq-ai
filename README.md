@@ -38,17 +38,19 @@ Deployed: `https://del-rosario-llino-g--hoopscliniq-ai-web.us-east.modal.run`
 | `SENTRY_DSN` | Modal Secret `hoopscliniq-sentry`, `.env` | Errors from the web endpoint and the job function |
 | `HOOPSCLINIQ_API_URL` | local shell | Deployed URL for `scripts/run_clip.py` and `scripts/smoke.py` |
 
-Storage: Modal Volume `hoopscliniq-film`, `jobs/<jobId>/{clip.mp4, job.json, sam.txt, play.json}`.
+Storage: Modal Volume `hoopscliniq-film`, `jobs/<jobId>/{clip.mp4, job.json, sam.txt, play.json, overlay.json}`.
 
 ## API
 
-Every response carries `Cache-Control: no-store` and `x-demo: live`. Errors are `{ "error": "..." }`.
+Every response carries `Cache-Control: no-store` (except the clip) and `x-demo: live`. Errors are `{ "error": "..." }`.
 
 | Route | Request | Response |
 |---|---|---|
 | `GET /health` | | `{ ok: true, version, modelsReachable }` (models check cached 60 s) |
 | `POST /film/upload` | multipart `file` (mp4/mov/webm, ≤ 200 MB, ≤ 60 s), optional `calibration` JSON string | `202 { jobId, status: "queued", statusUrl: "/film/jobs/<jobId>" }` |
-| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error }`; `400` malformed id, `404` unknown |
+| `GET /film/jobs/{jobId}` | | `{ jobId, status, finishedAt, steps[], suggestedName, playDna, error, clipUrl, overlay }`; `400` malformed id, `404` unknown |
+| `GET /film/jobs` | | `{ jobs: [{ jobId, finishedAt, title, playersFound }] }`: status `done` only, newest first, max 10; `title` = `suggestedName.title` |
+| `GET /film/jobs/{jobId}/clip` | | `clip.mp4` (`video/mp4`), HTTP Range (206), `Cache-Control: public, max-age=3600`, `Access-Control-Allow-Origin: *`; `404 { error }` when missing |
 | `POST /cliniq/ask` | `{ question }` (≤ 500 chars) | `{ question, answer: { body[], citations[], confidence, credits }, noSource }`; `400` bad body |
 
 `calibration` is `[[x,y] x4]` or `{ "points": [[x,y] x4], "imageSize": [w,h] }`: the half-court corners in the
