@@ -1,6 +1,6 @@
 # hoopscliniq-ai
 
-Backend for the Hoops ClinIQ hackathon demo (`../hoopscliniq-demo`): a coach's phone video of a basketball
+Backend for the Hoops ClinIQ hackathon demo ([hoopscliniq-demo](https://github.com/newmachinesph/hoopscliniq-demo)): a coach's phone video of a basketball
 possession goes in, tracked players and a suggested play name come out, and ClinIQ answers questions about the
 team's film with a citation for every claim. Meta Global AI Developer Hackathon 2026, Indie developer track.
 
@@ -256,6 +256,9 @@ Per clip, precision ranges 0.76–0.87 and recall 0.78–0.94.
 - Team split is jersey color only; referees, coaches or bench players caught in the top 10 tracks get a team anyway
   (the boys clip's two coaches on the floor are tracked).
 - Naming inside `POST /calibrate` is cut off at 40 s; when that happens the previous name stays.
+- ClinIQ on Muse Spark Open (`CLINIQ_PROVIDER=baseten`) is untested: the Baseten endpoint returned 403 on
+  2026-10-28. The deployed backend uses the Meta Model API.
+- Sideline voice tags (Muse Voice Transcribe) are not built.
 
 ## Attribution
 

@@ -9,7 +9,7 @@ Meta Global AI Developer Hackathon 2026, track Indie developer, due Nov 4 2026 9
 - **Python 3.12, FastAPI, deployed on Modal** as one app `hoopscliniq-ai`. No database. No auth.
 - **Meta Model API** (OpenAI-compatible, base `https://api.meta.ai/v1`, key `META_API_KEY`):
   `sam-3.1` for tracking, `muse-spark-1.3` for play naming and ClinIQ answers. Use the `openai`
-  Python SDK with `base_url` set. Never call Anthropic or OpenAI models.
+  Python SDK with `base_url` set. Only Meta models run in this backend.
 - **Secrets** come from the Modal Secret `hoopscliniq-keys` (already exists: `META_API_KEY`,
   `BASETEN_API_KEY`, `BASETEN_MODEL_ID`) plus a new Modal Secret `hoopscliniq-sentry` with
   `SENTRY_DSN` (create it from `.env` with `python -m modal secret create hoopscliniq-sentry SENTRY_DSN=...`).
