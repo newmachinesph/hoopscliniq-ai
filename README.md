@@ -1,8 +1,18 @@
 # hoopscliniq-ai
 
-Backend for the Hoops ClinIQ hackathon demo ([hoopscliniq-demo](https://github.com/newmachinesph/hoopscliniq-demo)): a coach's phone video of a basketball
-possession goes in, tracked players and a suggested play name come out, and ClinIQ answers questions about the
-team's film with a citation for every claim. Meta Global AI Developer Hackathon 2026, Indie developer track.
+Backend for the Hoops ClinIQ hackathon demo: a coach's phone video of a basketball possession goes in, tracked
+players and a suggested play name come out, and ClinIQ answers questions about the team's film with a citation for
+every claim. Meta Global AI Developer Hackathon 2026, Indie developer track.
+
+## The two repos
+
+| Repo | What it is | Runs on |
+|---|---|---|
+| [hoopscliniq-demo](https://github.com/newmachinesph/hoopscliniq-demo) | The web app (Next.js): Record → Tag → Ask → Study. Its `/api` routes proxy to this backend and fall back to sample data when it is unreachable. The submission writeup is its [SUBMISSION.md](https://github.com/newmachinesph/hoopscliniq-demo/blob/main/SUBMISSION.md). | Northflank |
+| **hoopscliniq-ai** (this repo) | The backend (FastAPI): SAM 3.1 player and ball tracking, court mapping, Muse Spark play naming, ClinIQ answers, study quizzes, the consent mask. | Modal |
+
+This backend has no UI. To try it, open the live demo at https://web--demo--mnlqynqt4mjy.code.run and start at
+`/demo`.
 
 - **Modal** runs it: one FastAPI web endpoint and one CPU function per film job (ffmpeg in the image).
 - **SAM 3.1** (Meta Model API) tracks the players; boxes become court positions in feet (play-dna v2 JSON).
@@ -20,13 +30,17 @@ pytest -q && ruff check .
 python -m modal serve app/modal_app.py    # dev server with a temporary URL, hot reload
 python -m modal deploy app/modal_app.py   # the deployed app `hoopscliniq-ai`
 
-python scripts/run_clip.py ../clips/hazen-girls-lakeregion-2026-02-11_t1200.mp4 --url <web url>
+python scripts/run_clip.py ../hoopscliniq-demo/public/samples/hazen-girls-lakeregion-2026-02-11_t1200.mp4 --url <web url>
 python scripts/smoke.py "What did we run against Westview's zone and what worked?" --url <web url>
 python -m eval.label_server --clips ../clips/eval   # label the eval frames at http://127.0.0.1:8765 (eval/README.md)
 python -m eval.run                                   # measure: eval/results/summary.{json,md}
 python -m eval.run --clip ../clips/<clip>.mp4 [--labels eval/labels/<clip>.json] [--stream <saved SAM stream> --fps 60]
 python scripts/build_world.py            # rebuild data/world.json from the demo's mocks (needs Node 22.6+)
 ```
+
+The commands assume [hoopscliniq-demo](https://github.com/newmachinesph/hoopscliniq-demo) is cloned next to this
+repo. The two sample clips are in its `public/samples/`. `../clips/` (the eval clips and saved SAM streams) is a
+local working folder and is not in either repo.
 
 Deployed: `https://del-rosario-llino-g--hoopscliniq-ai-web.us-east.modal.run`
 
@@ -265,4 +279,4 @@ Per clip, precision ranges 0.76–0.87 and recall 0.78–0.94.
 Test clips: Hardwick Community Television (HCTV), Hazen Union, Vermont, via Wikimedia Commons, **CC BY 4.0**:
 [Boys Varsity Basketball v. Stowe - Feb. 10, 2025](https://commons.wikimedia.org/wiki/File:Boys_Varsity_Basketball_v._Stowe_-_Feb._10,_2025.webm)
 and [Girls Varsity Basketball v. Lake Region - February 11, 2026](https://commons.wikimedia.org/wiki/File:Girls_Varsity_Basketball_v._Lake_Region_-_February_11,_2026.webm).
-20-second cuts, re-encoded. See `../clips/README.md`.
+20-second cuts, re-encoded, in the demo repo's `public/samples/`.
